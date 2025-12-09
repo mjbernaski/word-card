@@ -27,7 +27,7 @@ struct CardListView: View {
             gridView
             #endif
         }
-        .navigationTitle("Word Cards")
+        .navigationTitle("Cards")
         .searchable(text: $searchText, prompt: "Search cards")
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
@@ -64,7 +64,7 @@ struct CardListView: View {
                 ContentUnavailableView {
                     Label("No Cards", systemImage: "rectangle.on.rectangle.slash")
                 } description: {
-                    Text("Tap + to create your first word card")
+                    Text("Tap + to create your first card")
                 }
             }
         }
@@ -92,7 +92,7 @@ struct CardListView: View {
                 ContentUnavailableView {
                     Label("No Cards", systemImage: "rectangle.on.rectangle.slash")
                 } description: {
-                    Text("Tap + to create your first word card")
+                    Text("Tap + to create your first card")
                 }
             }
         }

@@ -25,17 +25,17 @@ enum FontStyle: String, Codable, CaseIterable {
 
 @Model
 final class WordCard {
-    var id: UUID
-    var text: String
-    var backgroundColor: String
-    var textColor: String
-    private var fontStyleRaw: String
-    var cornerRadius: Int
-    var borderColor: String?
-    var borderWidth: Int
-    var dpi: Int
-    var createdAt: Date
-    var updatedAt: Date
+    var id: UUID = UUID()
+    var text: String = ""
+    var backgroundColor: String = "#FFFFFF"
+    var textColor: String = "#000000"
+    private var fontStyleRaw: String = "elegant"
+    var cornerRadius: Int = 20
+    var borderColor: String? = "#CC785C"
+    var borderWidth: Int = 1
+    var dpi: Int = 150
+    var createdAt: Date = Date()
+    var updatedAt: Date = Date()
 
     @Transient
     var fontStyle: FontStyle {

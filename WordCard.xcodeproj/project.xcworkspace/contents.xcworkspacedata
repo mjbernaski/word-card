@@ -5,6 +5,9 @@
       location = "self:">
    </FileRef>
    <FileRef
-      location = "group:README.md">
+      location = "group:CloudKitSyncMonitor.swift">
+   </FileRef>
+   <FileRef
+      location = "group:SyncDebugView.swift">
    </FileRef>
 </Workspace>
