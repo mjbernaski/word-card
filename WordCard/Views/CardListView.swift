@@ -1,13 +1,25 @@
 import SwiftUI
 import SwiftData
+import UniformTypeIdentifiers
 
 struct CardListView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(filter: #Predicate<WordCard> { !$0.isArchived }, sort: \WordCard.updatedAt, order: .reverse) private var cards: [WordCard]
+    @Query private var allCards: [WordCard]
     @Binding var selectedCard: WordCard?
     @Binding var showingEditor: Bool
     @State private var searchText = ""
     @State private var showingArchive = false
+    @State private var showingBackupOptions = false
+    @State private var showingImporter = false
+    @State private var showingExporter = false
+    @State private var exportData: Data?
+    @State private var importResult: ImportResult?
+    @State private var showingImportResult = false
+    @State private var showingImportModeSheet = false
+    @State private var pendingImportURL: URL?
+    @State private var errorMessage: String?
+    @State private var showingError = false
 
     private var filteredCards: [WordCard] {
         if searchText.isEmpty {
@@ -41,15 +53,79 @@ struct CardListView: View {
                 }
             }
             ToolbarItem(placement: .secondaryAction) {
-                Button {
-                    showingArchive = true
+                Menu {
+                    Button {
+                        showingArchive = true
+                    } label: {
+                        Label("Archive", systemImage: "archivebox")
+                    }
+
+                    Divider()
+
+                    Button {
+                        exportBackup()
+                    } label: {
+                        Label("Export Backup", systemImage: "square.and.arrow.up")
+                    }
+
+                    Button {
+                        showingImporter = true
+                    } label: {
+                        Label("Import Backup", systemImage: "square.and.arrow.down")
+                    }
                 } label: {
-                    Label("Archive", systemImage: "archivebox")
+                    Label("More", systemImage: "ellipsis.circle")
                 }
             }
         }
         .sheet(isPresented: $showingArchive) {
             ArchiveView()
+        }
+        .fileExporter(
+            isPresented: $showingExporter,
+            document: BackupDocument(data: exportData ?? Data()),
+            contentType: .json,
+            defaultFilename: BackupService.shared.generateFilename()
+        ) { result in
+            if case .failure(let error) = result {
+                errorMessage = error.localizedDescription
+                showingError = true
+            }
+        }
+        .fileImporter(
+            isPresented: $showingImporter,
+            allowedContentTypes: [.json],
+            allowsMultipleSelection: false
+        ) { result in
+            handleImportResult(result)
+        }
+        .confirmationDialog("Import Options", isPresented: $showingImportModeSheet) {
+            Button("Skip Duplicates") {
+                performImport(mode: .skipDuplicates)
+            }
+            Button("Update Existing") {
+                performImport(mode: .updateExisting)
+            }
+            Button("Import as New Cards") {
+                performImport(mode: .importAsNew)
+            }
+            Button("Cancel", role: .cancel) {
+                pendingImportURL = nil
+            }
+        } message: {
+            Text("How should duplicate cards be handled?")
+        }
+        .alert("Import Complete", isPresented: $showingImportResult) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            if let result = importResult {
+                Text("Imported: \(result.imported)\nSkipped: \(result.skipped)\nUpdated: \(result.updated)")
+            }
+        }
+        .alert("Error", isPresented: $showingError) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(errorMessage ?? "An unknown error occurred")
         }
     }
 
@@ -123,6 +199,74 @@ struct CardListView: View {
                 filteredCards[index].archive()
             }
         }
+    }
+
+    private func exportBackup() {
+        do {
+            exportData = try BackupService.shared.exportCards(allCards)
+            showingExporter = true
+        } catch {
+            errorMessage = error.localizedDescription
+            showingError = true
+        }
+    }
+
+    private func handleImportResult(_ result: Result<[URL], Error>) {
+        switch result {
+        case .success(let urls):
+            guard let url = urls.first else { return }
+            pendingImportURL = url
+            showingImportModeSheet = true
+        case .failure(let error):
+            errorMessage = error.localizedDescription
+            showingError = true
+        }
+    }
+
+    private func performImport(mode: ImportMode) {
+        guard let url = pendingImportURL else { return }
+
+        do {
+            let accessing = url.startAccessingSecurityScopedResource()
+            defer {
+                if accessing {
+                    url.stopAccessingSecurityScopedResource()
+                }
+            }
+
+            let data = try Data(contentsOf: url)
+            let backup = try BackupService.shared.parseBackupFile(data)
+            importResult = BackupService.shared.importCards(
+                from: backup,
+                into: modelContext,
+                existingCards: allCards,
+                mode: mode
+            )
+            showingImportResult = true
+        } catch {
+            errorMessage = error.localizedDescription
+            showingError = true
+        }
+
+        pendingImportURL = nil
+    }
+}
+
+struct BackupDocument: FileDocument {
+    static var readableContentTypes: [UTType] { [.json] }
+
+    var data: Data
+
+    init(data: Data) {
+        self.data = data
+    }
+
+    init(configuration: ReadConfiguration) throws {
+        data = configuration.file.regularFileContents ?? Data()
+    }
+
+    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
+        FileWrapper(regularFileWithContents: data)
     }
 }
 
