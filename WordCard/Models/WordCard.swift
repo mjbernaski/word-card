@@ -23,6 +23,36 @@ enum FontStyle: String, Codable, CaseIterable {
     }
 }
 
+enum CardCategory: String, Codable, CaseIterable {
+    case idea = "idea"
+    case readings = "readings"
+    case miscellaneous = "miscellaneous"
+
+    var displayName: String {
+        switch self {
+        case .idea: return "Idea"
+        case .readings: return "Readings"
+        case .miscellaneous: return "Miscellaneous"
+        }
+    }
+
+    var defaultBackgroundColor: String {
+        switch self {
+        case .idea: return "#FFFFFF"           // White
+        case .readings: return "#F5DEB3"       // Manilla/Wheat
+        case .miscellaneous: return "#B0C4DE"  // Light steel blue
+        }
+    }
+
+    var iconName: String {
+        switch self {
+        case .idea: return "lightbulb"
+        case .readings: return "book"
+        case .miscellaneous: return "square.grid.2x2"
+        }
+    }
+}
+
 @Model
 final class WordCard {
     var id: UUID = UUID()
@@ -30,12 +60,15 @@ final class WordCard {
     var backgroundColor: String = "#FFFFFF"
     var textColor: String = "#000000"
     private var fontStyleRaw: String = "elegant"
+    private var categoryRaw: String = "idea"
     var cornerRadius: Int = 20
     var borderColor: String? = "#CC785C"
     var borderWidth: Int = 1
     var dpi: Int = 150
     var createdAt: Date = Date()
     var updatedAt: Date = Date()
+    var isArchived: Bool = false
+    var archivedAt: Date? = nil
 
     @Transient
     var fontStyle: FontStyle {
@@ -43,29 +76,57 @@ final class WordCard {
         set { fontStyleRaw = newValue.rawValue }
     }
 
+    @Transient
+    var category: CardCategory {
+        get { CardCategory(rawValue: categoryRaw) ?? .idea }
+        set {
+            categoryRaw = newValue.rawValue
+            // Optionally update background color when category changes
+            backgroundColor = newValue.defaultBackgroundColor
+        }
+    }
+
     init(
         id: UUID = UUID(),
         text: String = "",
-        backgroundColor: String = "#FFFFFF",
+        backgroundColor: String? = nil,
         textColor: String = "#000000",
         fontStyle: FontStyle = .elegant,
+        category: CardCategory = .idea,
         cornerRadius: Int = 20,
         borderColor: String? = "#CC785C",
         borderWidth: Int = 1,
         dpi: Int = 150,
         createdAt: Date = Date(),
-        updatedAt: Date = Date()
+        updatedAt: Date = Date(),
+        isArchived: Bool = false,
+        archivedAt: Date? = nil
     ) {
         self.id = id
         self.text = text
-        self.backgroundColor = backgroundColor
+        self.backgroundColor = backgroundColor ?? category.defaultBackgroundColor
         self.textColor = textColor
         self.fontStyleRaw = fontStyle.rawValue
+        self.categoryRaw = category.rawValue
         self.cornerRadius = cornerRadius
         self.borderColor = borderColor
         self.borderWidth = borderWidth
         self.dpi = dpi
         self.createdAt = createdAt
         self.updatedAt = updatedAt
+        self.isArchived = isArchived
+        self.archivedAt = archivedAt
+    }
+
+    func archive() {
+        isArchived = true
+        archivedAt = Date()
+        updatedAt = Date()
+    }
+
+    func restore() {
+        isArchived = false
+        archivedAt = nil
+        updatedAt = Date()
     }
 }

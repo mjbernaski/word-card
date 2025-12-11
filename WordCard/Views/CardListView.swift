@@ -3,10 +3,11 @@ import SwiftData
 
 struct CardListView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: \WordCard.updatedAt, order: .reverse) private var cards: [WordCard]
+    @Query(filter: #Predicate<WordCard> { !$0.isArchived }, sort: \WordCard.updatedAt, order: .reverse) private var cards: [WordCard]
     @Binding var selectedCard: WordCard?
     @Binding var showingEditor: Bool
     @State private var searchText = ""
+    @State private var showingArchive = false
 
     private var filteredCards: [WordCard] {
         if searchText.isEmpty {
@@ -37,6 +38,16 @@ struct CardListView: View {
                     Label("Add Card", systemImage: "plus")
                 }
             }
+            ToolbarItem(placement: .secondaryAction) {
+                Button {
+                    showingArchive = true
+                } label: {
+                    Label("Archive", systemImage: "archivebox")
+                }
+            }
+        }
+        .sheet(isPresented: $showingArchive) {
+            ArchiveView()
         }
     }
 
@@ -50,9 +61,9 @@ struct CardListView: View {
                         }
                         .contextMenu {
                             Button(role: .destructive) {
-                                deleteCard(card)
+                                archiveCard(card)
                             } label: {
-                                Label("Delete", systemImage: "trash")
+                                Label("Archive", systemImage: "archivebox")
                             }
                         }
                 }
@@ -82,7 +93,7 @@ struct CardListView: View {
                     }
                 }
             }
-            .onDelete(perform: deleteCards)
+            .onDelete(perform: archiveCards)
         }
         .navigationDestination(for: WordCard.self) { card in
             CardDetailView(card: card)
@@ -98,16 +109,91 @@ struct CardListView: View {
         }
     }
 
-    private func deleteCard(_ card: WordCard) {
+    private func archiveCard(_ card: WordCard) {
         withAnimation {
-            modelContext.delete(card)
+            card.archive()
         }
     }
 
-    private func deleteCards(at offsets: IndexSet) {
+    private func archiveCards(at offsets: IndexSet) {
         withAnimation {
             for index in offsets {
-                modelContext.delete(filteredCards[index])
+                filteredCards[index].archive()
+            }
+        }
+    }
+}
+
+struct ArchiveView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
+    @Query(filter: #Predicate<WordCard> { $0.isArchived }, sort: \WordCard.archivedAt, order: .reverse) private var archivedCards: [WordCard]
+
+    var body: some View {
+        NavigationStack {
+            List {
+                if archivedCards.isEmpty {
+                    ContentUnavailableView {
+                        Label("No Archived Cards", systemImage: "archivebox")
+                    } description: {
+                        Text("Cards you archive will appear here")
+                    }
+                } else {
+                    ForEach(archivedCards) { card in
+                        HStack {
+                            CardThumbnailView(card: card)
+                                .frame(width: 120, height: 60)
+                            VStack(alignment: .leading) {
+                                Text(card.text)
+                                    .lineLimit(2)
+                                if let archivedAt = card.archivedAt {
+                                    Text("Archived \(archivedAt.formatted(date: .abbreviated, time: .omitted))")
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
+                            }
+                            Spacer()
+                        }
+                        .swipeActions(edge: .trailing) {
+                            Button(role: .destructive) {
+                                modelContext.delete(card)
+                            } label: {
+                                Label("Delete", systemImage: "trash")
+                            }
+                        }
+                        .swipeActions(edge: .leading) {
+                            Button {
+                                card.restore()
+                            } label: {
+                                Label("Restore", systemImage: "arrow.uturn.backward")
+                            }
+                            .tint(.green)
+                        }
+                        .contextMenu {
+                            Button {
+                                card.restore()
+                            } label: {
+                                Label("Restore", systemImage: "arrow.uturn.backward")
+                            }
+                            Button(role: .destructive) {
+                                modelContext.delete(card)
+                            } label: {
+                                Label("Delete Permanently", systemImage: "trash")
+                            }
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Archive")
+            #if os(iOS)
+            .navigationBarTitleDisplayMode(.inline)
+            #endif
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
             }
         }
     }

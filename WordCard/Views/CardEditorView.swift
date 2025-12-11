@@ -8,6 +8,7 @@ struct CardEditorView: View {
     var existingCard: WordCard?
 
     @State private var text: String = ""
+    @State private var category: CardCategory = .idea
     @State private var backgroundColor: Color = .white
     @State private var textColor: Color = .black
     @State private var fontStyle: FontStyle = .elegant
@@ -21,6 +22,7 @@ struct CardEditorView: View {
         self.existingCard = card
         if let card = card {
             _text = State(initialValue: card.text)
+            _category = State(initialValue: card.category)
             _backgroundColor = State(initialValue: Color(hex: card.backgroundColor) ?? .white)
             _textColor = State(initialValue: Color(hex: card.textColor) ?? .black)
             _fontStyle = State(initialValue: card.fontStyle)
@@ -52,6 +54,18 @@ struct CardEditorView: View {
             Section("Text") {
                 TextField("Enter text", text: $text, axis: .vertical)
                     .lineLimit(3...6)
+            }
+
+            Section("Category") {
+                Picker("Category", selection: $category) {
+                    ForEach(CardCategory.allCases, id: \.self) { cat in
+                        Label(cat.displayName, systemImage: cat.iconName).tag(cat)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .onChange(of: category) { _, newCategory in
+                    backgroundColor = Color(hex: newCategory.defaultBackgroundColor) ?? .white
+                }
             }
 
             Section("Colors") {
@@ -122,6 +136,7 @@ struct CardEditorView: View {
     private func saveCard() {
         if let card = existingCard {
             card.text = text
+            card.category = category
             card.backgroundColor = backgroundColor.toHex()
             card.textColor = textColor.toHex()
             card.fontStyle = fontStyle
@@ -136,6 +151,7 @@ struct CardEditorView: View {
                 backgroundColor: backgroundColor.toHex(),
                 textColor: textColor.toHex(),
                 fontStyle: fontStyle,
+                category: category,
                 cornerRadius: Int(cornerRadius),
                 borderColor: hasBorder ? borderColor.toHex() : nil,
                 borderWidth: Int(borderWidth),
