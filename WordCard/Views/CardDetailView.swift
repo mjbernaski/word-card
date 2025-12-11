@@ -108,7 +108,9 @@ struct ShareSheetView: View {
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
-        #if os(iOS) || os(visionOS)
+        #if os(visionOS)
+        VisionOSShareView(image: image, filename: safeFilename, dismiss: dismiss)
+        #elseif os(iOS)
         ActivityView(image: image, filename: safeFilename)
         #else
         MacShareView(image: image, filename: safeFilename, dismiss: dismiss)
@@ -124,7 +126,82 @@ struct ShareSheetView: View {
     }
 }
 
-#if os(iOS) || os(visionOS)
+#if os(visionOS)
+import UIKit
+
+struct VisionOSShareView: View {
+    let image: CGImage
+    let filename: String
+    let dismiss: DismissAction
+    @State private var showingSaveConfirmation = false
+
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: 24) {
+                Image(decorative: image, scale: 1.0)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: 400, maxHeight: 200)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+
+                Text("\(filename).png")
+                    .font(.headline)
+
+                let uiImage = UIImage(cgImage: image)
+                if let pngData = uiImage.pngData() {
+                    ShareLink(
+                        item: pngData,
+                        preview: SharePreview("\(filename).png", image: Image(decorative: image, scale: 1.0))
+                    ) {
+                        Label("Share Image", systemImage: "square.and.arrow.up")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .padding(.horizontal)
+                }
+
+                Button("Save to Files") {
+                    saveToFiles()
+                }
+                .buttonStyle(.bordered)
+                .padding(.horizontal)
+            }
+            .padding()
+            .navigationTitle("Export Card")
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+        .alert("Saved!", isPresented: $showingSaveConfirmation) {
+            Button("OK") {
+                dismiss()
+            }
+        } message: {
+            Text("Image saved to Documents folder")
+        }
+    }
+
+    private func saveToFiles() {
+        let uiImage = UIImage(cgImage: image)
+        guard let pngData = uiImage.pngData() else { return }
+
+        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let fileURL = documentsURL.appendingPathComponent("\(filename).png")
+
+        do {
+            try pngData.write(to: fileURL)
+            showingSaveConfirmation = true
+        } catch {
+            print("Failed to save: \(error)")
+        }
+    }
+}
+
+#elseif os(iOS)
 import UIKit
 
 struct ActivityView: UIViewControllerRepresentable {
