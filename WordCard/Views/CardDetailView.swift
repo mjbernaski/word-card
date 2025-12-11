@@ -108,7 +108,7 @@ struct ShareSheetView: View {
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
-        #if os(iOS)
+        #if os(iOS) || os(visionOS)
         ActivityView(image: image, filename: safeFilename)
         #else
         MacShareView(image: image, filename: safeFilename, dismiss: dismiss)
@@ -124,7 +124,9 @@ struct ShareSheetView: View {
     }
 }
 
-#if os(iOS)
+#if os(iOS) || os(visionOS)
+import UIKit
+
 struct ActivityView: UIViewControllerRepresentable {
     let image: CGImage
     let filename: String
@@ -141,6 +143,8 @@ struct ActivityView: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
 #else
+import AppKit
+
 struct MacShareView: View {
     let image: CGImage
     let filename: String

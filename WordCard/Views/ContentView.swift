@@ -32,6 +32,27 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: .newCard)) { _ in
             showingEditor = true
         }
+        #elseif os(visionOS)
+        NavigationSplitView {
+            CardListView(selectedCard: $selectedCard, showingEditor: $showingEditor)
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        SyncStatusDot(syncMonitor: syncMonitor)
+                    }
+                }
+        } detail: {
+            if let card = selectedCard {
+                CardDetailView(card: card)
+            } else {
+                Text("Select a card")
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .sheet(isPresented: $showingEditor) {
+            NavigationStack {
+                CardEditorView()
+            }
+        }
         #else
         NavigationStack {
             VStack(spacing: 0) {

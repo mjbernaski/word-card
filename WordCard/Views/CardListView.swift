@@ -24,6 +24,8 @@ struct CardListView: View {
             } else {
                 listView
             }
+            #elseif os(visionOS)
+            gridView
             #else
             gridView
             #endif
