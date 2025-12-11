@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		611638B52EE88688000BCDC3 /* CloudKitSyncMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611638B42EE88688000BCDC3 /* CloudKitSyncMonitor.swift */; };
 		611638B72EE88B48000BCDC3 /* ValenceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611638B62EE88B48000BCDC3 /* ValenceApp.swift */; };
+		611638BA2EEA0000000BCDC3 /* ImmersiveCardSpaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611638BB2EEA0000000BCDC3 /* ImmersiveCardSpaceView.swift */; };
 		A10000010000000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000002 /* ContentView.swift */; };
 		A10000010000000000000003 /* WordCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000003 /* WordCard.swift */; };
 		A10000010000000000000004 /* CardListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000004 /* CardListView.swift */; };
@@ -23,6 +24,7 @@
 /* Begin PBXFileReference section */
 		611638B42EE88688000BCDC3 /* CloudKitSyncMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitSyncMonitor.swift; sourceTree = "<group>"; };
 		611638B62EE88B48000BCDC3 /* ValenceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValenceApp.swift; sourceTree = "<group>"; };
+		611638BB2EEA0000000BCDC3 /* ImmersiveCardSpaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveCardSpaceView.swift; sourceTree = "<group>"; };
 		A20000010000000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A20000010000000000000003 /* WordCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCard.swift; sourceTree = "<group>"; };
 		A20000010000000000000004 /* CardListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardListView.swift; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 				A20000010000000000000006 /* CardEditorView.swift */,
 				A20000010000000000000007 /* CardPreviewView.swift */,
 				611638B42EE88688000BCDC3 /* CloudKitSyncMonitor.swift */,
+				611638BB2EEA0000000BCDC3 /* ImmersiveCardSpaceView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -191,6 +194,7 @@
 				A10000010000000000000008 /* PNGExporter.swift in Sources */,
 				611638B72EE88B48000BCDC3 /* ValenceApp.swift in Sources */,
 				611638B52EE88688000BCDC3 /* CloudKitSyncMonitor.swift in Sources */,
+				611638BA2EEA0000000BCDC3 /* ImmersiveCardSpaceView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

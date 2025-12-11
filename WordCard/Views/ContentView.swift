@@ -7,6 +7,9 @@ struct ContentView: View {
     @State private var showingEditor = false
     @State private var selectedCard: WordCard?
     @StateObject private var syncMonitor = CloudKitSyncMonitor()
+    #if os(visionOS)
+    @State private var showingCardSpace = false
+    #endif
 
     var body: some View {
         #if os(macOS)
@@ -39,6 +42,13 @@ struct ContentView: View {
                     ToolbarItem(placement: .topBarLeading) {
                         SyncStatusDot(syncMonitor: syncMonitor)
                     }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            showingCardSpace = true
+                        } label: {
+                            Label("3D Space", systemImage: "cube.transparent")
+                        }
+                    }
                 }
         } detail: {
             if let card = selectedCard {
@@ -52,6 +62,9 @@ struct ContentView: View {
             NavigationStack {
                 CardEditorView()
             }
+        }
+        .fullScreenCover(isPresented: $showingCardSpace) {
+            ImmersiveCardSpaceView()
         }
         #else
         NavigationStack {
