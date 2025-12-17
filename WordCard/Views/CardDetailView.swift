@@ -8,6 +8,8 @@ struct CardDetailView: View {
     @State private var showingExporter = false
     @State private var exportedImage: CGImage?
     @State private var showingShareSheet = false
+    @State private var showingResolutionPicker = false
+    @State private var selectedResolution: ExportResolution = .medium
 
     var body: some View {
         ScrollView {
@@ -52,7 +54,7 @@ struct CardDetailView: View {
                     .buttonStyle(.bordered)
 
                     Button {
-                        exportCard()
+                        showingResolutionPicker = true
                     } label: {
                         Label("Export PNG", systemImage: "square.and.arrow.up")
                             .frame(maxWidth: .infinity)
@@ -77,11 +79,22 @@ struct CardDetailView: View {
                 ShareSheetView(image: image, card: card)
             }
         }
+        .confirmationDialog("Export Resolution", isPresented: $showingResolutionPicker, titleVisibility: .visible) {
+            ForEach(ExportResolution.allCases, id: \.self) { resolution in
+                Button("\(resolution.displayName) (\(resolution.dimensions))") {
+                    selectedResolution = resolution
+                    exportCard()
+                }
+            }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("Choose the resolution for your exported image")
+        }
     }
 
     private func exportCard() {
         let exporter = PNGExporter()
-        if let image = exporter.export(card: card) {
+        if let image = exporter.export(card: card, resolution: selectedResolution) {
             exportedImage = image
             showingShareSheet = true
         }
@@ -106,15 +119,58 @@ struct ShareSheetView: View {
     let image: CGImage
     let card: WordCard
     @Environment(\.dismiss) private var dismiss
+    @State private var tempFileURL: URL?
+    @State private var exportError: String?
 
     var body: some View {
-        #if os(visionOS)
-        VisionOSShareView(image: image, filename: safeFilename, dismiss: dismiss)
-        #elseif os(iOS)
-        ActivityView(image: image, filename: safeFilename)
-        #else
-        MacShareView(image: image, filename: safeFilename, dismiss: dismiss)
-        #endif
+        Group {
+            if let url = tempFileURL {
+                #if os(visionOS)
+                VisionOSShareView(fileURL: url, filename: safeFilename, dismiss: dismiss)
+                #elseif os(iOS)
+                ActivityView(fileURL: url)
+                #else
+                MacShareView(fileURL: url, filename: safeFilename, dismiss: dismiss)
+                #endif
+            } else if let error = exportError {
+                VStack(spacing: 16) {
+                    Image(systemName: "exclamationmark.triangle")
+                        .font(.largeTitle)
+                        .foregroundStyle(.red)
+                    Text("Export Failed")
+                        .font(.headline)
+                    Text(error)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Button("Dismiss") { dismiss() }
+                        .buttonStyle(.bordered)
+                }
+                .padding()
+            } else {
+                ProgressView("Preparing export...")
+                    .padding()
+            }
+        }
+        .task {
+            await prepareExport()
+        }
+    }
+
+    private func prepareExport() async {
+        let tempDir = FileManager.default.temporaryDirectory
+        let fileURL = tempDir.appendingPathComponent("\(safeFilename).png")
+
+        let exporter = PNGExporter()
+        do {
+            try exporter.saveToPNG(image: image, url: fileURL)
+            await MainActor.run {
+                tempFileURL = fileURL
+            }
+        } catch {
+            await MainActor.run {
+                exportError = error.localizedDescription
+            }
+        }
     }
 
     private var safeFilename: String {
@@ -130,35 +186,33 @@ struct ShareSheetView: View {
 import UIKit
 
 struct VisionOSShareView: View {
-    let image: CGImage
+    let fileURL: URL
     let filename: String
     let dismiss: DismissAction
     @State private var showingSaveConfirmation = false
+    @State private var showingSaveError = false
+    @State private var saveErrorMessage = ""
 
     var body: some View {
         NavigationStack {
             VStack(spacing: 24) {
-                Image(decorative: image, scale: 1.0)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(maxWidth: 400, maxHeight: 200)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                if let uiImage = UIImage(contentsOfFile: fileURL.path) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: 400, maxHeight: 200)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
 
                 Text("\(filename).png")
                     .font(.headline)
 
-                let uiImage = UIImage(cgImage: image)
-                if let pngData = uiImage.pngData() {
-                    ShareLink(
-                        item: pngData,
-                        preview: SharePreview("\(filename).png", image: Image(decorative: image, scale: 1.0))
-                    ) {
-                        Label("Share Image", systemImage: "square.and.arrow.up")
-                            .frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .padding(.horizontal)
+                ShareLink(item: fileURL) {
+                    Label("Share Image", systemImage: "square.and.arrow.up")
+                        .frame(maxWidth: .infinity)
                 }
+                .buttonStyle(.borderedProminent)
+                .padding(.horizontal)
 
                 Button("Save to Files") {
                     saveToFiles()
@@ -183,20 +237,26 @@ struct VisionOSShareView: View {
         } message: {
             Text("Image saved to Documents folder")
         }
+        .alert("Save Failed", isPresented: $showingSaveError) {
+            Button("OK") { }
+        } message: {
+            Text(saveErrorMessage)
+        }
     }
 
     private func saveToFiles() {
-        let uiImage = UIImage(cgImage: image)
-        guard let pngData = uiImage.pngData() else { return }
-
         let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let fileURL = documentsURL.appendingPathComponent("\(filename).png")
+        let destURL = documentsURL.appendingPathComponent("\(filename).png")
 
         do {
-            try pngData.write(to: fileURL)
+            if FileManager.default.fileExists(atPath: destURL.path) {
+                try FileManager.default.removeItem(at: destURL)
+            }
+            try FileManager.default.copyItem(at: fileURL, to: destURL)
             showingSaveConfirmation = true
         } catch {
-            print("Failed to save: \(error)")
+            saveErrorMessage = error.localizedDescription
+            showingSaveError = true
         }
     }
 }
@@ -205,13 +265,11 @@ struct VisionOSShareView: View {
 import UIKit
 
 struct ActivityView: UIViewControllerRepresentable {
-    let image: CGImage
-    let filename: String
+    let fileURL: URL
 
     func makeUIViewController(context: Context) -> UIActivityViewController {
-        let uiImage = UIImage(cgImage: image)
         let controller = UIActivityViewController(
-            activityItems: [uiImage],
+            activityItems: [fileURL],
             applicationActivities: nil
         )
         return controller
@@ -221,20 +279,21 @@ struct ActivityView: UIViewControllerRepresentable {
 }
 #else
 import AppKit
+import UniformTypeIdentifiers
 
 struct MacShareView: View {
-    let image: CGImage
+    let fileURL: URL
     let filename: String
     let dismiss: DismissAction
 
-    @State private var saveURL: URL?
-
     var body: some View {
         VStack(spacing: 20) {
-            Image(decorative: image, scale: 1.0)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(maxWidth: 300)
+            if let nsImage = NSImage(contentsOf: fileURL) {
+                Image(nsImage: nsImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: 300)
+            }
 
             Text("\(filename).png")
                 .font(.headline)
@@ -245,8 +304,8 @@ struct MacShareView: View {
                 }
                 .keyboardShortcut(.cancelAction)
 
-                Button("Save to Downloads") {
-                    saveToDownloads()
+                Button("Save As...") {
+                    showSavePanel()
                 }
                 .keyboardShortcut(.defaultAction)
             }
@@ -255,20 +314,30 @@ struct MacShareView: View {
         .frame(minWidth: 400)
     }
 
-    private func saveToDownloads() {
-        let nsImage = NSImage(cgImage: image, size: NSSize(width: image.width, height: image.height))
-        guard let tiffData = nsImage.tiffRepresentation,
-              let bitmapRep = NSBitmapImageRep(data: tiffData),
-              let pngData = bitmapRep.representation(using: .png, properties: [:]) else {
-            return
+    private func showSavePanel() {
+        let savePanel = NSSavePanel()
+        savePanel.allowedContentTypes = [.png]
+        savePanel.nameFieldStringValue = "\(filename).png"
+        savePanel.canCreateDirectories = true
+
+        savePanel.begin { response in
+            if response == .OK, let destURL = savePanel.url {
+                do {
+                    if FileManager.default.fileExists(atPath: destURL.path) {
+                        try FileManager.default.removeItem(at: destURL)
+                    }
+                    try FileManager.default.copyItem(at: fileURL, to: destURL)
+                    NSWorkspace.shared.activateFileViewerSelecting([destURL])
+                } catch {
+                    let alert = NSAlert()
+                    alert.messageText = "Save Failed"
+                    alert.informativeText = error.localizedDescription
+                    alert.alertStyle = .warning
+                    alert.runModal()
+                }
+            }
+            dismiss()
         }
-
-        let downloadsURL = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first!
-        let fileURL = downloadsURL.appendingPathComponent("\(filename).png")
-
-        try? pngData.write(to: fileURL)
-        NSWorkspace.shared.activateFileViewerSelecting([fileURL])
-        dismiss()
     }
 }
 #endif

@@ -23,6 +23,34 @@ enum FontStyle: String, Codable, CaseIterable {
     }
 }
 
+enum ExportResolution: String, CaseIterable {
+    case medium = "medium"
+    case high = "high"
+    case superHigh = "superHigh"
+
+    var displayName: String {
+        switch self {
+        case .medium: return "Medium"
+        case .high: return "High"
+        case .superHigh: return "Super High"
+        }
+    }
+
+    var dpi: Int {
+        switch self {
+        case .medium: return 150      // 450 x 225 px
+        case .high: return 300        // 900 x 450 px
+        case .superHigh: return 600   // 1800 x 900 px
+        }
+    }
+
+    var dimensions: String {
+        let width = 3 * dpi
+        let height = Int(1.5 * Double(dpi))
+        return "\(width) × \(height) px"
+    }
+}
+
 enum CardCategory: String, Codable, CaseIterable {
     case idea = "idea"
     case readings = "readings"
