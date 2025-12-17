@@ -1,0 +1,10 @@
+{
+    "serverAddress": "http://localhost:8080",
+    "defaultDPI": 150,
+    "defaultFontStyle": "elegant",
+    "defaultCornerRadius": 20,
+    "defaultBorderColor": "#CC785C",
+    "defaultBorderWidth": 1,
+    "defaultBackgroundColor": "#FFFFFF",
+    "defaultTextColor": "#000000"
+}

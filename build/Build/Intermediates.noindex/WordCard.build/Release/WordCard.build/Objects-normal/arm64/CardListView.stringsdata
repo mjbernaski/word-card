@@ -1,0 +1,264 @@
+{
+  "source": "/Users/michaelbernaski/Documents/word-card/WordCard/Views/CardListView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Cards",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 45
+        }
+      },
+      {
+        "comment": "",
+        "key": "Search cards",
+        "location": {
+          "startingColumn": 48,
+          "startingLine": 46
+        }
+      },
+      {
+        "comment": "",
+        "key": "Import Options",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 102
+        }
+      },
+      {
+        "comment": "",
+        "key": "Import Complete",
+        "location": {
+          "startingColumn": 16,
+          "startingLine": 118
+        }
+      },
+      {
+        "comment": "",
+        "key": "Error",
+        "location": {
+          "startingColumn": 16,
+          "startingLine": 125
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add Card",
+        "location": {
+          "startingColumn": 27,
+          "startingLine": 52
+        }
+      },
+      {
+        "comment": "",
+        "key": "Archive",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 60
+        }
+      },
+      {
+        "comment": "",
+        "key": "Export Backup",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 68
+        }
+      },
+      {
+        "comment": "",
+        "key": "Import Backup",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 74
+        }
+      },
+      {
+        "comment": "",
+        "key": "More",
+        "location": {
+          "startingColumn": 27,
+          "startingLine": 77
+        }
+      },
+      {
+        "comment": "",
+        "key": "Skip Duplicates",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 103
+        }
+      },
+      {
+        "comment": "",
+        "key": "Update Existing",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 106
+        }
+      },
+      {
+        "comment": "",
+        "key": "Import as New Cards",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 109
+        }
+      },
+      {
+        "comment": "",
+        "key": "Cancel",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 112
+        }
+      },
+      {
+        "comment": "",
+        "key": "How should duplicate cards be handled?",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 116
+        }
+      },
+      {
+        "comment": "",
+        "key": "OK",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 119
+        }
+      },
+      {
+        "comment": "",
+        "key": "Imported: %lld\nSkipped: %lld\nUpdated: %lld",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 122
+        }
+      },
+      {
+        "comment": "",
+        "key": "OK",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 126
+        }
+      },
+      {
+        "comment": "",
+        "key": "Archive",
+        "location": {
+          "startingColumn": 39,
+          "startingLine": 144
+        }
+      },
+      {
+        "comment": "",
+        "key": "No Cards",
+        "location": {
+          "startingColumn": 27,
+          "startingLine": 154
+        }
+      },
+      {
+        "comment": "",
+        "key": "Tap + to create your first card",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 156
+        }
+      },
+      {
+        "comment": "",
+        "key": "No Cards",
+        "location": {
+          "startingColumn": 27,
+          "startingLine": 182
+        }
+      },
+      {
+        "comment": "",
+        "key": "Tap + to create your first card",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 184
+        }
+      },
+      {
+        "comment": "",
+        "key": "Archive",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 333
+        }
+      },
+      {
+        "comment": "",
+        "key": "No Archived Cards",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 283
+        }
+      },
+      {
+        "comment": "",
+        "key": "Cards you archive will appear here",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 285
+        }
+      },
+      {
+        "comment": "",
+        "key": "Archived %@",
+        "location": {
+          "startingColumn": 42,
+          "startingLine": 296
+        }
+      },
+      {
+        "comment": "",
+        "key": "Delete",
+        "location": {
+          "startingColumn": 39,
+          "startingLine": 307
+        }
+      },
+      {
+        "comment": "",
+        "key": "Restore",
+        "location": {
+          "startingColumn": 39,
+          "startingLine": 314
+        }
+      },
+      {
+        "comment": "",
+        "key": "Restore",
+        "location": {
+          "startingColumn": 39,
+          "startingLine": 322
+        }
+      },
+      {
+        "comment": "",
+        "key": "Delete Permanently",
+        "location": {
+          "startingColumn": 39,
+          "startingLine": 327
+        }
+      },
+      {
+        "comment": "",
+        "key": "Done",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 339
+        }
+      }
+    ]
+  },
+  "version": 1
+}

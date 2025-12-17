@@ -1,0 +1,71 @@
+{
+  "" : {
+    "const-values" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/WordCard-primary.swiftconstvalues",
+    "dependencies" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/WordCard-primary.d",
+    "diagnostics" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/WordCard-primary.dia",
+    "emit-module-dependencies" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/WordCard-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/WordCard-primary-emit-module.dia",
+    "pch" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/WordCard-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/WordCard-primary.swiftdeps"
+  },
+  "/Users/michaelbernaski/Documents/word-card/WordCard/Models/WordCard.swift" : {
+    "index-unit-output-path" : "/WordCard.build/Release/WordCard.build/Objects-normal/arm64/WordCard.o",
+    "llvm-bc" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/WordCard.bc",
+    "object" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/WordCard.o"
+  },
+  "/Users/michaelbernaski/Documents/word-card/WordCard/Services/BackupService.swift" : {
+    "index-unit-output-path" : "/WordCard.build/Release/WordCard.build/Objects-normal/arm64/BackupService.o",
+    "llvm-bc" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/BackupService.bc",
+    "object" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/BackupService.o"
+  },
+  "/Users/michaelbernaski/Documents/word-card/WordCard/Services/PNGExporter.swift" : {
+    "index-unit-output-path" : "/WordCard.build/Release/WordCard.build/Objects-normal/arm64/PNGExporter.o",
+    "llvm-bc" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/PNGExporter.bc",
+    "object" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/PNGExporter.o"
+  },
+  "/Users/michaelbernaski/Documents/word-card/WordCard/ValenceApp.swift" : {
+    "index-unit-output-path" : "/WordCard.build/Release/WordCard.build/Objects-normal/arm64/ValenceApp.o",
+    "llvm-bc" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/ValenceApp.bc",
+    "object" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/ValenceApp.o"
+  },
+  "/Users/michaelbernaski/Documents/word-card/WordCard/Views/CardDetailView.swift" : {
+    "index-unit-output-path" : "/WordCard.build/Release/WordCard.build/Objects-normal/arm64/CardDetailView.o",
+    "llvm-bc" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/CardDetailView.bc",
+    "object" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/CardDetailView.o"
+  },
+  "/Users/michaelbernaski/Documents/word-card/WordCard/Views/CardEditorView.swift" : {
+    "index-unit-output-path" : "/WordCard.build/Release/WordCard.build/Objects-normal/arm64/CardEditorView.o",
+    "llvm-bc" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/CardEditorView.bc",
+    "object" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/CardEditorView.o"
+  },
+  "/Users/michaelbernaski/Documents/word-card/WordCard/Views/CardListView.swift" : {
+    "index-unit-output-path" : "/WordCard.build/Release/WordCard.build/Objects-normal/arm64/CardListView.o",
+    "llvm-bc" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/CardListView.bc",
+    "object" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/CardListView.o"
+  },
+  "/Users/michaelbernaski/Documents/word-card/WordCard/Views/CardPreviewView.swift" : {
+    "index-unit-output-path" : "/WordCard.build/Release/WordCard.build/Objects-normal/arm64/CardPreviewView.o",
+    "llvm-bc" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/CardPreviewView.bc",
+    "object" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/CardPreviewView.o"
+  },
+  "/Users/michaelbernaski/Documents/word-card/WordCard/Views/CloudKitSyncMonitor.swift" : {
+    "index-unit-output-path" : "/WordCard.build/Release/WordCard.build/Objects-normal/arm64/CloudKitSyncMonitor.o",
+    "llvm-bc" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/CloudKitSyncMonitor.bc",
+    "object" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/CloudKitSyncMonitor.o"
+  },
+  "/Users/michaelbernaski/Documents/word-card/WordCard/Views/ContentView.swift" : {
+    "index-unit-output-path" : "/WordCard.build/Release/WordCard.build/Objects-normal/arm64/ContentView.o",
+    "llvm-bc" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/ContentView.bc",
+    "object" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/ContentView.o"
+  },
+  "/Users/michaelbernaski/Documents/word-card/WordCard/Views/ImmersiveCardSpaceView.swift" : {
+    "index-unit-output-path" : "/WordCard.build/Release/WordCard.build/Objects-normal/arm64/ImmersiveCardSpaceView.o",
+    "llvm-bc" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/ImmersiveCardSpaceView.bc",
+    "object" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/ImmersiveCardSpaceView.o"
+  },
+  "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "index-unit-output-path" : "/WordCard.build/Release/WordCard.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/michaelbernaski/Documents/word-card/build/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/GeneratedAssetSymbols.o"
+  }
+}
