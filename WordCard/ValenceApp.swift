@@ -55,6 +55,13 @@ struct ValenceApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .onAppear {
+                    #if os(macOS)
+                    // Configure LAN sync service
+                    SyncFileService.shared.configure(modelContext: sharedModelContainer.mainContext)
+                    SyncFileService.shared.startSync()
+                    #endif
+                }
         }
         .modelContainer(sharedModelContainer)
         #if os(macOS)
@@ -64,6 +71,21 @@ struct ValenceApp: App {
                     NotificationCenter.default.post(name: .newCard, object: nil)
                 }
                 .keyboardShortcut("n", modifiers: .command)
+            }
+
+            CommandGroup(after: .appSettings) {
+                Divider()
+                Toggle("LAN Sync", isOn: Binding(
+                    get: { SyncFileService.shared.isEnabled },
+                    set: { enabled in
+                        if enabled {
+                            SyncFileService.shared.startSync()
+                        } else {
+                            SyncFileService.shared.stopSync()
+                        }
+                    }
+                ))
+                .keyboardShortcut("l", modifiers: [.command, .shift])
             }
         }
         #endif

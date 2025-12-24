@@ -20,6 +20,9 @@ struct ContentView: View {
                     ToolbarItem(placement: .navigation) {
                         SyncStatusDot(syncMonitor: syncMonitor)
                     }
+                    ToolbarItem(placement: .automatic) {
+                        CardCountBadge()
+                    }
                 }
         } detail: {
             if let card = selectedCard {
@@ -49,6 +52,9 @@ struct ContentView: View {
                             Label("3D Space", systemImage: "cube.transparent")
                         }
                     }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        CardCountBadge()
+                    }
                 }
         } detail: {
             if let card = selectedCard {
@@ -64,7 +70,10 @@ struct ContentView: View {
             }
         }
         .fullScreenCover(isPresented: $showingCardSpace) {
-            ImmersiveCardSpaceView()
+            NavigationStack {
+                ImmersiveCardSpaceView()
+            }
+            .modelContainer(modelContext.container)
         }
         #else
         NavigationStack {
@@ -74,6 +83,9 @@ struct ContentView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     SyncStatusDot(syncMonitor: syncMonitor)
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    CardCountBadge()
                 }
             }
             .sheet(isPresented: $showingEditor) {

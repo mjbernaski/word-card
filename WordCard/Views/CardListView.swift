@@ -4,7 +4,14 @@ import UniformTypeIdentifiers
 
 struct CardListView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(filter: #Predicate<WordCard> { !$0.isArchived }, sort: \WordCard.updatedAt, order: .reverse) private var cards: [WordCard]
+    @Query(filter: CardListView.activeCardsPredicate, sort: [
+        SortDescriptor(\WordCard.updatedAt, order: .reverse),
+        SortDescriptor(\WordCard.createdAt, order: .reverse)
+    ]) private var cards: [WordCard]
+
+    private static let activeCardsPredicate = #Predicate<WordCard> { card in
+        card.isArchived == false
+    }
     @Query private var allCards: [WordCard]
     @Binding var selectedCard: WordCard?
     @Binding var showingEditor: Bool
@@ -191,6 +198,7 @@ struct CardListView: View {
         withAnimation {
             card.archive()
         }
+        SyncFileService.shared.cardDidChange()
     }
 
     private func archiveCards(at offsets: IndexSet) {
@@ -199,6 +207,7 @@ struct CardListView: View {
                 filteredCards[index].archive()
             }
         }
+        SyncFileService.shared.cardDidChange()
     }
 
     private func exportBackup() {
@@ -273,7 +282,15 @@ struct BackupDocument: FileDocument {
 struct ArchiveView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
-    @Query(filter: #Predicate<WordCard> { $0.isArchived }, sort: \WordCard.archivedAt, order: .reverse) private var archivedCards: [WordCard]
+    @Query(filter: ArchiveView.archivedCardsPredicate, sort: [
+        SortDescriptor(\WordCard.archivedAt, order: .reverse),
+        SortDescriptor(\WordCard.updatedAt, order: .reverse),
+        SortDescriptor(\WordCard.createdAt, order: .reverse)
+    ]) private var archivedCards: [WordCard]
+
+    private static let archivedCardsPredicate = #Predicate<WordCard> { card in
+        card.isArchived == true
+    }
 
     var body: some View {
         NavigationStack {

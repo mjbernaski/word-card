@@ -159,6 +159,9 @@ struct CardEditorView: View {
             )
             modelContext.insert(card)
         }
+
+        // Trigger LAN sync export
+        SyncFileService.shared.cardDidChange()
     }
 }
 
