@@ -27,6 +27,10 @@ struct CardListView: View {
     @State private var pendingImportURL: URL?
     @State private var errorMessage: String?
     @State private var showingError = false
+    @State private var showingDedupeConfirm = false
+    @State private var dedupeResult: DeduplicationResult?
+    @State private var showingDedupeResult = false
+    @State private var showingSyncDiagnostics = false
 
     private var filteredCards: [WordCard] {
         if searchText.isEmpty {
@@ -80,6 +84,28 @@ struct CardListView: View {
                     } label: {
                         Label("Import Backup", systemImage: "square.and.arrow.down")
                     }
+
+                    Divider()
+
+                    Button {
+                        showingDedupeConfirm = true
+                    } label: {
+                        Label("Remove Duplicates", systemImage: "doc.on.doc")
+                    }
+
+                    Divider()
+
+                    Button {
+                        showingSyncDiagnostics = true
+                    } label: {
+                        Label("Sync Diagnostics", systemImage: "stethoscope")
+                    }
+
+                    Divider()
+
+                    Text("WordCard \(AppVersion.displayString)")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
                 } label: {
                     Label("More", systemImage: "ellipsis.circle")
                 }
@@ -87,6 +113,9 @@ struct CardListView: View {
         }
         .sheet(isPresented: $showingArchive) {
             ArchiveView()
+        }
+        .sheet(isPresented: $showingSyncDiagnostics) {
+            SyncDiagnosticsView()
         }
         .fileExporter(
             isPresented: $showingExporter,
@@ -134,6 +163,34 @@ struct CardListView: View {
         } message: {
             Text(errorMessage ?? "An unknown error occurred")
         }
+        .confirmationDialog("Remove Duplicates", isPresented: $showingDedupeConfirm) {
+            Button("By Content (same text)", role: .destructive) {
+                performDedupe(byContent: true)
+            }
+            Button("By ID (sync duplicates)", role: .destructive) {
+                performDedupe(byContent: false)
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("This will permanently remove duplicate cards, keeping the most recently updated version of each.")
+        }
+        .alert("Duplicates Removed", isPresented: $showingDedupeResult) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            if let result = dedupeResult {
+                Text("Removed \(result.duplicatesRemoved) duplicate(s).\n\(result.uniqueCards) unique cards remaining.")
+            }
+        }
+    }
+
+    private func performDedupe(byContent: Bool) {
+        if byContent {
+            dedupeResult = BackupService.shared.deduplicateCards(in: modelContext, cards: allCards)
+        } else {
+            dedupeResult = BackupService.shared.deduplicateByID(in: modelContext, cards: allCards)
+        }
+        showingDedupeResult = true
+        SyncFileService.shared.cardDidChange()
     }
 
     private var gridView: some View {

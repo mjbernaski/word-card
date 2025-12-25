@@ -120,7 +120,17 @@ class BackupService {
         var updated = 0
 
         let existingIDs = Set(existingCards.map { $0.id })
-        let existingCardsByID = Dictionary(uniqueKeysWithValues: existingCards.map { ($0.id, $0) })
+        // Use reduce to handle duplicate IDs (keep the most recent)
+        let existingCardsByID = existingCards.reduce(into: [UUID: WordCard]()) { dict, card in
+            if let existing = dict[card.id] {
+                // Keep the more recently updated one
+                if card.updatedAt > existing.updatedAt {
+                    dict[card.id] = card
+                }
+            } else {
+                dict[card.id] = card
+            }
+        }
 
         for backupCard in backup.cards {
             if existingIDs.contains(backupCard.id) {
@@ -199,5 +209,83 @@ enum ImportMode: String, CaseIterable {
         case .importAsNew:
             return "Import duplicates as new cards"
         }
+    }
+}
+
+// MARK: - Deduplication
+
+struct DeduplicationResult {
+    let totalCards: Int
+    let duplicatesRemoved: Int
+    let uniqueCards: Int
+}
+
+extension BackupService {
+    /// Finds and removes duplicate cards, keeping the most recently updated version.
+    /// Duplicates are identified by matching text content (case-insensitive, trimmed).
+    func deduplicateCards(in context: ModelContext, cards: [WordCard]) -> DeduplicationResult {
+        var seen: [String: WordCard] = [:]
+        var duplicatesToRemove: [WordCard] = []
+
+        // Sort by updatedAt descending so we keep the most recent version
+        let sortedCards = cards.sorted { $0.updatedAt > $1.updatedAt }
+
+        for card in sortedCards {
+            let normalizedText = card.text.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+
+            // Skip empty cards
+            guard !normalizedText.isEmpty else {
+                duplicatesToRemove.append(card)
+                continue
+            }
+
+            if seen[normalizedText] != nil {
+                // This is a duplicate - mark for removal
+                duplicatesToRemove.append(card)
+            } else {
+                // First occurrence (most recent) - keep it
+                seen[normalizedText] = card
+            }
+        }
+
+        // Remove duplicates
+        for card in duplicatesToRemove {
+            context.delete(card)
+        }
+
+        return DeduplicationResult(
+            totalCards: cards.count,
+            duplicatesRemoved: duplicatesToRemove.count,
+            uniqueCards: seen.count
+        )
+    }
+
+    /// Finds duplicates by UUID (same card synced multiple times)
+    func deduplicateByID(in context: ModelContext, cards: [WordCard]) -> DeduplicationResult {
+        var seen: [UUID: WordCard] = [:]
+        var duplicatesToRemove: [WordCard] = []
+
+        // Sort by updatedAt descending so we keep the most recent version
+        let sortedCards = cards.sorted { $0.updatedAt > $1.updatedAt }
+
+        for card in sortedCards {
+            if seen[card.id] != nil {
+                // Duplicate UUID - mark for removal
+                duplicatesToRemove.append(card)
+            } else {
+                seen[card.id] = card
+            }
+        }
+
+        // Remove duplicates
+        for card in duplicatesToRemove {
+            context.delete(card)
+        }
+
+        return DeduplicationResult(
+            totalCards: cards.count,
+            duplicatesRemoved: duplicatesToRemove.count,
+            uniqueCards: seen.count
+        )
     }
 }
