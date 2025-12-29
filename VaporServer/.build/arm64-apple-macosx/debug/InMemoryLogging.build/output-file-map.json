@@ -1,0 +1,12 @@
+{
+  "": {
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/InMemoryLogging.build/master.swiftdeps"
+  },
+  "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-log/Sources/InMemoryLogging/InMemoryLogHandler.swift": {
+    "dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/InMemoryLogging.build/InMemoryLogHandler.d",
+    "object": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/InMemoryLogging.build/InMemoryLogHandler.swift.o",
+    "swiftmodule": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/InMemoryLogging.build/InMemoryLogHandler~partial.swiftmodule",
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/InMemoryLogging.build/InMemoryLogHandler.swiftdeps",
+    "diagnostics": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/InMemoryLogging.build/InMemoryLogHandler.dia"
+  }
+}

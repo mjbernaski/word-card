@@ -1,0 +1,3 @@
+module NIOResumableUpload {
+    header "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/NIOResumableUpload.build/include/NIOResumableUpload-Swift.h"
+}

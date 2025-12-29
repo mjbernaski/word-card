@@ -16,13 +16,15 @@ class CloudKitSyncMonitor: ObservableObject {
     @Published var syncStatus: SyncStatus = .unknown
     @Published var errorMessage: String?
     @Published var lastSyncTime: Date?
-    
+
     private let container: CKContainer
     private var accountStatusTimer: Timer?
     private var syncStatusTimer: Timer?
-    
+
+    static let containerIdentifier = "iCloud.mjbernaski.wordcard.app"
+
     init() {
-        self.container = CKContainer.default()
+        self.container = CKContainer(identifier: Self.containerIdentifier)
         startMonitoring()
     }
     
@@ -187,18 +189,31 @@ extension CloudKitSyncMonitor {
             let status = try await container.accountStatus()
             switch status {
             case .available:
-                return "iCloud is available and ready"
+                return "Signed in"
             case .noAccount:
-                return "Please sign in to iCloud in Settings"
+                return "Not signed in"
             case .restricted:
-                return "iCloud access is restricted"
+                return "Restricted"
             case .couldNotDetermine:
-                return "Cannot determine iCloud status"
+                return "Unknown"
             @unknown default:
-                return "Unknown iCloud status"
+                return "Unknown"
             }
         } catch {
-            return "Error checking iCloud: \(error.localizedDescription)"
+            return "Error: \(error.localizedDescription)"
+        }
+    }
+
+    func getCloudKitRecordCount() async -> Int? {
+        let database = container.privateCloudDatabase
+        let query = CKQuery(recordType: "CD_WordCard", predicate: NSPredicate(value: true))
+
+        do {
+            let (results, _) = try await database.records(matching: query, resultsLimit: 1000)
+            return results.count
+        } catch {
+            print("CloudKit query error: \(error)")
+            return nil
         }
     }
 }

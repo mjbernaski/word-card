@@ -1,0 +1,3 @@
+module NIOCertificateReloading {
+    header "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/NIOCertificateReloading.build/include/NIOCertificateReloading-Swift.h"
+}

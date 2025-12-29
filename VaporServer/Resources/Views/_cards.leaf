@@ -1,0 +1,10 @@
+#if(cards.isEmpty):
+    <div class="empty-state">
+        <h2>No cards yet</h2>
+        <p>Create your first card above</p>
+    </div>
+#else:
+    #for(card in cards):
+        #extend("_card")
+    #endfor
+#endif

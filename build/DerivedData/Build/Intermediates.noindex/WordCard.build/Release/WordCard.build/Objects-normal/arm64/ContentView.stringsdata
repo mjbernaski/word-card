@@ -1,0 +1,24 @@
+{
+  "source": "/Users/michaelbernaski/Documents/word-card/WordCard/Views/ContentView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Select a card",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 28
+        }
+      },
+      {
+        "comment": "",
+        "key": "Fix",
+        "location": {
+          "startingColumn": 24,
+          "startingLine": 172
+        }
+      }
+    ]
+  },
+  "version": 1
+}

@@ -1,0 +1,12 @@
+{
+  "": {
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/NIOFileSystem.build/master.swiftdeps"
+  },
+  "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-nio/Sources/NIOFileSystem/Exports.swift": {
+    "dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/NIOFileSystem.build/Exports.d",
+    "object": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/NIOFileSystem.build/Exports.swift.o",
+    "swiftmodule": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/NIOFileSystem.build/Exports~partial.swiftmodule",
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/NIOFileSystem.build/Exports.swiftdeps",
+    "diagnostics": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/NIOFileSystem.build/Exports.dia"
+  }
+}

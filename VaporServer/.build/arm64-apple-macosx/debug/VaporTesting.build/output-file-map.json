@@ -1,0 +1,47 @@
+{
+  "": {
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/master.swiftdeps"
+  },
+  "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/vapor/Sources/VaporTesting/+TestingHTTPResponse.swift": {
+    "dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/+TestingHTTPResponse.d",
+    "object": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/+TestingHTTPResponse.swift.o",
+    "swiftmodule": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/+TestingHTTPResponse~partial.swiftmodule",
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/+TestingHTTPResponse.swiftdeps",
+    "diagnostics": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/+TestingHTTPResponse.dia"
+  },
+  "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/vapor/Sources/VaporTesting/Exports.swift": {
+    "dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/Exports.d",
+    "object": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/Exports.swift.o",
+    "swiftmodule": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/Exports~partial.swiftmodule",
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/Exports.swiftdeps",
+    "diagnostics": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/Exports.dia"
+  },
+  "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/vapor/Sources/VaporTesting/TestingApplicationTester.swift": {
+    "dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/TestingApplicationTester.d",
+    "object": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/TestingApplicationTester.swift.o",
+    "swiftmodule": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/TestingApplicationTester~partial.swiftmodule",
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/TestingApplicationTester.swiftdeps",
+    "diagnostics": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/TestingApplicationTester.dia"
+  },
+  "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/vapor/Sources/VaporTesting/VaporTestingContext.swift": {
+    "dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/VaporTestingContext.d",
+    "object": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/VaporTestingContext.swift.o",
+    "swiftmodule": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/VaporTestingContext~partial.swiftmodule",
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/VaporTestingContext.swiftdeps",
+    "diagnostics": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/VaporTestingContext.dia"
+  },
+  "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/vapor/Sources/VaporTesting/XCTest+Migration.swift": {
+    "dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/XCTest+Migration.d",
+    "object": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/XCTest+Migration.swift.o",
+    "swiftmodule": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/XCTest+Migration~partial.swiftmodule",
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/XCTest+Migration.swiftdeps",
+    "diagnostics": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/XCTest+Migration.dia"
+  },
+  "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/vapor/Sources/VaporTesting/withApp.swift": {
+    "dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/withApp.d",
+    "object": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/withApp.swift.o",
+    "swiftmodule": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/withApp~partial.swiftmodule",
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/withApp.swiftdeps",
+    "diagnostics": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/VaporTesting.build/withApp.dia"
+  }
+}

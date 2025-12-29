@@ -11,6 +11,7 @@ struct SyncDiagnosticsView: View {
     @State private var containerID: String = "Unknown"
     @State private var isRefreshing = false
     @State private var lastRefresh: Date?
+    @State private var cloudKitRecordCount: Int?
 
     var body: some View {
         NavigationStack {
@@ -71,6 +72,30 @@ struct SyncDiagnosticsView: View {
                         Spacer()
                         Text("\(allCards.filter { $0.isArchived }.count)")
                             .foregroundStyle(.secondary)
+                    }
+                }
+
+                Section("CloudKit Data") {
+                    HStack {
+                        Label("Cloud Records", systemImage: "icloud")
+                        Spacer()
+                        if let count = cloudKitRecordCount {
+                            Text("\(count)")
+                                .foregroundStyle(count == allCards.count ? .green : .orange)
+                        } else {
+                            Text("Checking...")
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+
+                    if let count = cloudKitRecordCount, count != allCards.count {
+                        HStack {
+                            Label("Difference", systemImage: "exclamationmark.triangle")
+                                .foregroundStyle(.orange)
+                            Spacer()
+                            Text("\(abs(allCards.count - count)) cards")
+                                .foregroundStyle(.orange)
+                        }
                     }
                 }
 
@@ -188,7 +213,8 @@ struct SyncDiagnosticsView: View {
     private func refreshDiagnostics() {
         Task {
             iCloudStatus = await syncMonitor.getiCloudStatusMessage()
-            containerID = "iCloud.mjbernaski.wordcard.app"
+            containerID = CloudKitSyncMonitor.containerIdentifier
+            cloudKitRecordCount = await syncMonitor.getCloudKitRecordCount()
             lastRefresh = Date()
         }
     }
@@ -204,8 +230,12 @@ struct SyncDiagnosticsView: View {
             print("Error saving context during force sync: \(error)")
         }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            isRefreshing = false
+        Task {
+            // Wait for sync to propagate
+            try? await Task.sleep(nanoseconds: 3_000_000_000)
+            await MainActor.run {
+                isRefreshing = false
+            }
             refreshDiagnostics()
         }
     }

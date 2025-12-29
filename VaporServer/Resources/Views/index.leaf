@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WordCard - LAN Access</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10/dist/ext/sse.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: #86868b;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #34c759;
+        }
+
+        .status-dot.disconnected {
+            background-color: #ff3b30;
+        }
+
+        /* Create Card Form */
+        .create-form {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-end;
+        }
+
+        .form-group {
+            flex: 1;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #86868b;
+        }
+
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d2d2d7;
+            border-radius: 8px;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #0071e3;
+            box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d2d2d7;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+            cursor: pointer;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: #0071e3;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0077ed;
+        }
+
+        .btn-primary:disabled {
+            background-color: #86868b;
+            cursor: not-allowed;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            border-radius: 12px;
+            padding: 1.5rem;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .card-text {
+            font-size: 1.125rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .card-category {
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            opacity: 0.7;
+        }
+
+        .card-date {
+            font-size: 0.75rem;
+            opacity: 0.5;
+        }
+
+        .btn-delete {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(0,0,0,0.1);
+            color: inherit;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s, background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card:hover .btn-delete {
+            opacity: 1;
+        }
+
+        .btn-delete:hover {
+            background: rgba(255,59,48,0.2);
+            color: #ff3b30;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #86868b;
+        }
+
+        .empty-state h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* HTMX loading indicator */
+        .htmx-request .btn-primary {
+            opacity: 0.7;
+        }
+
+        /* Animation for new cards */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        /* Font styles matching native app */
+        .font-elegant { font-family: Georgia, 'Times New Roman', serif; }
+        .font-book { font-family: 'Times New Roman', Times, serif; }
+        .font-apple { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 300; }
+    </style>
+</head>
+<body hx-ext="sse" sse-connect="/events">
+    <div class="container">
+        <header>
+            <h1>WordCard</h1>
+            <div class="status">
+                <div class="status-dot" id="connection-status"></div>
+                <span id="status-text">Connected</span>
+            </div>
+        </header>
+
+        <!-- Create Card Form -->
+        <div class="create-form">
+            <form hx-post="/htmx/cards"
+                  hx-target="#cards-container"
+                  hx-swap="afterbegin"
+                  hx-on::after-request="this.reset()">
+                <div class="form-row">
+                    <div class="form-group" style="flex: 3;">
+                        <label for="text">New Card</label>
+                        <textarea name="text" id="text" placeholder="Enter your text..." required></textarea>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label for="category">Category</label>
+                        <select name="category" id="category">
+                            <option value="idea">Idea</option>
+                            <option value="readings">Readings</option>
+                            <option value="miscellaneous">Miscellaneous</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Cards List -->
+        <div id="cards-container"
+             class="cards-grid"
+             hx-get="/htmx/cards"
+             hx-trigger="sse:cards-updated, sse:card-created, sse:card-archived"
+             hx-swap="innerHTML">
+            #if(cards.isEmpty):
+                <div class="empty-state">
+                    <h2>No cards yet</h2>
+                    <p>Create your first card above</p>
+                </div>
+            #else:
+                #for(card in cards):
+                    #extend("_card")
+                #endfor
+            #endif
+        </div>
+    </div>
+
+    <script>
+        // SSE connection status
+        document.body.addEventListener('htmx:sseOpen', function() {
+            document.getElementById('connection-status').classList.remove('disconnected');
+            document.getElementById('status-text').textContent = 'Connected';
+        });
+
+        document.body.addEventListener('htmx:sseError', function() {
+            document.getElementById('connection-status').classList.add('disconnected');
+            document.getElementById('status-text').textContent = 'Disconnected';
+        });
+
+        // Auto-resize textarea
+        document.getElementById('text').addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+    </script>
+</body>
+</html>

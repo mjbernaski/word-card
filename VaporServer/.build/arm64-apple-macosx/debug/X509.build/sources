@@ -1,0 +1,107 @@
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/CSR/CSRAttribute.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/CSR/CSRAttributes.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/CSR/CSRVersion.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/CSR/CertificateSigningRequest.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/CSR/CertificationRequestInfo.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/CSR/ExtensionRequest.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Certificate.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/CertificatePrivateKey.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/CertificatePublicKey.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/CertificateSerialNumber.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/CertificateVersion.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/CryptographicMessageSyntax/CMSAttribute.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/CryptographicMessageSyntax/CMSContentInfo.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/CryptographicMessageSyntax/CMSEncapsulatedContentInfo.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/CryptographicMessageSyntax/CMSIssuerAndSerialNumber.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/CryptographicMessageSyntax/CMSOperations.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/CryptographicMessageSyntax/CMSSignature.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/CryptographicMessageSyntax/CMSSignedData.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/CryptographicMessageSyntax/CMSSignerIdentifier.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/CryptographicMessageSyntax/CMSSignerInfo.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/CryptographicMessageSyntax/CMSVersion.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Curve25519+DER.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Digests.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/DistinguishedName.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/DistinguishedNameBuilder/CommonName.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/DistinguishedNameBuilder/CountryName.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/DistinguishedNameBuilder/DNBuilder.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/DistinguishedNameBuilder/DomainComponent.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/DistinguishedNameBuilder/EmailAddress.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/DistinguishedNameBuilder/LocalityName.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/DistinguishedNameBuilder/OrganizationName.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/DistinguishedNameBuilder/OrganizationalUnitName.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/DistinguishedNameBuilder/StateOrProvinceName.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/DistinguishedNameBuilder/StreetAddress.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Error.swift
+'/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Extension Types/AuthorityInformationAccess.swift'
+'/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Extension Types/AuthorityKeyIdentifier.swift'
+'/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Extension Types/BasicConstraints.swift'
+'/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Extension Types/ExtendedKeyUsage.swift'
+'/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Extension Types/ExtensionIdentifiers.swift'
+'/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Extension Types/KeyUsage.swift'
+'/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Extension Types/NameConstraints.swift'
+'/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Extension Types/SubjectAlternativeName.swift'
+'/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Extension Types/SubjectKeyIdentifier.swift'
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Extension.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Extensions.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/ExtensionsBuilder.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/GeneralName.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Lock.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/LockedValueBox.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/OCSP/BasicOCSPResponse.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/OCSP/DirectoryString.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/OCSP/OCSPCertID.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/OCSP/OCSPCertStatus.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/OCSP/OCSPExtensionID.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/OCSP/OCSPNonce.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/OCSP/OCSPPolicy.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/OCSP/OCSPRequest.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/OCSP/OCSPResponse.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/OCSP/OCSPResponseBytes.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/OCSP/OCSPResponseData.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/OCSP/OCSPResponseStatus.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/OCSP/OCSPSignature.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/OCSP/OCSPSingleRequest.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/OCSP/OCSPSingleResponse.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/OCSP/OCSPTBSRequest.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/OCSP/OCSPVersion.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/PKCS8PrivateKey.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/PromiseAndFuture.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/RDNAttribute.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/RandomNumberGenerator+bytes.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/RelativeDistinguishedName.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/SEC1PrivateKey.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/SecKeyWrapper.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Signature.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/SignatureAlgorithm.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Verifier/AllOfPolicies.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Verifier/AnyPolicy.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Verifier/CertificateStore.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Verifier/CustomCertificateStore.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Verifier/OneOfPolicies.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Verifier/PolicyBuilder.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Verifier/RFC5280/BasicConstraintsPolicy.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Verifier/RFC5280/DNSNames.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Verifier/RFC5280/DirectoryNames.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Verifier/RFC5280/ExpiryPolicy.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Verifier/RFC5280/IPConstraints.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Verifier/RFC5280/NameConstraintsPolicy.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Verifier/RFC5280/RFC5280Policy.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Verifier/RFC5280/URIConstraints.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Verifier/RFC5280/VersionPolicy.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Verifier/ServerIdentityPolicy.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Verifier/TrustRootLoading.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Verifier/UnverifiedChain.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Verifier/ValidatedCertificateChain.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Verifier/VerificationDiagnostic.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Verifier/Verifier.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/Verifier/VerifierPolicy.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/X509BaseTypes/AlgorithmIdentifier.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/X509BaseTypes/ECDSASignature.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/X509BaseTypes/RSAPKCS1PublicKey.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/X509BaseTypes/SubjectPublicKeyInfo.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/X509BaseTypes/TBSCertificate.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/X509BaseTypes/Time.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/X509BaseTypes/TimeCalculations.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/X509BaseTypes/Validity.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-certificates/Sources/X509/X509SendableMetatype.swift

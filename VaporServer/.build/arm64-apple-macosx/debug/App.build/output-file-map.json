@@ -1,0 +1,54 @@
+{
+  "": {
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/master.swiftdeps"
+  },
+  "/Users/michaelbernaski/Documents/word-card/VaporServer/Sources/App/Models/CardDTO.swift": {
+    "dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/CardDTO.d",
+    "object": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/CardDTO.swift.o",
+    "swiftmodule": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/CardDTO~partial.swiftmodule",
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/CardDTO.swiftdeps",
+    "diagnostics": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/CardDTO.dia"
+  },
+  "/Users/michaelbernaski/Documents/word-card/VaporServer/Sources/App/Services/CardStore.swift": {
+    "dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/CardStore.d",
+    "object": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/CardStore.swift.o",
+    "swiftmodule": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/CardStore~partial.swiftmodule",
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/CardStore.swiftdeps",
+    "diagnostics": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/CardStore.dia"
+  },
+  "/Users/michaelbernaski/Documents/word-card/VaporServer/Sources/App/Services/FileWatcherService.swift": {
+    "dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/FileWatcherService.d",
+    "object": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/FileWatcherService.swift.o",
+    "swiftmodule": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/FileWatcherService~partial.swiftmodule",
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/FileWatcherService.swiftdeps",
+    "diagnostics": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/FileWatcherService.dia"
+  },
+  "/Users/michaelbernaski/Documents/word-card/VaporServer/Sources/App/Services/SSEService.swift": {
+    "dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/SSEService.d",
+    "object": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/SSEService.swift.o",
+    "swiftmodule": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/SSEService~partial.swiftmodule",
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/SSEService.swiftdeps",
+    "diagnostics": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/SSEService.dia"
+  },
+  "/Users/michaelbernaski/Documents/word-card/VaporServer/Sources/App/configure.swift": {
+    "dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/configure.d",
+    "object": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/configure.swift.o",
+    "swiftmodule": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/configure~partial.swiftmodule",
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/configure.swiftdeps",
+    "diagnostics": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/configure.dia"
+  },
+  "/Users/michaelbernaski/Documents/word-card/VaporServer/Sources/App/entrypoint.swift": {
+    "dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/entrypoint.d",
+    "object": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/entrypoint.swift.o",
+    "swiftmodule": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/entrypoint~partial.swiftmodule",
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/entrypoint.swiftdeps",
+    "diagnostics": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/entrypoint.dia"
+  },
+  "/Users/michaelbernaski/Documents/word-card/VaporServer/Sources/App/routes.swift": {
+    "dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/routes.d",
+    "object": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/routes.swift.o",
+    "swiftmodule": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/routes~partial.swiftmodule",
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/routes.swiftdeps",
+    "diagnostics": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/App.build/routes.dia"
+  }
+}

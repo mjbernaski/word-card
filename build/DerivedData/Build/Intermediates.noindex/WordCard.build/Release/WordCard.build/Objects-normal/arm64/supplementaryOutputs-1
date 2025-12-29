@@ -1,0 +1,12 @@
+{
+  "/Users/michaelbernaski/Documents/word-card/WordCard/Views/ContentView.swift" : {
+    "abi-baseline-json" : "/Users/michaelbernaski/Documents/word-card/build/DerivedData/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/WordCard.abi.json",
+    "const-values" : "/Users/michaelbernaski/Documents/word-card/build/DerivedData/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/WordCard-primary.swiftconstvalues",
+    "dependencies" : "/Users/michaelbernaski/Documents/word-card/build/DerivedData/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/WordCard-primary.d",
+    "diagnostics" : "/Users/michaelbernaski/Documents/word-card/build/DerivedData/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/WordCard-primary.dia",
+    "objc-header" : "/Users/michaelbernaski/Documents/word-card/build/DerivedData/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/WordCard-Swift.h",
+    "swiftdoc" : "/Users/michaelbernaski/Documents/word-card/build/DerivedData/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/WordCard.swiftdoc",
+    "swiftmodule" : "/Users/michaelbernaski/Documents/word-card/build/DerivedData/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/WordCard.swiftmodule",
+    "swiftsourceinfo" : "/Users/michaelbernaski/Documents/word-card/build/DerivedData/Build/Intermediates.noindex/WordCard.build/Release/WordCard.build/Objects-normal/arm64/WordCard.swiftsourceinfo"
+  }
+}

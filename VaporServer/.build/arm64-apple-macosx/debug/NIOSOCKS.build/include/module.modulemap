@@ -1,0 +1,3 @@
+module NIOSOCKS {
+    header "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/NIOSOCKS.build/include/NIOSOCKS-Swift.h"
+}

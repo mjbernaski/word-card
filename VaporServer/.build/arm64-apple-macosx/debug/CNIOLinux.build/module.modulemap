@@ -1,0 +1,4 @@
+module CNIOLinux {
+    umbrella header "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-nio/Sources/CNIOLinux/include/CNIOLinux.h"
+    export *
+}

@@ -1,0 +1,20 @@
+<div class="card"
+     id="card-#(card.id)"
+     style="background-color: #(card.backgroundColor); color: #(card.textColor); border-radius: #(card.cornerRadius)px; #if(card.borderColor): border: #(card.borderWidth)px solid #(card.borderColor); #endif">
+    <button class="btn-delete"
+            hx-delete="/htmx/cards/#(card.id)"
+            hx-target="#card-#(card.id)"
+            hx-swap="outerHTML"
+            hx-confirm="Archive this card?">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+    </button>
+    <div class="card-text #if(card.fontStyle == "elegant"): font-elegant #elseif(card.fontStyle == "book"): font-book #else: font-apple #endif">
+        #(card.text)
+    </div>
+    <div class="card-footer">
+        <span class="card-category">#(card.category)</span>
+        <span class="card-date">#date(card.createdAt, "MMM d, yyyy")</span>
+    </div>
+</div>

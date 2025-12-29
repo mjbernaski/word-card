@@ -1,0 +1,12 @@
+'/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-nio-extras/Sources/NIOSOCKS/Channel Handlers/SOCKSClientHandler.swift'
+'/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-nio-extras/Sources/NIOSOCKS/Channel Handlers/SOCKSServerHandshakeHandler.swift'
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-nio-extras/Sources/NIOSOCKS/Messages/AuthenticationMethod.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-nio-extras/Sources/NIOSOCKS/Messages/ClientGreeting.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-nio-extras/Sources/NIOSOCKS/Messages/Errors.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-nio-extras/Sources/NIOSOCKS/Messages/Helpers.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-nio-extras/Sources/NIOSOCKS/Messages/Messages.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-nio-extras/Sources/NIOSOCKS/Messages/SOCKSRequest.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-nio-extras/Sources/NIOSOCKS/Messages/SOCKSResponse.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-nio-extras/Sources/NIOSOCKS/Messages/SelectedAuthenticationMethod.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-nio-extras/Sources/NIOSOCKS/State/ClientStateMachine.swift
+/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-nio-extras/Sources/NIOSOCKS/State/ServerStateMachine.swift

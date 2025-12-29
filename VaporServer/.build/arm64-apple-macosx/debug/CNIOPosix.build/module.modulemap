@@ -1,0 +1,4 @@
+module CNIOPosix {
+    umbrella header "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-nio/Sources/CNIOPosix/include/CNIOPosix.h"
+    export *
+}

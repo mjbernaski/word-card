@@ -1,0 +1,12 @@
+{
+  "": {
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/MetricsTestKit.build/master.swiftdeps"
+  },
+  "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-metrics/Sources/MetricsTestKit/TestMetrics.swift": {
+    "dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/MetricsTestKit.build/TestMetrics.d",
+    "object": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/MetricsTestKit.build/TestMetrics.swift.o",
+    "swiftmodule": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/MetricsTestKit.build/TestMetrics~partial.swiftmodule",
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/MetricsTestKit.build/TestMetrics.swiftdeps",
+    "diagnostics": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/MetricsTestKit.build/TestMetrics.dia"
+  }
+}

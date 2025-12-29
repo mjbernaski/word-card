@@ -1,0 +1,3 @@
+module NIOCore {
+    header "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/NIOCore.build/include/NIOCore-Swift.h"
+}

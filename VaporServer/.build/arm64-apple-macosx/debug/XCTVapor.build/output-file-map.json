@@ -1,0 +1,54 @@
+{
+  "": {
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/master.swiftdeps"
+  },
+  "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/vapor/Sources/XCTVapor/+Application.swift": {
+    "dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/+Application.d",
+    "object": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/+Application.swift.o",
+    "swiftmodule": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/+Application~partial.swiftmodule",
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/+Application.swiftdeps",
+    "diagnostics": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/+Application.dia"
+  },
+  "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/vapor/Sources/XCTVapor/+XCTHTTPResponse.swift": {
+    "dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/+XCTHTTPResponse.d",
+    "object": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/+XCTHTTPResponse.swift.o",
+    "swiftmodule": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/+XCTHTTPResponse~partial.swiftmodule",
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/+XCTHTTPResponse.swiftdeps",
+    "diagnostics": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/+XCTHTTPResponse.dia"
+  },
+  "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/vapor/Sources/XCTVapor/Exports.swift": {
+    "dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/Exports.d",
+    "object": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/Exports.swift.o",
+    "swiftmodule": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/Exports~partial.swiftmodule",
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/Exports.swiftdeps",
+    "diagnostics": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/Exports.dia"
+  },
+  "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/vapor/Sources/XCTVapor/XCTApplicationTester.swift": {
+    "dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/XCTApplicationTester.d",
+    "object": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/XCTApplicationTester.swift.o",
+    "swiftmodule": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/XCTApplicationTester~partial.swiftmodule",
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/XCTApplicationTester.swiftdeps",
+    "diagnostics": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/XCTApplicationTester.dia"
+  },
+  "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/vapor/Sources/XCTVapor/XCTVaporContext.swift": {
+    "dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/XCTVaporContext.d",
+    "object": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/XCTVaporContext.swift.o",
+    "swiftmodule": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/XCTVaporContext~partial.swiftmodule",
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/XCTVaporContext.swiftdeps",
+    "diagnostics": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/XCTVaporContext.dia"
+  },
+  "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/vapor/Sources/XCTVapor/XCTVaporTests.swift": {
+    "dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/XCTVaporTests.d",
+    "object": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/XCTVaporTests.swift.o",
+    "swiftmodule": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/XCTVaporTests~partial.swiftmodule",
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/XCTVaporTests.swiftdeps",
+    "diagnostics": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/XCTVaporTests.dia"
+  },
+  "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/vapor/Sources/XCTVapor/typealiases.swift": {
+    "dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/typealiases.d",
+    "object": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/typealiases.swift.o",
+    "swiftmodule": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/typealiases~partial.swiftmodule",
+    "swift-dependencies": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/typealiases.swiftdeps",
+    "diagnostics": "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/XCTVapor.build/typealiases.dia"
+  }
+}
