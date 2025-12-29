@@ -2,10 +2,16 @@ import SwiftUI
 import SwiftData
 import UniformTypeIdentifiers
 
+enum CardSortOrder: String, CaseIterable {
+    case newestFirst = "Newest First"
+    case oldestFirst = "Oldest First"
+    case recentlyUpdated = "Recently Updated"
+    case alphabetical = "A-Z"
+}
+
 struct CardListView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(filter: CardListView.activeCardsPredicate, sort: [
-        SortDescriptor(\WordCard.updatedAt, order: .reverse),
         SortDescriptor(\WordCard.createdAt, order: .reverse)
     ]) private var cards: [WordCard]
 
@@ -13,6 +19,20 @@ struct CardListView: View {
         card.isArchived == false
     }
     @Query private var allCards: [WordCard]
+    @AppStorage("cardSortOrder") private var sortOrder: CardSortOrder = .newestFirst
+
+    private var sortedCards: [WordCard] {
+        switch sortOrder {
+        case .newestFirst:
+            return cards.sorted { $0.createdAt > $1.createdAt }
+        case .oldestFirst:
+            return cards.sorted { $0.createdAt < $1.createdAt }
+        case .recentlyUpdated:
+            return cards.sorted { $0.updatedAt > $1.updatedAt }
+        case .alphabetical:
+            return cards.sorted { $0.text.localizedCaseInsensitiveCompare($1.text) == .orderedAscending }
+        }
+    }
     @Binding var selectedCard: WordCard?
     @Binding var showingEditor: Bool
     @State private var searchText = ""
@@ -33,10 +53,11 @@ struct CardListView: View {
     @State private var showingSyncDiagnostics = false
 
     private var filteredCards: [WordCard] {
+        let sorted = sortedCards
         if searchText.isEmpty {
-            return cards
+            return sorted
         }
-        return cards.filter { $0.text.localizedCaseInsensitiveContains(searchText) }
+        return sorted.filter { $0.text.localizedCaseInsensitiveContains(searchText) }
     }
 
     var body: some View {
@@ -69,6 +90,25 @@ struct CardListView: View {
                         showingArchive = true
                     } label: {
                         Label("Archive", systemImage: "archivebox")
+                    }
+
+                    Divider()
+
+                    Menu {
+                        ForEach(CardSortOrder.allCases, id: \.self) { order in
+                            Button {
+                                sortOrder = order
+                            } label: {
+                                HStack {
+                                    Text(order.rawValue)
+                                    if sortOrder == order {
+                                        Image(systemName: "checkmark")
+                                    }
+                                }
+                            }
+                        }
+                    } label: {
+                        Label("Sort By", systemImage: "arrow.up.arrow.down")
                     }
 
                     Divider()

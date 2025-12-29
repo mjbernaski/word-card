@@ -57,9 +57,9 @@ struct ValenceApp: App {
             ContentView()
                 .onAppear {
                     #if os(macOS)
-                    // Configure LAN sync service
+                    // Configure LAN sync service (disabled by default to avoid CloudKit conflicts)
                     SyncFileService.shared.configure(modelContext: sharedModelContainer.mainContext)
-                    SyncFileService.shared.startSync()
+                    // LAN sync is now opt-in via menu: WordCard → LAN Sync
                     #endif
                 }
         }
