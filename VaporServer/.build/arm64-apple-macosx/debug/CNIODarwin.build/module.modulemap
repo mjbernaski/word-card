@@ -1,4 +1,0 @@
-module CNIODarwin {
-    umbrella header "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/swift-nio/Sources/CNIODarwin/include/CNIODarwin.h"
-    export *
-}

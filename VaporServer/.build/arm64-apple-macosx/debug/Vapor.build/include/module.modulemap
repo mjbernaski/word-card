@@ -1,3 +1,0 @@
-module Vapor {
-    header "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/Vapor.build/include/Vapor-Swift.h"
-}

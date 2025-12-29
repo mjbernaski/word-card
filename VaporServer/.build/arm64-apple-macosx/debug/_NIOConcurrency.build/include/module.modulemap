@@ -1,3 +1,0 @@
-module _NIOConcurrency {
-    header "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/arm64-apple-macosx/debug/_NIOConcurrency.build/include/_NIOConcurrency-Swift.h"
-}

@@ -1,4 +1,0 @@
-module CAsyncHTTPClient {
-    umbrella header "/Users/michaelbernaski/Documents/word-card/VaporServer/.build/checkouts/async-http-client/Sources/CAsyncHTTPClient/include/CAsyncHTTPClient.h"
-    export *
-}
