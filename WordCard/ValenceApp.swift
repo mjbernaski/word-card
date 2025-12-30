@@ -1,54 +1,26 @@
 import SwiftUI
 import SwiftData
-import CloudKit
 
 @main
 struct ValenceApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([WordCard.self])
 
-        // Configure CloudKit with explicit container ID
-        let cloudConfig = ModelConfiguration(
+        // Use local-only storage - sync is handled by iCloudDriveSyncService
+        let localConfig = ModelConfiguration(
             schema: schema,
             isStoredInMemoryOnly: false,
-            cloudKitDatabase: .private("iCloud.mjbernaski.wordcard.app")
+            cloudKitDatabase: .none
         )
 
         do {
-            let container = try ModelContainer(for: schema, configurations: [cloudConfig])
-            print("✅ CloudKit container created successfully with: iCloud.mjbernaski.wordcard.app")
-
-            // Log additional info
-            print("📁 Database URL: \(cloudConfig.url)")
-
+            let container = try ModelContainer(for: schema, configurations: [localConfig])
+            print("✅ Local storage container created")
+            print("📁 Database URL: \(localConfig.url)")
+            print("☁️ Sync will be handled via iCloud Drive file sync")
             return container
         } catch {
-            print("❌ CloudKit container failed: \(error)")
-            print("❌ Full error: \(String(describing: error))")
-            
-            // Check if this is a CloudKit availability issue
-            if error.localizedDescription.contains("CloudKit") {
-                print("🔧 CloudKit may not be available. Check:")
-                print("   - iCloud account is signed in")
-                print("   - iCloud Drive is enabled") 
-                print("   - App has CloudKit capabilities")
-                print("   - Sufficient iCloud storage")
-            }
-
-            // Fall back to local-only storage
-            let localConfig = ModelConfiguration(
-                schema: schema,
-                isStoredInMemoryOnly: false,
-                cloudKitDatabase: .none
-            )
-
-            do {
-                let localContainer = try ModelContainer(for: schema, configurations: [localConfig])
-                print("⚠️ Using local storage only - cards will not sync between devices")
-                return localContainer
-            } catch {
-                fatalError("Could not create ModelContainer: \(error)")
-            }
+            fatalError("Could not create ModelContainer: \(error)")
         }
     }()
 
@@ -56,10 +28,13 @@ struct ValenceApp: App {
         WindowGroup {
             ContentView()
                 .onAppear {
+                    // Configure and start iCloud Drive sync on all platforms
+                    iCloudDriveSyncService.shared.configure(modelContext: sharedModelContainer.mainContext)
+                    iCloudDriveSyncService.shared.startSync()
+
                     #if os(macOS)
-                    // Configure LAN sync service (disabled by default to avoid CloudKit conflicts)
+                    // Also configure LAN sync service (disabled by default)
                     SyncFileService.shared.configure(modelContext: sharedModelContainer.mainContext)
-                    // LAN sync is now opt-in via menu: WordCard → LAN Sync
                     #endif
                 }
         }
@@ -75,6 +50,12 @@ struct ValenceApp: App {
 
             CommandGroup(after: .appSettings) {
                 Divider()
+                Button("Sync Now") {
+                    iCloudDriveSyncService.shared.forceSync()
+                }
+                .keyboardShortcut("s", modifiers: [.command, .shift])
+
+                Divider()
                 Toggle("LAN Sync", isOn: Binding(
                     get: { SyncFileService.shared.isEnabled },
                     set: { enabled in
@@ -85,7 +66,6 @@ struct ValenceApp: App {
                         }
                     }
                 ))
-                .keyboardShortcut("l", modifiers: [.command, .shift])
             }
         }
         #endif

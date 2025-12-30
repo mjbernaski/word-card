@@ -160,7 +160,8 @@ struct CardEditorView: View {
             modelContext.insert(card)
         }
 
-        // Trigger LAN sync export
+        // Trigger sync
+        iCloudDriveSyncService.shared.cardDidChange()
         SyncFileService.shared.cardDidChange()
     }
 }

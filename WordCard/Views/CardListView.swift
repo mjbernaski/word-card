@@ -230,6 +230,7 @@ struct CardListView: View {
             dedupeResult = BackupService.shared.deduplicateByID(in: modelContext, cards: allCards)
         }
         showingDedupeResult = true
+        iCloudDriveSyncService.shared.cardDidChange()
         SyncFileService.shared.cardDidChange()
     }
 
@@ -295,6 +296,7 @@ struct CardListView: View {
         withAnimation {
             card.archive()
         }
+        iCloudDriveSyncService.shared.cardDidChange()
         SyncFileService.shared.cardDidChange()
     }
 
@@ -304,6 +306,7 @@ struct CardListView: View {
                 filteredCards[index].archive()
             }
         }
+        iCloudDriveSyncService.shared.cardDidChange()
         SyncFileService.shared.cardDidChange()
     }
 
@@ -349,6 +352,10 @@ struct CardListView: View {
                 mode: mode
             )
             showingImportResult = true
+
+            // Trigger sync after import
+            iCloudDriveSyncService.shared.cardDidChange()
+            SyncFileService.shared.cardDidChange()
         } catch {
             errorMessage = error.localizedDescription
             showingError = true
@@ -417,6 +424,8 @@ struct ArchiveView: View {
                         .swipeActions(edge: .trailing) {
                             Button(role: .destructive) {
                                 modelContext.delete(card)
+                                iCloudDriveSyncService.shared.cardDidChange()
+                                SyncFileService.shared.cardDidChange()
                             } label: {
                                 Label("Delete", systemImage: "trash")
                             }
@@ -424,6 +433,8 @@ struct ArchiveView: View {
                         .swipeActions(edge: .leading) {
                             Button {
                                 card.restore()
+                                iCloudDriveSyncService.shared.cardDidChange()
+                                SyncFileService.shared.cardDidChange()
                             } label: {
                                 Label("Restore", systemImage: "arrow.uturn.backward")
                             }
@@ -432,11 +443,15 @@ struct ArchiveView: View {
                         .contextMenu {
                             Button {
                                 card.restore()
+                                iCloudDriveSyncService.shared.cardDidChange()
+                                SyncFileService.shared.cardDidChange()
                             } label: {
                                 Label("Restore", systemImage: "arrow.uturn.backward")
                             }
                             Button(role: .destructive) {
                                 modelContext.delete(card)
+                                iCloudDriveSyncService.shared.cardDidChange()
+                                SyncFileService.shared.cardDidChange()
                             } label: {
                                 Label("Delete Permanently", systemImage: "trash")
                             }

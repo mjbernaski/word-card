@@ -1,17 +1,14 @@
 import SwiftUI
 import SwiftData
-import CloudKit
 
 struct SyncDiagnosticsView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @Query private var allCards: [WordCard]
-    @StateObject private var syncMonitor = CloudKitSyncMonitor()
-    @State private var iCloudStatus: String = "Checking..."
-    @State private var containerID: String = "Unknown"
+    @StateObject private var syncService = iCloudDriveSyncService.shared
     @State private var isRefreshing = false
     @State private var lastRefresh: Date?
-    @State private var cloudKitRecordCount: Int?
+    @State private var syncFileInfo: String = "Checking..."
 
     var body: some View {
         NavigationStack {
@@ -20,18 +17,18 @@ struct SyncDiagnosticsView: View {
                     HStack {
                         Label("Status", systemImage: statusIcon)
                         Spacer()
-                        Text(statusText)
+                        Text(syncService.syncStatus.rawValue)
                             .foregroundStyle(statusColor)
                     }
 
                     HStack {
-                        Label("iCloud Account", systemImage: "person.icloud")
+                        Label("iCloud Drive", systemImage: "icloud")
                         Spacer()
-                        Text(iCloudStatus)
-                            .foregroundStyle(.secondary)
+                        Text(syncService.iCloudAvailable ? "Available" : "Unavailable")
+                            .foregroundStyle(syncService.iCloudAvailable ? .green : .red)
                     }
 
-                    if let lastSync = syncMonitor.lastSyncTime {
+                    if let lastSync = syncService.lastSyncDate {
                         HStack {
                             Label("Last Sync", systemImage: "clock")
                             Spacer()
@@ -40,7 +37,7 @@ struct SyncDiagnosticsView: View {
                         }
                     }
 
-                    if let error = syncMonitor.errorMessage {
+                    if let error = syncService.syncError {
                         HStack {
                             Label("Error", systemImage: "exclamationmark.triangle")
                                 .foregroundStyle(.red)
@@ -75,26 +72,22 @@ struct SyncDiagnosticsView: View {
                     }
                 }
 
-                Section("CloudKit Data") {
+                Section("iCloud Drive Sync File") {
                     HStack {
-                        Label("Cloud Records", systemImage: "icloud")
+                        Label("Sync File", systemImage: "doc.badge.clock")
                         Spacer()
-                        if let count = cloudKitRecordCount {
-                            Text("\(count)")
-                                .foregroundStyle(count == allCards.count ? .green : .orange)
-                        } else {
-                            Text("Checking...")
-                                .foregroundStyle(.secondary)
-                        }
+                        Text(syncFileInfo)
+                            .foregroundStyle(.secondary)
+                            .font(.caption)
                     }
 
-                    if let count = cloudKitRecordCount, count != allCards.count {
+                    if syncService.syncFileURL != nil {
                         HStack {
-                            Label("Difference", systemImage: "exclamationmark.triangle")
-                                .foregroundStyle(.orange)
+                            Label("Location", systemImage: "folder")
                             Spacer()
-                            Text("\(abs(allCards.count - count)) cards")
-                                .foregroundStyle(.orange)
+                            Text("iCloud Drive/WordCard")
+                                .foregroundStyle(.secondary)
+                                .font(.caption)
                         }
                     }
                 }
@@ -104,7 +97,7 @@ struct SyncDiagnosticsView: View {
                         forceSync()
                     } label: {
                         HStack {
-                            Label("Force Sync Refresh", systemImage: "arrow.triangle.2.circlepath")
+                            Label("Sync Now", systemImage: "arrow.triangle.2.circlepath")
                             Spacer()
                             if isRefreshing {
                                 ProgressView()
@@ -129,17 +122,17 @@ struct SyncDiagnosticsView: View {
                         troubleshootingItem("1.", "Check iCloud is signed in on all devices")
                         troubleshootingItem("2.", "Ensure iCloud Drive is enabled")
                         troubleshootingItem("3.", "Check network connectivity")
-                        troubleshootingItem("4.", "Force close and reopen the app")
-                        troubleshootingItem("5.", "Export backup from one device, import on others")
+                        troubleshootingItem("4.", "Wait a minute for iCloud to sync the file")
+                        troubleshootingItem("5.", "Use 'Sync Now' on all devices")
                     }
                     .padding(.vertical, 4)
                 }
 
                 Section("Technical Info") {
                     HStack {
-                        Label("Container", systemImage: "externaldrive.badge.icloud")
+                        Label("Sync Method", systemImage: "externaldrive.badge.icloud")
                         Spacer()
-                        Text(containerID)
+                        Text("iCloud Drive File")
                             .foregroundStyle(.secondary)
                             .font(.caption)
                     }
@@ -181,28 +174,18 @@ struct SyncDiagnosticsView: View {
     }
 
     private var statusIcon: String {
-        switch syncMonitor.syncStatus {
+        switch syncService.syncStatus {
         case .syncing: return "arrow.triangle.2.circlepath"
         case .synced: return "checkmark.icloud"
         case .error: return "exclamationmark.icloud"
         case .disabled: return "icloud.slash"
-        case .unknown: return "questionmark.circle"
-        }
-    }
-
-    private var statusText: String {
-        switch syncMonitor.syncStatus {
-        case .syncing: return "Syncing..."
-        case .synced: return "Synced"
-        case .error: return "Error"
-        case .disabled: return "Disabled"
-        case .unknown: return "Unknown"
+        case .unknown, .checking: return "questionmark.circle"
         }
     }
 
     private var statusColor: Color {
-        switch syncMonitor.syncStatus {
-        case .syncing: return .blue
+        switch syncService.syncStatus {
+        case .syncing, .checking: return .blue
         case .synced: return .green
         case .error: return .red
         case .disabled: return .orange
@@ -212,27 +195,32 @@ struct SyncDiagnosticsView: View {
 
     private func refreshDiagnostics() {
         Task {
-            iCloudStatus = await syncMonitor.getiCloudStatusMessage()
-            containerID = CloudKitSyncMonitor.containerIdentifier
-            cloudKitRecordCount = await syncMonitor.getCloudKitRecordCount()
+            // Get sync file info
+            if let syncURL = syncService.syncFileURL {
+                if FileManager.default.fileExists(atPath: syncURL.path) {
+                    if let attrs = try? FileManager.default.attributesOfItem(atPath: syncURL.path),
+                       let size = attrs[.size] as? Int64 {
+                        let formatter = ByteCountFormatter()
+                        formatter.countStyle = .file
+                        syncFileInfo = "Exists (\(formatter.string(fromByteCount: size)))"
+                    } else {
+                        syncFileInfo = "Exists"
+                    }
+                } else {
+                    syncFileInfo = "Not yet created"
+                }
+            } else {
+                syncFileInfo = "iCloud unavailable"
+            }
             lastRefresh = Date()
         }
     }
 
     private func forceSync() {
         isRefreshing = true
-        syncMonitor.forceSyncRefresh()
-
-        // Also trigger a model context save to push changes
-        do {
-            try modelContext.save()
-        } catch {
-            print("Error saving context during force sync: \(error)")
-        }
 
         Task {
-            // Wait for sync to propagate
-            try? await Task.sleep(nanoseconds: 3_000_000_000)
+            await syncService.performFullSync()
             await MainActor.run {
                 isRefreshing = false
             }
