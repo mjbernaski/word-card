@@ -16,6 +16,61 @@ struct CardBackup: Codable {
     let updatedAt: Date
     let isArchived: Bool
     let archivedAt: Date?
+    let notes: String
+
+    // Custom decoder to handle backups without notes field (backward compatibility)
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(UUID.self, forKey: .id)
+        text = try container.decode(String.self, forKey: .text)
+        backgroundColor = try container.decode(String.self, forKey: .backgroundColor)
+        textColor = try container.decode(String.self, forKey: .textColor)
+        fontStyle = try container.decode(String.self, forKey: .fontStyle)
+        category = try container.decode(String.self, forKey: .category)
+        cornerRadius = try container.decode(Int.self, forKey: .cornerRadius)
+        borderColor = try container.decodeIfPresent(String.self, forKey: .borderColor)
+        borderWidth = try container.decode(Int.self, forKey: .borderWidth)
+        dpi = try container.decode(Int.self, forKey: .dpi)
+        createdAt = try container.decode(Date.self, forKey: .createdAt)
+        updatedAt = try container.decode(Date.self, forKey: .updatedAt)
+        isArchived = try container.decode(Bool.self, forKey: .isArchived)
+        archivedAt = try container.decodeIfPresent(Date.self, forKey: .archivedAt)
+        notes = try container.decodeIfPresent(String.self, forKey: .notes) ?? ""
+    }
+
+    init(
+        id: UUID,
+        text: String,
+        backgroundColor: String,
+        textColor: String,
+        fontStyle: String,
+        category: String,
+        cornerRadius: Int,
+        borderColor: String?,
+        borderWidth: Int,
+        dpi: Int,
+        createdAt: Date,
+        updatedAt: Date,
+        isArchived: Bool,
+        archivedAt: Date?,
+        notes: String
+    ) {
+        self.id = id
+        self.text = text
+        self.backgroundColor = backgroundColor
+        self.textColor = textColor
+        self.fontStyle = fontStyle
+        self.category = category
+        self.cornerRadius = cornerRadius
+        self.borderColor = borderColor
+        self.borderWidth = borderWidth
+        self.dpi = dpi
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
+        self.isArchived = isArchived
+        self.archivedAt = archivedAt
+        self.notes = notes
+    }
 }
 
 struct BackupFile: Codable {
@@ -71,7 +126,8 @@ class BackupService {
                 createdAt: card.createdAt,
                 updatedAt: card.updatedAt,
                 isArchived: card.isArchived,
-                archivedAt: card.archivedAt
+                archivedAt: card.archivedAt,
+                notes: card.notes
             )
         }
 
@@ -175,7 +231,8 @@ class BackupService {
             createdAt: backup.createdAt,
             updatedAt: backup.updatedAt,
             isArchived: backup.isArchived,
-            archivedAt: backup.archivedAt
+            archivedAt: backup.archivedAt,
+            notes: backup.notes
         )
         return card
     }
@@ -191,6 +248,7 @@ class BackupService {
         card.dpi = backup.dpi
         card.isArchived = backup.isArchived
         card.archivedAt = backup.archivedAt
+        card.notes = backup.notes
         card.updatedAt = Date()
     }
 }

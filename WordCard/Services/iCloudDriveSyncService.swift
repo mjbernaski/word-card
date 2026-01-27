@@ -445,7 +445,8 @@ class iCloudDriveSyncService: ObservableObject {
             createdAt: backup.createdAt,
             updatedAt: backup.updatedAt,
             isArchived: backup.isArchived,
-            archivedAt: backup.archivedAt
+            archivedAt: backup.archivedAt,
+            notes: backup.notes
         )
     }
 
@@ -461,6 +462,7 @@ class iCloudDriveSyncService: ObservableObject {
         card.dpi = backup.dpi
         card.isArchived = backup.isArchived
         card.archivedAt = backup.archivedAt
+        card.notes = backup.notes
         // Keep the backup's updatedAt to prevent sync loops
         card.updatedAt = backup.updatedAt
     }

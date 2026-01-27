@@ -10,6 +10,7 @@ struct CardDetailView: View {
     @State private var showingShareSheet = false
     @State private var showingResolutionPicker = false
     @State private var selectedResolution: ExportResolution = .medium
+    @State private var notesExpanded = true
 
     var body: some View {
         ScrollView {
@@ -26,6 +27,20 @@ struct CardDetailView: View {
                 .frame(maxWidth: 450, maxHeight: 225)
                 .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
                 .padding()
+
+                if !card.notes.isEmpty {
+                    GroupBox {
+                        DisclosureGroup(isExpanded: $notesExpanded) {
+                            Text(card.notes)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.top, 4)
+                        } label: {
+                            Label("Notes", systemImage: "note.text")
+                                .foregroundStyle(.primary)
+                        }
+                    }
+                    .padding(.horizontal)
+                }
 
                 GroupBox("Card Details") {
                     VStack(alignment: .leading, spacing: 12) {

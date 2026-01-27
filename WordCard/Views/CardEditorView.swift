@@ -8,6 +8,7 @@ struct CardEditorView: View {
     var existingCard: WordCard?
 
     @State private var text: String = ""
+    @State private var notes: String = ""
     @State private var category: CardCategory = .idea
     @State private var backgroundColor: Color = .white
     @State private var textColor: Color = .black
@@ -22,6 +23,7 @@ struct CardEditorView: View {
         self.existingCard = card
         if let card = card {
             _text = State(initialValue: card.text)
+            _notes = State(initialValue: card.notes)
             _category = State(initialValue: card.category)
             _backgroundColor = State(initialValue: Color(hex: card.backgroundColor) ?? .white)
             _textColor = State(initialValue: Color(hex: card.textColor) ?? .black)
@@ -54,6 +56,33 @@ struct CardEditorView: View {
             Section("Text") {
                 TextField("Enter text", text: $text, axis: .vertical)
                     .lineLimit(3...6)
+            }
+
+            Section {
+                ZStack(alignment: .topLeading) {
+                    if notes.isEmpty {
+                        Text("Add notes about this card...")
+                            .foregroundStyle(.secondary)
+                            .padding(.top, 8)
+                            .padding(.leading, 4)
+                    }
+                    TextEditor(text: $notes)
+                        .frame(minHeight: 80)
+                        .scrollContentBackground(.hidden)
+                        .onChange(of: notes) { _, newValue in
+                            if newValue.count > 500 {
+                                notes = String(newValue.prefix(500))
+                            }
+                        }
+                }
+            } header: {
+                HStack {
+                    Text("Notes")
+                    Spacer()
+                    Text("\(notes.count)/500")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
             }
 
             Section("Category") {
@@ -136,6 +165,7 @@ struct CardEditorView: View {
     private func saveCard() {
         if let card = existingCard {
             card.text = text
+            card.notes = notes
             card.category = category
             card.backgroundColor = backgroundColor.toHex()
             card.textColor = textColor.toHex()
@@ -155,7 +185,8 @@ struct CardEditorView: View {
                 cornerRadius: Int(cornerRadius),
                 borderColor: hasBorder ? borderColor.toHex() : nil,
                 borderWidth: Int(borderWidth),
-                dpi: dpi
+                dpi: dpi,
+                notes: notes
             )
             modelContext.insert(card)
         }
