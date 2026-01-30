@@ -9,7 +9,7 @@ struct ValenceApp: App {
         let config = ModelConfiguration(
             schema: schema,
             isStoredInMemoryOnly: false,
-            cloudKitDatabase: .automatic
+            cloudKitDatabase: .private("iCloud.mjbernaski.wordcard.app")
         )
 
         do {
