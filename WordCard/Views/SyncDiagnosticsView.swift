@@ -5,10 +5,7 @@ struct SyncDiagnosticsView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @Query private var allCards: [WordCard]
-    @StateObject private var syncService = iCloudDriveSyncService.shared
-    @State private var isRefreshing = false
-    @State private var lastRefresh: Date?
-    @State private var syncFileInfo: String = "Checking..."
+    @StateObject private var syncMonitor = CloudKitSyncMonitor()
 
     var body: some View {
         NavigationStack {
@@ -17,18 +14,18 @@ struct SyncDiagnosticsView: View {
                     HStack {
                         Label("Status", systemImage: statusIcon)
                         Spacer()
-                        Text(syncService.syncStatus.rawValue)
+                        Text(statusText)
                             .foregroundStyle(statusColor)
                     }
 
                     HStack {
-                        Label("iCloud Drive", systemImage: "icloud")
+                        Label("iCloud Account", systemImage: "icloud")
                         Spacer()
-                        Text(syncService.iCloudAvailable ? "Available" : "Unavailable")
-                            .foregroundStyle(syncService.iCloudAvailable ? .green : .red)
+                        Text(accountStatusText)
+                            .foregroundStyle(accountStatusColor)
                     }
 
-                    if let lastSync = syncService.lastSyncDate {
+                    if let lastSync = syncMonitor.lastSyncTime {
                         HStack {
                             Label("Last Sync", systemImage: "clock")
                             Spacer()
@@ -37,7 +34,7 @@ struct SyncDiagnosticsView: View {
                         }
                     }
 
-                    if let error = syncService.syncError {
+                    if let error = syncMonitor.errorMessage {
                         HStack {
                             Label("Error", systemImage: "exclamationmark.triangle")
                                 .foregroundStyle(.red)
@@ -72,45 +69,18 @@ struct SyncDiagnosticsView: View {
                     }
                 }
 
-                Section("iCloud Drive Sync File") {
-                    HStack {
-                        Label("Sync File", systemImage: "doc.badge.clock")
-                        Spacer()
-                        Text(syncFileInfo)
-                            .foregroundStyle(.secondary)
-                            .font(.caption)
-                    }
-
-                    if syncService.syncFileURL != nil {
-                        HStack {
-                            Label("Location", systemImage: "folder")
-                            Spacer()
-                            Text("iCloud Drive/WordCard")
-                                .foregroundStyle(.secondary)
-                                .font(.caption)
-                        }
-                    }
-                }
-
                 Section("Actions") {
                     Button {
-                        forceSync()
+                        syncMonitor.forceSyncRefresh()
                     } label: {
                         HStack {
-                            Label("Sync Now", systemImage: "arrow.triangle.2.circlepath")
+                            Label("Refresh Status", systemImage: "arrow.triangle.2.circlepath")
                             Spacer()
-                            if isRefreshing {
+                            if syncMonitor.syncStatus == .syncing {
                                 ProgressView()
                                     .scaleEffect(0.8)
                             }
                         }
-                    }
-                    .disabled(isRefreshing)
-
-                    Button {
-                        refreshDiagnostics()
-                    } label: {
-                        Label("Refresh Diagnostics", systemImage: "arrow.clockwise")
                     }
                 }
 
@@ -122,8 +92,8 @@ struct SyncDiagnosticsView: View {
                         troubleshootingItem("1.", "Check iCloud is signed in on all devices")
                         troubleshootingItem("2.", "Ensure iCloud Drive is enabled")
                         troubleshootingItem("3.", "Check network connectivity")
-                        troubleshootingItem("4.", "Wait a minute for iCloud to sync the file")
-                        troubleshootingItem("5.", "Use 'Sync Now' on all devices")
+                        troubleshootingItem("4.", "Allow time for CloudKit to propagate changes")
+                        troubleshootingItem("5.", "Restart the app if sync seems stuck")
                     }
                     .padding(.vertical, 4)
                 }
@@ -132,7 +102,7 @@ struct SyncDiagnosticsView: View {
                     HStack {
                         Label("Sync Method", systemImage: "externaldrive.badge.icloud")
                         Spacer()
-                        Text("iCloud Drive File")
+                        Text("CloudKit (Automatic)")
                             .foregroundStyle(.secondary)
                             .font(.caption)
                     }
@@ -156,9 +126,6 @@ struct SyncDiagnosticsView: View {
                     }
                 }
             }
-            .onAppear {
-                refreshDiagnostics()
-            }
         }
     }
 
@@ -174,18 +141,28 @@ struct SyncDiagnosticsView: View {
     }
 
     private var statusIcon: String {
-        switch syncService.syncStatus {
+        switch syncMonitor.syncStatus {
         case .syncing: return "arrow.triangle.2.circlepath"
         case .synced: return "checkmark.icloud"
         case .error: return "exclamationmark.icloud"
         case .disabled: return "icloud.slash"
-        case .unknown, .checking: return "questionmark.circle"
+        case .unknown: return "questionmark.circle"
+        }
+    }
+
+    private var statusText: String {
+        switch syncMonitor.syncStatus {
+        case .syncing: return "Syncing"
+        case .synced: return "Synced"
+        case .error: return "Error"
+        case .disabled: return "Disabled"
+        case .unknown: return "Checking..."
         }
     }
 
     private var statusColor: Color {
-        switch syncService.syncStatus {
-        case .syncing, .checking: return .blue
+        switch syncMonitor.syncStatus {
+        case .syncing: return .blue
         case .synced: return .green
         case .error: return .red
         case .disabled: return .orange
@@ -193,38 +170,19 @@ struct SyncDiagnosticsView: View {
         }
     }
 
-    private func refreshDiagnostics() {
-        Task {
-            // Get sync file info
-            if let syncURL = syncService.syncFileURL {
-                if FileManager.default.fileExists(atPath: syncURL.path) {
-                    if let attrs = try? FileManager.default.attributesOfItem(atPath: syncURL.path),
-                       let size = attrs[.size] as? Int64 {
-                        let formatter = ByteCountFormatter()
-                        formatter.countStyle = .file
-                        syncFileInfo = "Exists (\(formatter.string(fromByteCount: size)))"
-                    } else {
-                        syncFileInfo = "Exists"
-                    }
-                } else {
-                    syncFileInfo = "Not yet created"
-                }
-            } else {
-                syncFileInfo = "iCloud unavailable"
-            }
-            lastRefresh = Date()
+    private var accountStatusText: String {
+        switch syncMonitor.syncStatus {
+        case .disabled: return syncMonitor.errorMessage ?? "Unavailable"
+        case .error: return "Error"
+        default: return "Available"
         }
     }
 
-    private func forceSync() {
-        isRefreshing = true
-
-        Task {
-            await syncService.performFullSync()
-            await MainActor.run {
-                isRefreshing = false
-            }
-            refreshDiagnostics()
+    private var accountStatusColor: Color {
+        switch syncMonitor.syncStatus {
+        case .disabled: return .red
+        case .error: return .red
+        default: return .green
         }
     }
 }

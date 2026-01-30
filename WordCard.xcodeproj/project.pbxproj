@@ -11,7 +11,6 @@
 		611638B72EE88B48000BCDC3 /* ValenceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611638B62EE88B48000BCDC3 /* ValenceApp.swift */; };
 		611638BA2EEA0000000BCDC3 /* ImmersiveCardSpaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611638BB2EEA0000000BCDC3 /* ImmersiveCardSpaceView.swift */; };
 		611638BC2EEA0001000BCDC3 /* BackupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611638BD2EEA0001000BCDC3 /* BackupService.swift */; };
-		61AB685B2EFD0000003D01C1 /* iCloudDriveSyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB685A2EFD0000003D01C1 /* iCloudDriveSyncService.swift */; };
 		61AB68552EFC214D003D01C1 /* CardCountBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB68542EFC214D003D01C1 /* CardCountBadge.swift */; };
 		61AB68562EFC3000003D01C1 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB68572EFC3000003D01C1 /* AppVersion.swift */; };
 		61AB68582EFC4000003D01C1 /* SyncDiagnosticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB68592EFC4000003D01C1 /* SyncDiagnosticsView.swift */; };
@@ -24,7 +23,6 @@
 		A10000010000000000000008 /* PNGExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000008 /* PNGExporter.swift */; };
 		A10000010000000000000009 /* AppConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000009 /* AppConfig.json */; };
 		A1000001000000000000000A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2000001000000000000000A /* Assets.xcassets */; };
-		A1000001000000000000000B /* SyncFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000001000000000000000B /* SyncFileService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,7 +30,6 @@
 		611638B62EE88B48000BCDC3 /* ValenceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValenceApp.swift; sourceTree = "<group>"; };
 		611638BB2EEA0000000BCDC3 /* ImmersiveCardSpaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveCardSpaceView.swift; sourceTree = "<group>"; };
 		611638BD2EEA0001000BCDC3 /* BackupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupService.swift; sourceTree = "<group>"; };
-		61AB685A2EFD0000003D01C1 /* iCloudDriveSyncService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iCloudDriveSyncService.swift; sourceTree = "<group>"; };
 		61AB68542EFC214D003D01C1 /* CardCountBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCountBadge.swift; sourceTree = "<group>"; };
 		61AB68572EFC3000003D01C1 /* AppVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
 		61AB68592EFC4000003D01C1 /* SyncDiagnosticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncDiagnosticsView.swift; sourceTree = "<group>"; };
@@ -45,7 +42,6 @@
 		A20000010000000000000008 /* PNGExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PNGExporter.swift; sourceTree = "<group>"; };
 		A20000010000000000000009 /* AppConfig.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = AppConfig.json; sourceTree = "<group>"; };
 		A2000001000000000000000A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		A2000001000000000000000B /* SyncFileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncFileService.swift; sourceTree = "<group>"; };
 		A30000010000000000000001 /* WordCard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WordCard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -119,8 +115,6 @@
 			children = (
 				A20000010000000000000008 /* PNGExporter.swift */,
 				611638BD2EEA0001000BCDC3 /* BackupService.swift */,
-				A2000001000000000000000B /* SyncFileService.swift */,
-				61AB685A2EFD0000003D01C1 /* iCloudDriveSyncService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -215,8 +209,6 @@
 				611638B52EE88688000BCDC3 /* CloudKitSyncMonitor.swift in Sources */,
 				611638BA2EEA0000000BCDC3 /* ImmersiveCardSpaceView.swift in Sources */,
 				611638BC2EEA0001000BCDC3 /* BackupService.swift in Sources */,
-				A1000001000000000000000B /* SyncFileService.swift in Sources */,
-				61AB685B2EFD0000003D01C1 /* iCloudDriveSyncService.swift in Sources */,
 				61AB68562EFC3000003D01C1 /* AppVersion.swift in Sources */,
 				61AB68582EFC4000003D01C1 /* SyncDiagnosticsView.swift in Sources */,
 			);

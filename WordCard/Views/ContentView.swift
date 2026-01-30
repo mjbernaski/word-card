@@ -1,6 +1,5 @@
 import SwiftUI
 import SwiftData
-import CloudKit
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext

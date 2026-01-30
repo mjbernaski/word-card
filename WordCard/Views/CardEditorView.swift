@@ -191,9 +191,6 @@ struct CardEditorView: View {
             modelContext.insert(card)
         }
 
-        // Trigger sync
-        iCloudDriveSyncService.shared.cardDidChange()
-        SyncFileService.shared.cardDidChange()
     }
 }
 
