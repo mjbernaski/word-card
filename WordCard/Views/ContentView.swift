@@ -37,6 +37,9 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: .newCard)) { _ in
             showingEditor = true
         }
+        .onAppear {
+            syncMonitor.setModelContainer(modelContext.container)
+        }
         #elseif os(visionOS)
         NavigationSplitView {
             CardListView(selectedCard: $selectedCard, showingEditor: $showingEditor)
@@ -74,6 +77,9 @@ struct ContentView: View {
             }
             .modelContainer(modelContext.container)
         }
+        .onAppear {
+            syncMonitor.setModelContainer(modelContext.container)
+        }
         #else
         NavigationStack {
             VStack(spacing: 0) {
@@ -91,6 +97,9 @@ struct ContentView: View {
                 NavigationStack {
                     CardEditorView()
                 }
+            }
+            .onAppear {
+                syncMonitor.setModelContainer(modelContext.container)
             }
         }
         #endif

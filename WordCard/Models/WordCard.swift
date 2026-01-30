@@ -83,7 +83,7 @@ enum CardCategory: String, Codable, CaseIterable {
 
 @Model
 final class WordCard {
-    @Attribute(.unique) var id: UUID = UUID()
+    var id: UUID = UUID()
     var text: String = ""
     var backgroundColor: String = "#FFFFFF"
     var textColor: String = "#000000"

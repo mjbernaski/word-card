@@ -17,10 +17,15 @@ class CloudKitSyncMonitor: ObservableObject {
     @Published var lastSyncTime: Date?
 
     private var accountStatusTimer: Timer?
+    private var modelContainer: ModelContainer?
 
     init() {
         checkiCloudStatus()
         startMonitoring()
+    }
+
+    func setModelContainer(_ container: ModelContainer) {
+        self.modelContainer = container
     }
 
     deinit {
@@ -61,6 +66,8 @@ class CloudKitSyncMonitor: ObservableObject {
             if syncStatus != .error && syncStatus != .disabled {
                 syncStatus = .syncing
 
+                deduplicateAfterSync()
+
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                     Task { @MainActor in
                         if self.syncStatus == .syncing {
@@ -70,6 +77,32 @@ class CloudKitSyncMonitor: ObservableObject {
                     }
                 }
             }
+        }
+    }
+
+    private func deduplicateAfterSync() {
+        guard let container = modelContainer else { return }
+        let context = ModelContext(container)
+        let descriptor = FetchDescriptor<WordCard>()
+        guard let allCards = try? context.fetch(descriptor) else { return }
+
+        var seen: [UUID: WordCard] = [:]
+        var toDelete: [WordCard] = []
+        let sorted = allCards.sorted { $0.updatedAt > $1.updatedAt }
+        for card in sorted {
+            if seen[card.id] != nil {
+                toDelete.append(card)
+            } else {
+                seen[card.id] = card
+            }
+        }
+
+        if !toDelete.isEmpty {
+            for card in toDelete {
+                context.delete(card)
+            }
+            try? context.save()
+            print("🧹 Auto-deduplicated \(toDelete.count) sync duplicate(s)")
         }
     }
 
