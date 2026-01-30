@@ -1,3 +1,4 @@
+import CloudKit
 import Foundation
 import SwiftData
 import SwiftUI
@@ -135,6 +136,3 @@ class CloudKitSyncMonitor: ObservableObject {
     }
 }
 
-extension Notification.Name {
-    static let CKAccountChanged = Notification.Name("CKAccountChanged")
-}
