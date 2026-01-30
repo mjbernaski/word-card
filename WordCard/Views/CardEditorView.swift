@@ -56,6 +56,9 @@ struct CardEditorView: View {
             Section("Text") {
                 TextField("Enter text", text: $text, axis: .vertical)
                     .lineLimit(3...6)
+                    #if !os(macOS)
+                    .textInputAutocapitalization(.never)
+                    #endif
             }
 
             Section {

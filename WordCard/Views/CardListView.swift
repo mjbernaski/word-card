@@ -57,7 +57,10 @@ struct CardListView: View {
         if searchText.isEmpty {
             return sorted
         }
-        return sorted.filter { $0.text.localizedCaseInsensitiveContains(searchText) }
+        return sorted.filter {
+            $0.text.localizedCaseInsensitiveContains(searchText) ||
+            $0.notes.localizedCaseInsensitiveContains(searchText)
+        }
     }
 
     var body: some View {
@@ -156,6 +159,9 @@ struct CardListView: View {
         }
         .sheet(isPresented: $showingSyncDiagnostics) {
             SyncDiagnosticsView()
+                #if os(macOS)
+                .frame(minWidth: 480, minHeight: 500)
+                #endif
         }
         .fileExporter(
             isPresented: $showingExporter,
