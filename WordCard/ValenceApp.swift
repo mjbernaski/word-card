@@ -54,6 +54,7 @@ struct ValenceApp: App {
             let container = try ModelContainer(for: schema, configurations: [config])
             print("✅ SwiftData container created with CloudKit sync")
             print("📁 Database URL: \(config.url)")
+            SharedModelContainer.container = container
             return container
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
