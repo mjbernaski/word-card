@@ -1,3 +1,4 @@
+#if !os(tvOS)
 import SwiftUI
 import SwiftData
 
@@ -203,3 +204,4 @@ struct CardEditorView: View {
     }
     .modelContainer(for: WordCard.self, inMemory: true)
 }
+#endif

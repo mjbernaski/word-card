@@ -1,3 +1,4 @@
+#if !os(tvOS)
 import AppIntents
 
 struct WordCardShortcuts: AppShortcutsProvider {
@@ -16,3 +17,4 @@ struct WordCardShortcuts: AppShortcutsProvider {
         )
     }
 }
+#endif

@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "icon_1024.png",
+      "filename" : "icon_small@2x.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -67,16 +67,22 @@
       "size" : "512x512"
     },
     {
-      "filename" : "icon_1024.png",
+      "filename" : "valence 2.jpg",
       "idiom" : "universal",
       "platform" : "watchos",
       "size" : "1024x1024"
     },
     {
-      "filename" : "icon_1024.png",
+      "filename" : "valence.jpg",
       "idiom" : "vision",
       "scale" : "2x",
       "size" : "512x512"
+    },
+    {
+      "filename" : "valence 1.jpg",
+      "idiom" : "tv",
+      "platform" : "tvos",
+      "size" : "1280x768"
     }
   ],
   "info" : {

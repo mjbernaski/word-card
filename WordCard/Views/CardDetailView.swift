@@ -29,6 +29,18 @@ struct CardDetailView: View {
                 .padding()
 
                 if !card.notes.isEmpty {
+                    #if os(tvOS)
+                    VStack(alignment: .leading, spacing: 8) {
+                        Label("Notes", systemImage: "note.text")
+                            .font(.headline)
+                        Text(card.notes)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .padding()
+                    .background(Color.secondary.opacity(0.1))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .padding(.horizontal)
+                    #else
                     GroupBox {
                         DisclosureGroup(isExpanded: $notesExpanded) {
                             Text(card.notes)
@@ -40,8 +52,29 @@ struct CardDetailView: View {
                         }
                     }
                     .padding(.horizontal)
+                    #endif
                 }
 
+                #if os(tvOS)
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Card Details")
+                        .font(.headline)
+                    DetailRow(label: "Font Style", value: card.fontStyle.displayName)
+                    DetailRow(label: "Corner Radius", value: "\(card.cornerRadius)px")
+                    DetailRow(label: "Border", value: card.borderColor != nil ? "Yes (\(card.borderWidth)px)" : "None")
+                    DetailRow(label: "DPI", value: "\(card.dpi)")
+                    DetailRow(label: "Export Size", value: "\(Int(3 * Double(card.dpi)))×\(Int(1.5 * Double(card.dpi)))px")
+
+                    Divider()
+
+                    DetailRow(label: "Created", value: card.createdAt.formatted(date: .abbreviated, time: .shortened))
+                    DetailRow(label: "Modified", value: card.updatedAt.formatted(date: .abbreviated, time: .shortened))
+                }
+                .padding()
+                .background(Color.secondary.opacity(0.1))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .padding(.horizontal)
+                #else
                 GroupBox("Card Details") {
                     VStack(alignment: .leading, spacing: 12) {
                         DetailRow(label: "Font Style", value: card.fontStyle.displayName)
@@ -58,7 +91,9 @@ struct CardDetailView: View {
                     .padding(.vertical, 8)
                 }
                 .padding(.horizontal)
+                #endif
 
+                #if !os(tvOS)
                 HStack(spacing: 16) {
                     Button {
                         showingEditor = true
@@ -77,6 +112,7 @@ struct CardDetailView: View {
                     .buttonStyle(.borderedProminent)
                 }
                 .padding(.horizontal)
+                #endif
             }
             .padding(.vertical)
         }
@@ -84,6 +120,7 @@ struct CardDetailView: View {
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
+        #if !os(tvOS)
         .sheet(isPresented: $showingEditor) {
             NavigationStack {
                 CardEditorView(card: card)
@@ -105,6 +142,7 @@ struct CardDetailView: View {
         } message: {
             Text("Choose the resolution for your exported image")
         }
+        #endif
     }
 
     private func exportCard() {
@@ -142,6 +180,9 @@ struct ShareSheetView: View {
             if let url = tempFileURL {
                 #if os(visionOS)
                 VisionOSShareView(fileURL: url, filename: safeFilename, dismiss: dismiss)
+                #elseif os(tvOS)
+                Text("Export is not available on Apple TV.")
+                    .foregroundStyle(.secondary)
                 #elseif os(iOS)
                 ActivityView(fileURL: url)
                 #else
@@ -292,6 +333,8 @@ struct ActivityView: UIViewControllerRepresentable {
 
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
+#elseif os(tvOS)
+// No share/export views needed on tvOS
 #else
 import AppKit
 import UniformTypeIdentifiers

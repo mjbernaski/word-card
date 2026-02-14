@@ -8,6 +8,8 @@ struct ContentView: View {
     @StateObject private var syncMonitor = CloudKitSyncMonitor()
     #if os(visionOS)
     @State private var showingCardSpace = false
+    #elseif os(tvOS)
+    @State private var showingShowcase = false
     #endif
 
     var body: some View {
@@ -80,6 +82,36 @@ struct ContentView: View {
         .onAppear {
             syncMonitor.setModelContainer(modelContext.container)
         }
+        #elseif os(tvOS)
+        NavigationStack {
+            CardListView(selectedCard: $selectedCard, showingEditor: .constant(false))
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        SyncStatusDot(syncMonitor: syncMonitor)
+                    }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            showingShowcase = true
+                        } label: {
+                            Label("Showcase", systemImage: "sparkles.rectangle.stack")
+                        }
+                    }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        CardCountBadge()
+                    }
+                }
+                .navigationDestination(for: WordCard.self) { card in
+                    CardDetailView(card: card)
+                }
+                .onAppear {
+                    syncMonitor.setModelContainer(modelContext.container)
+                    seedSampleDataIfNeeded()
+                }
+        }
+        .fullScreenCover(isPresented: $showingShowcase) {
+            CardShowcaseView()
+                .modelContainer(modelContext.container)
+        }
         #else
         NavigationStack {
             VStack(spacing: 0) {
@@ -104,6 +136,40 @@ struct ContentView: View {
         }
         #endif
     }
+
+    #if os(tvOS)
+    private func seedSampleDataIfNeeded() {
+        let descriptor = FetchDescriptor<WordCard>()
+        let count = (try? modelContext.fetchCount(descriptor)) ?? 0
+        guard count == 0 else { return }
+
+        guard let url = Bundle.main.url(forResource: "SampleCards", withExtension: "json"),
+              let data = try? Data(contentsOf: url) else { return }
+
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        guard let backup = try? decoder.decode(BackupFile.self, from: data) else { return }
+
+        for cardBackup in backup.cards where !cardBackup.isArchived {
+            let card = WordCard(
+                id: cardBackup.id,
+                text: cardBackup.text,
+                backgroundColor: cardBackup.backgroundColor,
+                textColor: cardBackup.textColor,
+                fontStyle: FontStyle(rawValue: cardBackup.fontStyle) ?? .elegant,
+                category: CardCategory(rawValue: cardBackup.category) ?? .idea,
+                cornerRadius: cardBackup.cornerRadius,
+                borderColor: cardBackup.borderColor,
+                borderWidth: cardBackup.borderWidth,
+                dpi: cardBackup.dpi,
+                createdAt: cardBackup.createdAt,
+                updatedAt: cardBackup.updatedAt,
+                notes: cardBackup.notes
+            )
+            modelContext.insert(card)
+        }
+    }
+    #endif
 }
 
 struct SyncStatusDot: View {

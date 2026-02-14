@@ -14,6 +14,9 @@
 		61AB68552EFC214D003D01C1 /* CardCountBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB68542EFC214D003D01C1 /* CardCountBadge.swift */; };
 		61AB68562EFC3000003D01C1 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB68572EFC3000003D01C1 /* AppVersion.swift */; };
 		61AB68582EFC4000003D01C1 /* SyncDiagnosticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB68592EFC4000003D01C1 /* SyncDiagnosticsView.swift */; };
+		61AB685A2EFC5000003D01C1 /* CardShowcaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB685B2EFC5000003D01C1 /* CardShowcaseView.swift */; };
+		61D71EC82F3E9A3200B7CE73 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61D71EC32F3E9A3200B7CE73 /* Assets.xcassets */; };
+		61D71EC92F3E9A3200B7CE73 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61D71EC52F3E9A3200B7CE73 /* Assets.xcassets */; };
 		A10000010000000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000002 /* ContentView.swift */; };
 		A10000010000000000000003 /* WordCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000003 /* WordCard.swift */; };
 		A10000010000000000000004 /* CardListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000004 /* CardListView.swift */; };
@@ -22,10 +25,10 @@
 		A10000010000000000000007 /* CardPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000007 /* CardPreviewView.swift */; };
 		A10000010000000000000008 /* PNGExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000008 /* PNGExporter.swift */; };
 		A10000010000000000000009 /* AppConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000009 /* AppConfig.json */; };
-		A1000001000000000000000A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2000001000000000000000A /* Assets.xcassets */; };
 		C10000010000000000000001 /* SharedModelContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20000010000000000000001 /* SharedModelContainer.swift */; };
 		C10000010000000000000002 /* CreateWordCardIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20000010000000000000002 /* CreateWordCardIntent.swift */; };
 		C10000010000000000000003 /* WordCardShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20000010000000000000003 /* WordCardShortcuts.swift */; };
+		D1000001000000000000000B /* SampleCards.json in Resources */ = {isa = PBXBuildFile; fileRef = D2000001000000000000000B /* SampleCards.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +39,9 @@
 		61AB68542EFC214D003D01C1 /* CardCountBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCountBadge.swift; sourceTree = "<group>"; };
 		61AB68572EFC3000003D01C1 /* AppVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
 		61AB68592EFC4000003D01C1 /* SyncDiagnosticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncDiagnosticsView.swift; sourceTree = "<group>"; };
+		61AB685B2EFC5000003D01C1 /* CardShowcaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardShowcaseView.swift; sourceTree = "<group>"; };
+		61D71EC32F3E9A3200B7CE73 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		61D71EC52F3E9A3200B7CE73 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A20000010000000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A20000010000000000000003 /* WordCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCard.swift; sourceTree = "<group>"; };
 		A20000010000000000000004 /* CardListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardListView.swift; sourceTree = "<group>"; };
@@ -44,11 +50,11 @@
 		A20000010000000000000007 /* CardPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPreviewView.swift; sourceTree = "<group>"; };
 		A20000010000000000000008 /* PNGExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PNGExporter.swift; sourceTree = "<group>"; };
 		A20000010000000000000009 /* AppConfig.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = AppConfig.json; sourceTree = "<group>"; };
-		A2000001000000000000000A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A30000010000000000000001 /* WordCard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WordCard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C20000010000000000000001 /* SharedModelContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedModelContainer.swift; sourceTree = "<group>"; };
 		C20000010000000000000002 /* CreateWordCardIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWordCardIntent.swift; sourceTree = "<group>"; };
 		C20000010000000000000003 /* WordCardShortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCardShortcuts.swift; sourceTree = "<group>"; };
+		D2000001000000000000000B /* SampleCards.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SampleCards.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +68,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		61D71EC42F3E9A3200B7CE73 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				61D71EC32F3E9A3200B7CE73 /* Assets.xcassets */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		61D71EC62F3E9A3200B7CE73 /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				61D71EC52F3E9A3200B7CE73 /* Assets.xcassets */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		61D71EC72F3E9A3200B7CE73 /* App Assets */ = {
+			isa = PBXGroup;
+			children = (
+				61D71EC42F3E9A3200B7CE73 /* iOS */,
+				61D71EC62F3E9A3200B7CE73 /* macOS */,
+			);
+			path = "App Assets";
+			sourceTree = "<group>";
+		};
 		A50000010000000000000001 = {
 			isa = PBXGroup;
 			children = (
@@ -79,7 +110,7 @@
 				A50000010000000000000006 /* Services */,
 				C50000010000000000000001 /* Intents */,
 				A50000010000000000000007 /* Config */,
-				A2000001000000000000000A /* Assets.xcassets */,
+				61D71EC72F3E9A3200B7CE73 /* App Assets */,
 				61AB68542EFC214D003D01C1 /* CardCountBadge.swift */,
 				61AB68572EFC3000003D01C1 /* AppVersion.swift */,
 			);
@@ -112,6 +143,7 @@
 				A20000010000000000000007 /* CardPreviewView.swift */,
 				611638B42EE88688000BCDC3 /* CloudKitSyncMonitor.swift */,
 				611638BB2EEA0000000BCDC3 /* ImmersiveCardSpaceView.swift */,
+				61AB685B2EFC5000003D01C1 /* CardShowcaseView.swift */,
 				61AB68592EFC4000003D01C1 /* SyncDiagnosticsView.swift */,
 			);
 			path = Views;
@@ -127,6 +159,15 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		A50000010000000000000007 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				A20000010000000000000009 /* AppConfig.json */,
+				D2000001000000000000000B /* SampleCards.json */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
 		C50000010000000000000001 /* Intents */ = {
 			isa = PBXGroup;
 			children = (
@@ -134,14 +175,6 @@
 				C20000010000000000000003 /* WordCardShortcuts.swift */,
 			);
 			path = Intents;
-			sourceTree = "<group>";
-		};
-		A50000010000000000000007 /* Config */ = {
-			isa = PBXGroup;
-			children = (
-				A20000010000000000000009 /* AppConfig.json */,
-			);
-			path = Config;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -202,8 +235,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61D71EC82F3E9A3200B7CE73 /* Assets.xcassets in Resources */,
+				61D71EC92F3E9A3200B7CE73 /* Assets.xcassets in Resources */,
 				A10000010000000000000009 /* AppConfig.json in Resources */,
-				A1000001000000000000000A /* Assets.xcassets in Resources */,
+				D1000001000000000000000B /* SampleCards.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,6 +260,7 @@
 				611638B72EE88B48000BCDC3 /* ValenceApp.swift in Sources */,
 				611638B52EE88688000BCDC3 /* CloudKitSyncMonitor.swift in Sources */,
 				611638BA2EEA0000000BCDC3 /* ImmersiveCardSpaceView.swift in Sources */,
+				61AB685A2EFC5000003D01C1 /* CardShowcaseView.swift in Sources */,
 				611638BC2EEA0001000BCDC3 /* BackupService.swift in Sources */,
 				61AB68562EFC3000003D01C1 /* AppVersion.swift in Sources */,
 				61AB68582EFC4000003D01C1 /* SyncDiagnosticsView.swift in Sources */,
@@ -395,19 +431,21 @@
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.wordcard.app;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=appletvos*]" = mjbernaski.wordcard.app;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = mjbernaski.wordcard.app;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = mjbernaski.wordcard.app;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=xros*]" = mjbernaski.wordcard.app;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=xrsimulator*]" = mjbernaski.wordcard.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "appletvos appletvsimulator iphoneos iphonesimulator macosx xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = "1,2,3,7";
+				TVOS_DEPLOYMENT_TARGET = 17.0;
 				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Debug;
@@ -450,19 +488,21 @@
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.wordcard.app;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=appletvos*]" = mjbernaski.wordcard.app;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = mjbernaski.wordcard.app;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = mjbernaski.wordcard.app;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=xros*]" = mjbernaski.wordcard.app;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=xrsimulator*]" = mjbernaski.wordcard.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "appletvos appletvsimulator iphoneos iphonesimulator macosx xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = "1,2,3,7";
+				TVOS_DEPLOYMENT_TARGET = 17.0;
 				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Release;

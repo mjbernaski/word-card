@@ -1,3 +1,4 @@
+#if !os(tvOS)
 import AppIntents
 import SwiftData
 
@@ -73,3 +74,4 @@ struct CreateWordCardIntent: AppIntent {
         )
     }
 }
+#endif

@@ -1,7 +1,7 @@
 import Foundation
 import CoreGraphics
 import CoreText
-#if os(iOS) || os(visionOS)
+#if os(iOS) || os(visionOS) || os(tvOS)
 import UIKit
 #else
 import AppKit

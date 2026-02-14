@@ -73,6 +73,8 @@ struct CardListView: View {
             }
             #elseif os(visionOS)
             gridView
+            #elseif os(tvOS)
+            gridView
             #else
             gridView
             #endif
@@ -80,6 +82,7 @@ struct CardListView: View {
         .navigationTitle("Cards")
         .searchable(text: $searchText, prompt: "Search cards")
         .toolbar {
+            #if !os(tvOS)
             ToolbarItem(placement: .primaryAction) {
                 Button {
                     showingEditor = true
@@ -87,72 +90,16 @@ struct CardListView: View {
                     Label("Add Card", systemImage: "plus")
                 }
             }
-            ToolbarItem(placement: .secondaryAction) {
-                Menu {
-                    Button {
-                        showingArchive = true
-                    } label: {
-                        Label("Archive", systemImage: "archivebox")
-                    }
-
-                    Divider()
-
-                    Menu {
-                        ForEach(CardSortOrder.allCases, id: \.self) { order in
-                            Button {
-                                sortOrder = order
-                            } label: {
-                                HStack {
-                                    Text(order.rawValue)
-                                    if sortOrder == order {
-                                        Image(systemName: "checkmark")
-                                    }
-                                }
-                            }
-                        }
-                    } label: {
-                        Label("Sort By", systemImage: "arrow.up.arrow.down")
-                    }
-
-                    Divider()
-
-                    Button {
-                        exportBackup()
-                    } label: {
-                        Label("Export Backup", systemImage: "square.and.arrow.up")
-                    }
-
-                    Button {
-                        showingImporter = true
-                    } label: {
-                        Label("Import Backup", systemImage: "square.and.arrow.down")
-                    }
-
-                    Divider()
-
-                    Button {
-                        showingDedupeConfirm = true
-                    } label: {
-                        Label("Remove Duplicates", systemImage: "doc.on.doc")
-                    }
-
-                    Divider()
-
-                    Button {
-                        showingSyncDiagnostics = true
-                    } label: {
-                        Label("Sync Diagnostics", systemImage: "stethoscope")
-                    }
-
-                    Divider()
-
-                    Text("WordCard \(AppVersion.displayString)")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                } label: {
-                    Label("More", systemImage: "ellipsis.circle")
-                }
+            #endif
+            #if os(tvOS)
+            ToolbarItem(placement: .automatic) {
+                moreMenu
             }
+            #else
+            ToolbarItem(placement: .secondaryAction) {
+                moreMenu
+            }
+            #endif
         }
         .sheet(isPresented: $showingArchive) {
             ArchiveView()
@@ -163,6 +110,7 @@ struct CardListView: View {
                 .frame(minWidth: 480, minHeight: 500)
                 #endif
         }
+        #if !os(tvOS)
         .fileExporter(
             isPresented: $showingExporter,
             document: BackupDocument(data: exportData ?? Data()),
@@ -227,6 +175,7 @@ struct CardListView: View {
                 Text("Removed \(result.duplicatesRemoved) duplicate(s).\n\(result.uniqueCards) unique cards remaining.")
             }
         }
+        #endif
     }
 
     private func performDedupe(byContent: Bool) {
@@ -236,6 +185,75 @@ struct CardListView: View {
             dedupeResult = BackupService.shared.deduplicateByID(in: modelContext, cards: allCards)
         }
         showingDedupeResult = true
+    }
+
+    private var moreMenu: some View {
+        Menu {
+            Button {
+                showingArchive = true
+            } label: {
+                Label("Archive", systemImage: "archivebox")
+            }
+
+            Divider()
+
+            Menu {
+                ForEach(CardSortOrder.allCases, id: \.self) { order in
+                    Button {
+                        sortOrder = order
+                    } label: {
+                        HStack {
+                            Text(order.rawValue)
+                            if sortOrder == order {
+                                Image(systemName: "checkmark")
+                            }
+                        }
+                    }
+                }
+            } label: {
+                Label("Sort By", systemImage: "arrow.up.arrow.down")
+            }
+
+            #if !os(tvOS)
+            Divider()
+
+            Button {
+                exportBackup()
+            } label: {
+                Label("Export Backup", systemImage: "square.and.arrow.up")
+            }
+
+            Button {
+                showingImporter = true
+            } label: {
+                Label("Import Backup", systemImage: "square.and.arrow.down")
+            }
+
+            Divider()
+
+            Button {
+                showingDedupeConfirm = true
+            } label: {
+                Label("Remove Duplicates", systemImage: "doc.on.doc")
+            }
+            #endif
+
+            Divider()
+
+            Button {
+                showingSyncDiagnostics = true
+            } label: {
+                Label("Sync Diagnostics", systemImage: "stethoscope")
+            }
+
+            Divider()
+
+            Text("WordCard \(AppVersion.displayString)")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        } label: {
+            Label("More", systemImage: "ellipsis.circle")
+        }
     }
 
     private var gridView: some View {
@@ -361,6 +379,7 @@ struct CardListView: View {
     }
 }
 
+#if !os(tvOS)
 struct BackupDocument: FileDocument {
     static var readableContentTypes: [UTType] { [.json] }
 
@@ -378,6 +397,7 @@ struct BackupDocument: FileDocument {
         FileWrapper(regularFileWithContents: data)
     }
 }
+#endif
 
 struct ArchiveView: View {
     @Environment(\.modelContext) private var modelContext
@@ -417,6 +437,7 @@ struct ArchiveView: View {
                             }
                             Spacer()
                         }
+                        #if !os(tvOS)
                         .swipeActions(edge: .trailing) {
                             Button(role: .destructive) {
                                 modelContext.delete(card)
@@ -432,6 +453,7 @@ struct ArchiveView: View {
                             }
                             .tint(.green)
                         }
+                        #endif
                         .contextMenu {
                             Button {
                                 card.restore()
