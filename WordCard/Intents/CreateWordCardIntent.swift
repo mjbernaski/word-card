@@ -2,6 +2,11 @@
 import AppIntents
 import SwiftData
 
+private struct CreateCardError: LocalizedError {
+    let errorDescription: String?
+    init(_ message: String) { errorDescription = message }
+}
+
 enum CardCategoryAppEnum: String, AppEnum {
     case idea
     case readings
@@ -37,7 +42,8 @@ struct CreateWordCardIntent: AppIntent {
         categoryName: "Cards"
     )
 
-    @Parameter(title: "Text", description: "The text content for the card")
+    @Parameter(title: "Text", description: "The text content for the card",
+               requestValueDialog: "What text should the card say?")
     var text: String
 
     @Parameter(title: "Category", description: "The card category", default: .idea)
@@ -47,13 +53,13 @@ struct CreateWordCardIntent: AppIntent {
         Summary("Create a \(\.$category) card saying \(\.$text)")
     }
 
-    static var openAppWhenRun: Bool = true
+    static var openAppWhenRun: Bool = false
 
     @MainActor
-    func perform() async throws -> some IntentResult & ProvidesDialog {
+    func perform() async throws -> some IntentResult & ReturnsValue<String> {
         let trimmedText = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedText.isEmpty else {
-            throw $text.needsValueError("What text should the card say?")
+            throw CreateCardError("Text cannot be empty.")
         }
 
         let cardCategory = category.toCardCategory
@@ -67,11 +73,7 @@ struct CreateWordCardIntent: AppIntent {
         context.insert(card)
         try context.save()
 
-        try await Task.sleep(for: .seconds(2))
-
-        return .result(
-            dialog: "Created a new \(cardCategory.displayName) card."
-        )
+        return .result(value: trimmedText)
     }
 }
 #endif
