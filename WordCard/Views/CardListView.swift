@@ -278,6 +278,21 @@ struct CardListView: View {
         ScrollView {
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 200, maximum: 300))], spacing: 16) {
                 ForEach(filteredCards) { card in
+                    #if os(tvOS)
+                    Button {
+                        selectedCard = card
+                    } label: {
+                        CardThumbnailView(card: card)
+                    }
+                    .buttonStyle(.card)
+                    .contextMenu {
+                        Button(role: .destructive) {
+                            archiveCard(card)
+                        } label: {
+                            Label("Archive", systemImage: "archivebox")
+                        }
+                    }
+                    #else
                     CardThumbnailView(card: card)
                         .onTapGesture {
                             selectedCard = card
@@ -289,6 +304,7 @@ struct CardListView: View {
                                 Label("Archive", systemImage: "archivebox")
                             }
                         }
+                    #endif
                 }
             }
             .padding()

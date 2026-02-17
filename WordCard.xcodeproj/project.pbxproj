@@ -17,6 +17,7 @@
 		61AB685A2EFC5000003D01C1 /* CardShowcaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB685B2EFC5000003D01C1 /* CardShowcaseView.swift */; };
 		61D71EC82F3E9A3200B7CE73 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61D71EC32F3E9A3200B7CE73 /* Assets.xcassets */; };
 		61D71EC92F3E9A3200B7CE73 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61D71EC52F3E9A3200B7CE73 /* Assets.xcassets */; };
+		61D71ECC2F3E9A3200B7CE73 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61D71ECA2F3E9A3200B7CE73 /* Assets.xcassets */; };
 		A10000010000000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000002 /* ContentView.swift */; };
 		A10000010000000000000003 /* WordCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000003 /* WordCard.swift */; };
 		A10000010000000000000004 /* CardListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000004 /* CardListView.swift */; };
@@ -43,6 +44,7 @@
 		61AB685B2EFC5000003D01C1 /* CardShowcaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardShowcaseView.swift; sourceTree = "<group>"; };
 		61D71EC32F3E9A3200B7CE73 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		61D71EC52F3E9A3200B7CE73 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		61D71ECA2F3E9A3200B7CE73 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A20000010000000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A20000010000000000000003 /* WordCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCard.swift; sourceTree = "<group>"; };
 		A20000010000000000000004 /* CardListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardListView.swift; sourceTree = "<group>"; };
@@ -91,8 +93,17 @@
 			children = (
 				61D71EC42F3E9A3200B7CE73 /* iOS */,
 				61D71EC62F3E9A3200B7CE73 /* macOS */,
+				61D71ECB2F3E9A3200B7CE73 /* tvOS */,
 			);
 			path = "App Assets";
+			sourceTree = "<group>";
+		};
+		61D71ECB2F3E9A3200B7CE73 /* tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				61D71ECA2F3E9A3200B7CE73 /* Assets.xcassets */,
+			);
+			path = tvOS;
 			sourceTree = "<group>";
 		};
 		A50000010000000000000001 = {
@@ -240,6 +251,7 @@
 			files = (
 				61D71EC82F3E9A3200B7CE73 /* Assets.xcassets in Resources */,
 				61D71EC92F3E9A3200B7CE73 /* Assets.xcassets in Resources */,
+				61D71ECC2F3E9A3200B7CE73 /* Assets.xcassets in Resources */,
 				A10000010000000000000009 /* AppConfig.json in Resources */,
 				D1000001000000000000000B /* SampleCards.json in Resources */,
 			);
