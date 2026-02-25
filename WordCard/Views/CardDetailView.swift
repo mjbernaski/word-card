@@ -362,6 +362,10 @@ struct MacShareView: View {
                 }
                 .keyboardShortcut(.cancelAction)
 
+                ShareLink(item: fileURL) {
+                    Label("Share...", systemImage: "square.and.arrow.up")
+                }
+
                 Button("Save As...") {
                     showSavePanel()
                 }

@@ -51,6 +51,9 @@ struct CardListView: View {
     @State private var dedupeResult: DeduplicationResult?
     @State private var showingDedupeResult = false
     @State private var showingSyncDiagnostics = false
+    @State private var randomCard: WordCard?
+    @State private var randomCardImage: CGImage?
+    @State private var showingRandomCardShare = false
 
     private var filteredCards: [WordCard] {
         let sorted = sortedCards
@@ -90,6 +93,14 @@ struct CardListView: View {
                     Label("Add Card", systemImage: "plus")
                 }
             }
+            ToolbarItem(placement: .secondaryAction) {
+                Button {
+                    shareRandomCard()
+                } label: {
+                    Label("Random Card", systemImage: "die.face.5")
+                }
+                .disabled(cards.isEmpty)
+            }
             #endif
             #if os(tvOS)
             ToolbarItem(placement: .automatic) {
@@ -104,6 +115,13 @@ struct CardListView: View {
         .sheet(isPresented: $showingArchive) {
             ArchiveView()
         }
+        #if !os(tvOS)
+        .sheet(isPresented: $showingRandomCardShare) {
+            if let image = randomCardImage, let card = randomCard {
+                ShareSheetView(image: image, card: card)
+            }
+        }
+        #endif
         .sheet(isPresented: $showingSyncDiagnostics) {
             SyncDiagnosticsView()
                 #if os(macOS)
@@ -326,6 +344,15 @@ struct CardListView: View {
                 filteredCards[index].archive()
             }
         }
+    }
+
+    private func shareRandomCard() {
+        guard let card = cards.randomElement() else { return }
+        let exporter = PNGExporter()
+        guard let image = exporter.export(card: card, resolution: .medium) else { return }
+        randomCard = card
+        randomCardImage = image
+        showingRandomCardShare = true
     }
 
     private func exportBackup() {

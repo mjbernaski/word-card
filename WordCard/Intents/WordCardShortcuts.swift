@@ -15,6 +15,15 @@ struct WordCardShortcuts: AppShortcutsProvider {
             shortTitle: "Create Card",
             systemImageName: "plus.rectangle.on.rectangle"
         )
+        AppShortcut(
+            intent: RandomCardIntent(),
+            phrases: [
+                "Show me a random WordCard in \(.applicationName)",
+                "Random WordCard from \(.applicationName)"
+            ],
+            shortTitle: "Random Card",
+            systemImageName: "die.face.5"
+        )
     }
 }
 #endif
