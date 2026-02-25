@@ -33,12 +33,27 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 }
 #endif
 
+struct NewCardCommandKey: FocusedValueKey {
+    typealias Value = () -> Void
+}
+
+extension FocusedValues {
+    var newCardAction: (() -> Void)? {
+        get { self[NewCardCommandKey.self] }
+        set { self[NewCardCommandKey.self] = newValue }
+    }
+}
+
 @main
 struct ValenceApp: App {
     #if os(macOS)
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     #else
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    #endif
+
+    #if os(macOS)
+    @FocusedValue(\.newCardAction) var newCardAction
     #endif
 
     var sharedModelContainer: ModelContainer = {
@@ -70,15 +85,12 @@ struct ValenceApp: App {
         .commands {
             CommandGroup(replacing: .newItem) {
                 Button("New Card") {
-                    NotificationCenter.default.post(name: .newCard, object: nil)
+                    newCardAction?()
                 }
                 .keyboardShortcut("n", modifiers: .command)
+                .disabled(newCardAction == nil)
             }
         }
         #endif
     }
-}
-
-extension Notification.Name {
-    static let newCard = Notification.Name("newCard")
 }

@@ -12,6 +12,7 @@
 		611638BA2EEA0000000BCDC3 /* ImmersiveCardSpaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611638BB2EEA0000000BCDC3 /* ImmersiveCardSpaceView.swift */; };
 		611638BC2EEA0001000BCDC3 /* BackupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611638BD2EEA0001000BCDC3 /* BackupService.swift */; };
 		61AB68552EFC214D003D01C1 /* CardCountBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB68542EFC214D003D01C1 /* CardCountBadge.swift */; };
+		E10000010000000000000001 /* CardActivityChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20000010000000000000001 /* CardActivityChartView.swift */; };
 		61AB68562EFC3000003D01C1 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB68572EFC3000003D01C1 /* AppVersion.swift */; };
 		61AB68582EFC4000003D01C1 /* SyncDiagnosticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB68592EFC4000003D01C1 /* SyncDiagnosticsView.swift */; };
 		61AB685A2EFC5000003D01C1 /* CardShowcaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB685B2EFC5000003D01C1 /* CardShowcaseView.swift */; };
@@ -39,6 +40,7 @@
 		611638BB2EEA0000000BCDC3 /* ImmersiveCardSpaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveCardSpaceView.swift; sourceTree = "<group>"; };
 		611638BD2EEA0001000BCDC3 /* BackupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupService.swift; sourceTree = "<group>"; };
 		61AB68542EFC214D003D01C1 /* CardCountBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCountBadge.swift; sourceTree = "<group>"; };
+		E20000010000000000000001 /* CardActivityChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardActivityChartView.swift; sourceTree = "<group>"; };
 		61AB68572EFC3000003D01C1 /* AppVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
 		61AB68592EFC4000003D01C1 /* SyncDiagnosticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncDiagnosticsView.swift; sourceTree = "<group>"; };
 		61AB685B2EFC5000003D01C1 /* CardShowcaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardShowcaseView.swift; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 				611638BB2EEA0000000BCDC3 /* ImmersiveCardSpaceView.swift */,
 				61AB685B2EFC5000003D01C1 /* CardShowcaseView.swift */,
 				61AB68592EFC4000003D01C1 /* SyncDiagnosticsView.swift */,
+				E20000010000000000000001 /* CardActivityChartView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -283,6 +286,7 @@
 				C10000010000000000000002 /* CreateWordCardIntent.swift in Sources */,
 				C10000010000000000000003 /* WordCardShortcuts.swift in Sources */,
 				C10000010000000000000004 /* RandomCardIntent.swift in Sources */,
+				E10000010000000000000001 /* CardActivityChartView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

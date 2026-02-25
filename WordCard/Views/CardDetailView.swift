@@ -404,6 +404,105 @@ struct MacShareView: View {
 }
 #endif
 
+#if os(iOS)
+struct RandomCardPreviewView: View {
+    let cards: [WordCard]
+    @State var card: WordCard
+    @State var cgImage: CGImage
+    @State private var tempFileURL: URL?
+    @State private var isLoading = false
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(spacing: 20) {
+                    if let uiImage = UIImage(cgImage: cgImage) as UIImage? {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: 400, maxHeight: 200)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
+                    }
+
+                    Text(card.text)
+                        .font(.title3)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
+
+                    if !card.notes.isEmpty {
+                        Text(card.notes)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal)
+                    }
+
+                    HStack(spacing: 16) {
+                        Button {
+                            reroll()
+                        } label: {
+                            Label("Re-roll", systemImage: "die.face.5")
+                                .frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(.bordered)
+                        .disabled(cards.count <= 1 || isLoading)
+
+                        if let url = tempFileURL {
+                            ShareLink(item: url) {
+                                Label("Share", systemImage: "square.and.arrow.up")
+                                    .frame(maxWidth: .infinity)
+                            }
+                            .buttonStyle(.borderedProminent)
+                        } else {
+                            ProgressView()
+                                .frame(maxWidth: .infinity)
+                        }
+                    }
+                    .padding(.horizontal)
+                }
+                .padding(.vertical)
+            }
+            .navigationTitle("Random Card")
+            #if os(iOS)
+            .navigationBarTitleDisplayMode(.inline)
+            #endif
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") { dismiss() }
+                }
+            }
+        }
+        .task { prepareFile() }
+    }
+
+    private func reroll() {
+        guard let newCard = cards.filter({ $0.id != card.id }).randomElement() ?? cards.randomElement() else { return }
+        let exporter = PNGExporter()
+        guard let newImage = exporter.export(card: newCard, resolution: .medium) else { return }
+        isLoading = true
+        tempFileURL = nil
+        card = newCard
+        cgImage = newImage
+        prepareFile()
+        isLoading = false
+    }
+
+    private func prepareFile() {
+        let sanitized = card.text
+            .replacingOccurrences(of: " ", with: "_")
+            .filter { $0.isLetter || $0.isNumber || $0 == "_" }
+            .prefix(30)
+        let filename = sanitized.isEmpty ? "word_card" : String(sanitized)
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("\(filename).png")
+        let exporter = PNGExporter()
+        try? exporter.saveToPNG(image: cgImage, url: url)
+        tempFileURL = url
+    }
+}
+#endif
+
 #Preview {
     let card = WordCard(text: "Hello World")
     return NavigationStack {

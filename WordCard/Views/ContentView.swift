@@ -36,7 +36,7 @@ struct ContentView: View {
         .sheet(isPresented: $showingEditor) {
             CardEditorView()
         }
-        .onReceive(NotificationCenter.default.publisher(for: .newCard)) { _ in
+        .focusedSceneValue(\.newCardAction) {
             showingEditor = true
         }
         .onAppear {

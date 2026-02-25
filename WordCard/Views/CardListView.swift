@@ -51,6 +51,7 @@ struct CardListView: View {
     @State private var dedupeResult: DeduplicationResult?
     @State private var showingDedupeResult = false
     @State private var showingSyncDiagnostics = false
+    @State private var showingCardActivity = false
     @State private var randomCard: WordCard?
     @State private var randomCardImage: CGImage?
     @State private var showingRandomCardShare = false
@@ -115,7 +116,17 @@ struct CardListView: View {
         .sheet(isPresented: $showingArchive) {
             ArchiveView()
         }
-        #if !os(tvOS)
+        #if os(iOS)
+        .sheet(isPresented: $showingRandomCardShare) {
+            if let image = randomCardImage, let card = randomCard {
+                if UIDevice.current.userInterfaceIdiom == .phone {
+                    RandomCardPreviewView(cards: cards, card: card, cgImage: image)
+                } else {
+                    ShareSheetView(image: image, card: card)
+                }
+            }
+        }
+        #elseif !os(tvOS)
         .sheet(isPresented: $showingRandomCardShare) {
             if let image = randomCardImage, let card = randomCard {
                 ShareSheetView(image: image, card: card)
@@ -127,6 +138,9 @@ struct CardListView: View {
                 #if os(macOS)
                 .frame(minWidth: 480, minHeight: 500)
                 #endif
+        }
+        .sheet(isPresented: $showingCardActivity) {
+            CardActivityChartView(cards: cards)
         }
         #if !os(tvOS)
         .fileExporter(
@@ -211,6 +225,12 @@ struct CardListView: View {
                 showingArchive = true
             } label: {
                 Label("Archive", systemImage: "archivebox")
+            }
+
+            Button {
+                showingCardActivity = true
+            } label: {
+                Label("Card Activity", systemImage: "chart.bar")
             }
 
             Divider()
@@ -346,6 +366,24 @@ struct CardListView: View {
                 }
             }
         }
+        #if os(iOS)
+        .overlay(alignment: .bottomTrailing) {
+            if UIDevice.current.userInterfaceIdiom == .phone {
+                Button {
+                    showingEditor = true
+                } label: {
+                    Image(systemName: "plus")
+                        .font(.title2.weight(.semibold))
+                        .foregroundStyle(.white)
+                        .frame(width: 56, height: 56)
+                        .background(Color.accentColor, in: Circle())
+                        .shadow(color: .black.opacity(0.2), radius: 6, x: 0, y: 3)
+                }
+                .padding(.trailing, 20)
+                .padding(.bottom, 32)
+            }
+        }
+        #endif
     }
 
     private func archiveCard(_ card: WordCard) {
