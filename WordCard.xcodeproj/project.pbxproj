@@ -456,7 +456,7 @@
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = mjbernaski.wordcard.app;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=xros*]" = mjbernaski.wordcard.app;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=xrsimulator*]" = mjbernaski.wordcard.app;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Valence;
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "appletvos appletvsimulator iphoneos iphonesimulator macosx xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -513,7 +513,7 @@
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = mjbernaski.wordcard.app;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=xros*]" = mjbernaski.wordcard.app;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=xrsimulator*]" = mjbernaski.wordcard.app;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Valence;
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "appletvos appletvsimulator iphoneos iphonesimulator macosx xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
