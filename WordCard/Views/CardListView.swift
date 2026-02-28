@@ -129,7 +129,10 @@ struct CardListView: View {
         #elseif !os(tvOS)
         .sheet(isPresented: $showingRandomCardShare) {
             if let image = randomCardImage, let card = randomCard {
-                ShareSheetView(image: image, card: card)
+                RandomCardPreviewView(cards: cards, card: card, cgImage: image)
+                    #if os(macOS)
+                    .frame(minWidth: 420, minHeight: 350)
+                    #endif
             }
         }
         #endif

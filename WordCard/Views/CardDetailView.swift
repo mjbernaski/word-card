@@ -404,7 +404,7 @@ struct MacShareView: View {
 }
 #endif
 
-#if os(iOS)
+#if !os(tvOS)
 struct RandomCardPreviewView: View {
     let cards: [WordCard]
     @State var card: WordCard
@@ -417,6 +417,14 @@ struct RandomCardPreviewView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 20) {
+                    #if os(macOS)
+                    Image(nsImage: NSImage(cgImage: cgImage, size: NSSize(width: cgImage.width, height: cgImage.height)))
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: 400, maxHeight: 200)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
+                    #else
                     if let uiImage = UIImage(cgImage: cgImage) as UIImage? {
                         Image(uiImage: uiImage)
                             .resizable()
@@ -425,6 +433,7 @@ struct RandomCardPreviewView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                             .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
                     }
+                    #endif
 
                     Text(card.text)
                         .font(.title3)
