@@ -408,7 +408,7 @@ struct MacShareView: View {
 struct RandomCardPreviewView: View {
     let cards: [WordCard]
     @State var card: WordCard
-    @State var cgImage: CGImage
+    @State var cgImage: CGImage?
     @State private var tempFileURL: URL?
     @State private var isLoading = false
     @Environment(\.dismiss) private var dismiss
@@ -417,23 +417,28 @@ struct RandomCardPreviewView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 20) {
-                    #if os(macOS)
-                    Image(nsImage: NSImage(cgImage: cgImage, size: NSSize(width: cgImage.width, height: cgImage.height)))
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: 400, maxHeight: 200)
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                        .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
-                    #else
-                    if let uiImage = UIImage(cgImage: cgImage) as UIImage? {
-                        Image(uiImage: uiImage)
+                    if let cgImage {
+                        #if os(macOS)
+                        Image(nsImage: NSImage(cgImage: cgImage, size: NSSize(width: cgImage.width, height: cgImage.height)))
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(maxWidth: 400, maxHeight: 200)
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                             .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
+                        #else
+                        Image(uiImage: UIImage(cgImage: cgImage))
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: 400, maxHeight: 200)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
+                        #endif
+                    } else {
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(.quaternary)
+                            .frame(maxWidth: 400, maxHeight: 200)
+                            .overlay { ProgressView() }
                     }
-                    #endif
 
                     Text(card.text)
                         .font(.title3)
@@ -483,22 +488,37 @@ struct RandomCardPreviewView: View {
                 }
             }
         }
-        .task { prepareFile() }
+        .task {
+            if cgImage == nil {
+                let currentCard = card
+                let image = await Task.detached {
+                    PNGExporter().export(card: currentCard, resolution: .medium)
+                }.value
+                cgImage = image
+            }
+            prepareFile()
+        }
     }
 
     private func reroll() {
         guard let newCard = cards.filter({ $0.id != card.id }).randomElement() ?? cards.randomElement() else { return }
-        let exporter = PNGExporter()
-        guard let newImage = exporter.export(card: newCard, resolution: .medium) else { return }
         isLoading = true
         tempFileURL = nil
         card = newCard
-        cgImage = newImage
-        prepareFile()
-        isLoading = false
+        cgImage = nil
+        Task.detached {
+            let exporter = PNGExporter()
+            let newImage = exporter.export(card: newCard, resolution: .medium)
+            await MainActor.run {
+                cgImage = newImage
+                prepareFile()
+                isLoading = false
+            }
+        }
     }
 
     private func prepareFile() {
+        guard let cgImage else { return }
         let sanitized = card.text
             .replacingOccurrences(of: " ", with: "_")
             .filter { $0.isLetter || $0.isNumber || $0 == "_" }

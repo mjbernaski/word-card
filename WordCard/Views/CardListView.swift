@@ -118,18 +118,21 @@ struct CardListView: View {
         }
         #if os(iOS)
         .sheet(isPresented: $showingRandomCardShare) {
-            if let image = randomCardImage, let card = randomCard {
+            if let card = randomCard {
                 if UIDevice.current.userInterfaceIdiom == .phone {
-                    RandomCardPreviewView(cards: cards, card: card, cgImage: image)
-                } else {
+                    RandomCardPreviewView(cards: cards, card: card, cgImage: randomCardImage)
+                } else if let image = randomCardImage {
                     ShareSheetView(image: image, card: card)
+                } else {
+                    ProgressView("Preparing card...")
+                        .padding()
                 }
             }
         }
         #elseif !os(tvOS)
         .sheet(isPresented: $showingRandomCardShare) {
-            if let image = randomCardImage, let card = randomCard {
-                RandomCardPreviewView(cards: cards, card: card, cgImage: image)
+            if let card = randomCard {
+                RandomCardPreviewView(cards: cards, card: card, cgImage: randomCardImage)
                     #if os(macOS)
                     .frame(minWidth: 420, minHeight: 350)
                     #endif
@@ -405,11 +408,16 @@ struct CardListView: View {
 
     private func shareRandomCard() {
         guard let card = cards.randomElement() else { return }
-        let exporter = PNGExporter()
-        guard let image = exporter.export(card: card, resolution: .medium) else { return }
         randomCard = card
-        randomCardImage = image
+        randomCardImage = nil
         showingRandomCardShare = true
+        Task.detached {
+            let exporter = PNGExporter()
+            let image = exporter.export(card: card, resolution: .medium)
+            await MainActor.run {
+                randomCardImage = image
+            }
+        }
     }
 
     private func exportBackup() {
