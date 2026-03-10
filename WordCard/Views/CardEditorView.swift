@@ -19,6 +19,7 @@ struct CardEditorView: View {
     @State private var borderColor: Color = Color(hex: "#CC785C") ?? .brown
     @State private var borderWidth: Double = 1
     @State private var dpi: Int = 150
+    @State private var valence: Double = 0
 
     init(card: WordCard? = nil) {
         self.existingCard = card
@@ -34,6 +35,7 @@ struct CardEditorView: View {
             _borderColor = State(initialValue: card.borderColor.flatMap { Color(hex: $0) } ?? .brown)
             _borderWidth = State(initialValue: Double(card.borderWidth))
             _dpi = State(initialValue: card.dpi)
+            _valence = State(initialValue: Double(card.valence))
         }
     }
 
@@ -100,6 +102,48 @@ struct CardEditorView: View {
                     backgroundColor = Color(hex: newCategory.defaultBackgroundColor) ?? .white
                 }
             }
+
+            Section("Valence") {
+                HStack {
+                    Text("-5")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Slider(value: $valence, in: -5...5, step: 1)
+                    Text("+5")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                HStack {
+                    Spacer()
+                    Text("\(Int(valence))")
+                        .font(.title3.monospacedDigit())
+                        .foregroundStyle(valence > 0 ? .green : valence < 0 ? .red : .secondary)
+                    Spacer()
+                }
+                #if os(iOS)
+                .gesture(
+                    DragGesture(minimumDistance: 20)
+                        .onEnded { drag in
+                            let vertical = drag.translation.height
+                            if vertical < -20 && valence < 5 {
+                                valence += 1
+                            } else if vertical > 20 && valence > -5 {
+                                valence -= 1
+                            }
+                        }
+                )
+                #endif
+            }
+            #if os(macOS)
+            .onKeyPress(.upArrow) {
+                if valence < 5 { valence += 1 }
+                return .handled
+            }
+            .onKeyPress(.downArrow) {
+                if valence > -5 { valence -= 1 }
+                return .handled
+            }
+            #endif
 
             Section("Colors") {
                 ColorPicker("Background", selection: $backgroundColor)
@@ -178,6 +222,7 @@ struct CardEditorView: View {
             card.borderColor = hasBorder ? borderColor.toHex() : nil
             card.borderWidth = Int(borderWidth)
             card.dpi = dpi
+            card.valence = Int(valence)
             card.updatedAt = Date()
         } else {
             let card = WordCard(
@@ -190,7 +235,8 @@ struct CardEditorView: View {
                 borderColor: hasBorder ? borderColor.toHex() : nil,
                 borderWidth: Int(borderWidth),
                 dpi: dpi,
-                notes: notes
+                notes: notes,
+                valence: Int(valence)
             )
             modelContext.insert(card)
         }

@@ -64,6 +64,7 @@ struct CardDetailView: View {
                     DetailRow(label: "Border", value: card.borderColor != nil ? "Yes (\(card.borderWidth)px)" : "None")
                     DetailRow(label: "DPI", value: "\(card.dpi)")
                     DetailRow(label: "Export Size", value: "\(Int(3 * Double(card.dpi)))×\(Int(1.5 * Double(card.dpi)))px")
+                    DetailRow(label: "Valence", value: card.valence > 0 ? "+\(card.valence)" : "\(card.valence)")
 
                     Divider()
 
@@ -82,6 +83,7 @@ struct CardDetailView: View {
                         DetailRow(label: "Border", value: card.borderColor != nil ? "Yes (\(card.borderWidth)px)" : "None")
                         DetailRow(label: "DPI", value: "\(card.dpi)")
                         DetailRow(label: "Export Size", value: "\(Int(3 * Double(card.dpi)))×\(Int(1.5 * Double(card.dpi)))px")
+                        DetailRow(label: "Valence", value: card.valence > 0 ? "+\(card.valence)" : "\(card.valence)")
 
                         Divider()
 

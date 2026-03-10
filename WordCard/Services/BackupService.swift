@@ -17,6 +17,7 @@ struct CardBackup: Codable {
     let isArchived: Bool
     let archivedAt: Date?
     let notes: String
+    let valence: Int
 
     // Custom decoder to handle backups without notes field (backward compatibility)
     init(from decoder: Decoder) throws {
@@ -36,6 +37,7 @@ struct CardBackup: Codable {
         isArchived = try container.decode(Bool.self, forKey: .isArchived)
         archivedAt = try container.decodeIfPresent(Date.self, forKey: .archivedAt)
         notes = try container.decodeIfPresent(String.self, forKey: .notes) ?? ""
+        valence = try container.decodeIfPresent(Int.self, forKey: .valence) ?? 0
     }
 
     init(
@@ -53,7 +55,8 @@ struct CardBackup: Codable {
         updatedAt: Date,
         isArchived: Bool,
         archivedAt: Date?,
-        notes: String
+        notes: String,
+        valence: Int = 0
     ) {
         self.id = id
         self.text = text
@@ -70,6 +73,7 @@ struct CardBackup: Codable {
         self.isArchived = isArchived
         self.archivedAt = archivedAt
         self.notes = notes
+        self.valence = valence
     }
 }
 
@@ -127,7 +131,8 @@ class BackupService {
                 updatedAt: card.updatedAt,
                 isArchived: card.isArchived,
                 archivedAt: card.archivedAt,
-                notes: card.notes
+                notes: card.notes,
+                valence: card.valence
             )
         }
 
@@ -232,7 +237,8 @@ class BackupService {
             updatedAt: backup.updatedAt,
             isArchived: backup.isArchived,
             archivedAt: backup.archivedAt,
-            notes: backup.notes
+            notes: backup.notes,
+            valence: backup.valence
         )
         return card
     }
@@ -249,6 +255,7 @@ class BackupService {
         card.isArchived = backup.isArchived
         card.archivedAt = backup.archivedAt
         card.notes = backup.notes
+        card.valence = backup.valence
         card.updatedAt = Date()
     }
 }

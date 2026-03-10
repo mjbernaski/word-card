@@ -98,6 +98,7 @@ final class WordCard {
     var isArchived: Bool = false
     var archivedAt: Date? = nil
     var notes: String = ""
+    var valence: Int = 0
 
     @Transient
     var fontStyle: FontStyle {
@@ -130,7 +131,8 @@ final class WordCard {
         updatedAt: Date = Date(),
         isArchived: Bool = false,
         archivedAt: Date? = nil,
-        notes: String = ""
+        notes: String = "",
+        valence: Int = 0
     ) {
         self.id = id
         self.text = text
@@ -147,6 +149,7 @@ final class WordCard {
         self.isArchived = isArchived
         self.archivedAt = archivedAt
         self.notes = notes
+        self.valence = max(-5, min(5, valence))
     }
 
     func archive() {
