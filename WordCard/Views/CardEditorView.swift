@@ -104,6 +104,17 @@ struct CardEditorView: View {
             }
 
             Section("Valence") {
+                #if os(macOS)
+                Stepper(value: $valence, in: -5...5, step: 1) {
+                    HStack {
+                        Text("Valence")
+                        Spacer()
+                        Text("\(Int(valence))")
+                            .font(.title3.monospacedDigit())
+                            .foregroundStyle(valence > 0 ? .green : valence < 0 ? .red : .secondary)
+                    }
+                }
+                #else
                 HStack {
                     Text("-5")
                         .font(.caption)
@@ -120,7 +131,6 @@ struct CardEditorView: View {
                         .foregroundStyle(valence > 0 ? .green : valence < 0 ? .red : .secondary)
                     Spacer()
                 }
-                #if os(iOS)
                 .gesture(
                     DragGesture(minimumDistance: 20)
                         .onEnded { drag in
@@ -134,16 +144,6 @@ struct CardEditorView: View {
                 )
                 #endif
             }
-            #if os(macOS)
-            .onKeyPress(.upArrow) {
-                if valence < 5 { valence += 1 }
-                return .handled
-            }
-            .onKeyPress(.downArrow) {
-                if valence > -5 { valence -= 1 }
-                return .handled
-            }
-            #endif
 
             Section("Colors") {
                 ColorPicker("Background", selection: $backgroundColor)
