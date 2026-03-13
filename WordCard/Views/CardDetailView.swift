@@ -22,7 +22,8 @@ struct CardDetailView: View {
                     fontStyle: card.fontStyle,
                     cornerRadius: CGFloat(card.cornerRadius),
                     borderColor: card.borderColor.flatMap { Color(hex: $0) },
-                    borderWidth: CGFloat(card.borderWidth)
+                    borderWidth: CGFloat(card.borderWidth),
+                    notes: card.notes
                 )
                 .frame(maxWidth: 450, maxHeight: 225)
                 .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)

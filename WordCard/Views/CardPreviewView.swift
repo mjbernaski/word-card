@@ -8,6 +8,7 @@ struct CardPreviewView: View {
     let cornerRadius: CGFloat
     let borderColor: Color?
     let borderWidth: CGFloat
+    var notes: String = ""
 
     var body: some View {
         GeometryReader { geometry in
@@ -15,13 +16,26 @@ struct CardPreviewView: View {
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .fill(backgroundColor)
 
-                Text(text.isEmpty ? "Preview" : text)
-                    .font(fontForStyle(fontStyle, size: geometry.size))
-                    .foregroundStyle(text.isEmpty ? textColor.opacity(0.4) : textColor)
-                    .multilineTextAlignment(.center)
-                    .padding(geometry.size.width * 0.1)
-                    .minimumScaleFactor(0.1)
-                    .lineLimit(nil)
+                VStack(spacing: 0) {
+                    Text(text.isEmpty ? "Preview" : text)
+                        .font(fontForStyle(fontStyle, size: geometry.size))
+                        .foregroundStyle(text.isEmpty ? textColor.opacity(0.4) : textColor)
+                        .multilineTextAlignment(.center)
+                        .minimumScaleFactor(0.1)
+                        .lineLimit(nil)
+
+                    if !notes.isEmpty {
+                        Spacer()
+                            .frame(height: geometry.size.height * 0.08)
+                        Text(notes)
+                            .font(.system(size: max(geometry.size.height * 0.06, 6)))
+                            .foregroundStyle(textColor.opacity(0.45))
+                            .multilineTextAlignment(.center)
+                            .lineLimit(2)
+                            .minimumScaleFactor(0.5)
+                    }
+                }
+                .padding(geometry.size.width * 0.1)
 
                 if let border = borderColor {
                     RoundedRectangle(cornerRadius: cornerRadius)

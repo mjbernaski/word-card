@@ -12,7 +12,6 @@
 		611638BA2EEA0000000BCDC3 /* ImmersiveCardSpaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611638BB2EEA0000000BCDC3 /* ImmersiveCardSpaceView.swift */; };
 		611638BC2EEA0001000BCDC3 /* BackupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611638BD2EEA0001000BCDC3 /* BackupService.swift */; };
 		61AB68552EFC214D003D01C1 /* CardCountBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB68542EFC214D003D01C1 /* CardCountBadge.swift */; };
-		E10000010000000000000001 /* CardActivityChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20000010000000000000001 /* CardActivityChartView.swift */; };
 		61AB68562EFC3000003D01C1 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB68572EFC3000003D01C1 /* AppVersion.swift */; };
 		61AB68582EFC4000003D01C1 /* SyncDiagnosticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB68592EFC4000003D01C1 /* SyncDiagnosticsView.swift */; };
 		61AB685A2EFC5000003D01C1 /* CardShowcaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB685B2EFC5000003D01C1 /* CardShowcaseView.swift */; };
@@ -32,6 +31,7 @@
 		C10000010000000000000003 /* WordCardShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20000010000000000000003 /* WordCardShortcuts.swift */; };
 		C10000010000000000000004 /* RandomCardIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20000010000000000000004 /* RandomCardIntent.swift */; };
 		D1000001000000000000000B /* SampleCards.json in Resources */ = {isa = PBXBuildFile; fileRef = D2000001000000000000000B /* SampleCards.json */; };
+		E10000010000000000000001 /* CardActivityChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20000010000000000000001 /* CardActivityChartView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,7 +40,6 @@
 		611638BB2EEA0000000BCDC3 /* ImmersiveCardSpaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveCardSpaceView.swift; sourceTree = "<group>"; };
 		611638BD2EEA0001000BCDC3 /* BackupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupService.swift; sourceTree = "<group>"; };
 		61AB68542EFC214D003D01C1 /* CardCountBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCountBadge.swift; sourceTree = "<group>"; };
-		E20000010000000000000001 /* CardActivityChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardActivityChartView.swift; sourceTree = "<group>"; };
 		61AB68572EFC3000003D01C1 /* AppVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
 		61AB68592EFC4000003D01C1 /* SyncDiagnosticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncDiagnosticsView.swift; sourceTree = "<group>"; };
 		61AB685B2EFC5000003D01C1 /* CardShowcaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardShowcaseView.swift; sourceTree = "<group>"; };
@@ -55,12 +54,13 @@
 		A20000010000000000000007 /* CardPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPreviewView.swift; sourceTree = "<group>"; };
 		A20000010000000000000008 /* PNGExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PNGExporter.swift; sourceTree = "<group>"; };
 		A20000010000000000000009 /* AppConfig.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = AppConfig.json; sourceTree = "<group>"; };
-		A30000010000000000000001 /* WordCard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WordCard.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A30000010000000000000001 /* Valence.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Valence.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C20000010000000000000001 /* SharedModelContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedModelContainer.swift; sourceTree = "<group>"; };
 		C20000010000000000000002 /* CreateWordCardIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWordCardIntent.swift; sourceTree = "<group>"; };
 		C20000010000000000000003 /* WordCardShortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCardShortcuts.swift; sourceTree = "<group>"; };
 		C20000010000000000000004 /* RandomCardIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomCardIntent.swift; sourceTree = "<group>"; };
 		D2000001000000000000000B /* SampleCards.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SampleCards.json; sourceTree = "<group>"; };
+		E20000010000000000000001 /* CardActivityChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardActivityChartView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,7 +135,7 @@
 		A50000010000000000000003 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A30000010000000000000001 /* WordCard.app */,
+				A30000010000000000000001 /* Valence.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -211,7 +211,7 @@
 			);
 			name = WordCard;
 			productName = WordCard;
-			productReference = A30000010000000000000001 /* WordCard.app */;
+			productReference = A30000010000000000000001 /* Valence.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -420,7 +420,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = WordCard/WordCard.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = DQPDVF6ZSY;
 				ENABLE_APP_SANDBOX = NO;
@@ -477,7 +477,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = WordCard/WordCard.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = DQPDVF6ZSY;
 				ENABLE_APP_SANDBOX = NO;

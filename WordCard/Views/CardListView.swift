@@ -587,7 +587,8 @@ struct CardThumbnailView: View {
             fontStyle: card.fontStyle,
             cornerRadius: CGFloat(card.cornerRadius),
             borderColor: card.borderColor.flatMap { Color(hex: $0) },
-            borderWidth: CGFloat(card.borderWidth)
+            borderWidth: CGFloat(card.borderWidth),
+            notes: card.notes
         )
         .aspectRatio(2, contentMode: .fit)
         .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
