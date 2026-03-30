@@ -21,7 +21,7 @@ struct ContentView: View {
                     ToolbarItem(placement: .navigation) {
                         SyncStatusDot(syncMonitor: syncMonitor)
                     }
-                    ToolbarItem(placement: .automatic) {
+                    ToolbarItem(placement: .principal) {
                         CardCountBadge()
                     }
                 }

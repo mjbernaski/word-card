@@ -10,6 +10,7 @@ struct CardDetailView: View {
     @State private var showingShareSheet = false
     @State private var showingResolutionPicker = false
     @State private var selectedResolution: ExportResolution = .medium
+    @State private var includeNotesInExport = false
     @State private var notesExpanded = true
 
     var body: some View {
@@ -97,6 +98,11 @@ struct CardDetailView: View {
                 #endif
 
                 #if !os(tvOS)
+                if !card.notes.isEmpty {
+                    Toggle("Include notes in export", isOn: $includeNotesInExport)
+                        .padding(.horizontal)
+                }
+
                 HStack(spacing: 16) {
                     Button {
                         showingEditor = true
@@ -150,7 +156,7 @@ struct CardDetailView: View {
 
     private func exportCard() {
         let exporter = PNGExporter()
-        if let image = exporter.export(card: card, resolution: selectedResolution) {
+        if let image = exporter.export(card: card, resolution: selectedResolution, includeNotes: includeNotesInExport) {
             exportedImage = image
             showingShareSheet = true
         }
