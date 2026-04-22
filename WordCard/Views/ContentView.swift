@@ -6,6 +6,9 @@ struct ContentView: View {
     @State private var showingEditor = false
     @State private var selectedCard: WordCard?
     @StateObject private var syncMonitor = CloudKitSyncMonitor()
+    #if os(macOS)
+    @State private var columnVisibility: NavigationSplitViewVisibility = .all
+    #endif
     #if os(visionOS)
     @State private var showingCardSpace = false
     #elseif os(tvOS)
@@ -14,9 +17,9 @@ struct ContentView: View {
 
     var body: some View {
         #if os(macOS)
-        NavigationSplitView {
+        NavigationSplitView(columnVisibility: $columnVisibility) {
             CardListView(selectedCard: $selectedCard, showingEditor: $showingEditor)
-                .navigationSplitViewColumnWidth(min: 200, ideal: 280)
+                .navigationSplitViewColumnWidth(min: 240, ideal: 320)
                 .toolbar {
                     ToolbarItem(placement: .navigation) {
                         SyncStatusDot(syncMonitor: syncMonitor)
@@ -33,6 +36,7 @@ struct ContentView: View {
                     .foregroundStyle(.secondary)
             }
         }
+        .navigationSplitViewStyle(.balanced)
         .sheet(isPresented: $showingEditor) {
             CardEditorView()
         }

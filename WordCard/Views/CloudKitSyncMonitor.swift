@@ -67,8 +67,6 @@ class CloudKitSyncMonitor: ObservableObject {
             if syncStatus != .error && syncStatus != .disabled {
                 syncStatus = .syncing
 
-                deduplicateAfterSync()
-
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                     Task { @MainActor in
                         if self.syncStatus == .syncing {

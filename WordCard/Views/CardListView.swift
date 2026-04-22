@@ -55,6 +55,7 @@ struct CardListView: View {
     @State private var randomCard: WordCard?
     @State private var randomCardImage: CGImage?
     @State private var showingRandomCardShare = false
+    @State private var editingCard: WordCard?
 
     private var filteredCards: [WordCard] {
         let sorted = sortedCards
@@ -116,6 +117,16 @@ struct CardListView: View {
         .sheet(isPresented: $showingArchive) {
             ArchiveView()
         }
+        #if !os(tvOS)
+        .sheet(item: $editingCard) { card in
+            NavigationStack {
+                CardEditorView(card: card)
+            }
+            #if os(macOS)
+            .frame(minWidth: 520, minHeight: 600)
+            #endif
+        }
+        #endif
         #if os(iOS)
         .sheet(isPresented: $showingRandomCardShare) {
             if let card = randomCard {
@@ -319,17 +330,24 @@ struct CardListView: View {
                         }
                     }
                     #else
-                    CardThumbnailView(card: card)
-                        .onTapGesture {
-                            selectedCard = card
+                    Button {
+                        selectedCard = card
+                    } label: {
+                        CardThumbnailView(card: card)
+                    }
+                    .buttonStyle(.plain)
+                    .contextMenu {
+                        Button {
+                            editingCard = card
+                        } label: {
+                            Label("Edit", systemImage: "pencil")
                         }
-                        .contextMenu {
-                            Button(role: .destructive) {
-                                archiveCard(card)
-                            } label: {
-                                Label("Archive", systemImage: "archivebox")
-                            }
+                        Button(role: .destructive) {
+                            archiveCard(card)
+                        } label: {
+                            Label("Archive", systemImage: "archivebox")
                         }
+                    }
                     #endif
                 }
             }
