@@ -56,6 +56,8 @@ struct CardListView: View {
     @State private var randomCardImage: CGImage?
     @State private var showingRandomCardShare = false
     @State private var editingCard: WordCard?
+    @Environment(\.scenePhase) private var scenePhase
+    @StateObject private var autoBackup = AutoBackupService.shared
 
     private var filteredCards: [WordCard] {
         let sorted = sortedCards
@@ -224,7 +226,25 @@ struct CardListView: View {
                 Text("Removed \(result.duplicatesRemoved) duplicate(s).\n\(result.uniqueCards) unique cards remaining.")
             }
         }
+        .onAppear {
+            autoBackup.runIfNeeded(cards: allCards)
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase == .active {
+                autoBackup.runIfNeeded(cards: allCards)
+            }
+        }
         #endif
+    }
+
+    private var lastBackupLabel: String {
+        guard let date = autoBackup.lastBackupDate else {
+            return "Last backup: never"
+        }
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        return "Last backup: \(formatter.string(from: date))"
     }
 
     private func performDedupe(byContent: Bool) {
@@ -283,6 +303,10 @@ struct CardListView: View {
             } label: {
                 Label("Import Backup", systemImage: "square.and.arrow.down")
             }
+
+            Text(lastBackupLabel)
+                .font(.caption)
+                .foregroundStyle(.secondary)
 
             Divider()
 
