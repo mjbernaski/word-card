@@ -31,6 +31,7 @@
 		C10000010000000000000002 /* CreateWordCardIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20000010000000000000002 /* CreateWordCardIntent.swift */; };
 		C10000010000000000000003 /* WordCardShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20000010000000000000003 /* WordCardShortcuts.swift */; };
 		C10000010000000000000004 /* RandomCardIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20000010000000000000004 /* RandomCardIntent.swift */; };
+		C10000010000000000000005 /* SearchWordCardsIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20000010000000000000005 /* SearchWordCardsIntent.swift */; };
 		D1000001000000000000000B /* SampleCards.json in Resources */ = {isa = PBXBuildFile; fileRef = D2000001000000000000000B /* SampleCards.json */; };
 		E10000010000000000000001 /* CardActivityChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20000010000000000000001 /* CardActivityChartView.swift */; };
 /* End PBXBuildFile section */
@@ -61,6 +62,7 @@
 		C20000010000000000000002 /* CreateWordCardIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWordCardIntent.swift; sourceTree = "<group>"; };
 		C20000010000000000000003 /* WordCardShortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCardShortcuts.swift; sourceTree = "<group>"; };
 		C20000010000000000000004 /* RandomCardIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomCardIntent.swift; sourceTree = "<group>"; };
+		C20000010000000000000005 /* SearchWordCardsIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchWordCardsIntent.swift; sourceTree = "<group>"; };
 		D2000001000000000000000B /* SampleCards.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SampleCards.json; sourceTree = "<group>"; };
 		E20000010000000000000001 /* CardActivityChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardActivityChartView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -192,6 +194,7 @@
 			children = (
 				C20000010000000000000002 /* CreateWordCardIntent.swift */,
 				C20000010000000000000004 /* RandomCardIntent.swift */,
+				C20000010000000000000005 /* SearchWordCardsIntent.swift */,
 				C20000010000000000000003 /* WordCardShortcuts.swift */,
 			);
 			path = Intents;
@@ -290,6 +293,7 @@
 				C10000010000000000000002 /* CreateWordCardIntent.swift in Sources */,
 				C10000010000000000000003 /* WordCardShortcuts.swift in Sources */,
 				C10000010000000000000004 /* RandomCardIntent.swift in Sources */,
+				C10000010000000000000005 /* SearchWordCardsIntent.swift in Sources */,
 				E10000010000000000000001 /* CardActivityChartView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

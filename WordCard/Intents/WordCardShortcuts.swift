@@ -24,6 +24,15 @@ struct WordCardShortcuts: AppShortcutsProvider {
             shortTitle: "Random Card",
             systemImageName: "die.face.5"
         )
+        AppShortcut(
+            intent: SearchWordCardsIntent(),
+            phrases: [
+                "Search WordCards in \(.applicationName)",
+                "Find WordCards in \(.applicationName)"
+            ],
+            shortTitle: "Search Cards",
+            systemImageName: "magnifyingglass"
+        )
     }
 }
 #endif

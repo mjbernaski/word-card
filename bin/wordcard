@@ -1,0 +1,79 @@
+#!/bin/bash
+# Thin CLI wrapper around the WordCard macOS app's App Intents.
+# Each subcommand calls `shortcuts run` against an intent the app exposes
+# via AppShortcutsProvider. The intents read/write the same SwiftData/CloudKit
+# store the GUI uses, so changes are visible everywhere.
+
+set -euo pipefail
+
+CREATE_NAME="Create a WordCard"
+SEARCH_NAME="Search WordCards"
+RANDOM_NAME="Random WordCard"
+
+usage() {
+    cat <<EOF
+wordcard - CLI for the WordCard macOS app
+
+Usage:
+  wordcard new <text>...        Create a card with the given text
+  wordcard new -                Create a card from stdin
+  wordcard search <query>...    Print non-archived cards whose text contains query
+  wordcard random [path]        Save a random card as PNG (default: ./random.png)
+
+Subcommands invoke macOS Shortcuts that the app registers; the app must be
+installed and have been launched at least once after the intent was added.
+EOF
+}
+
+run_with_input() {
+    local name="$1"
+    local input="$2"
+    local tmp
+    tmp=$(mktemp -t wordcard.XXXXXX)
+    trap 'rm -f "$tmp"' RETURN
+    printf '%s' "$input" > "$tmp"
+    shortcuts run "$name" --input-path "$tmp"
+}
+
+cmd=${1:-}
+[[ $# -gt 0 ]] && shift
+
+case "$cmd" in
+    new)
+        if [[ "${1:-}" == "-" ]]; then
+            text=$(cat)
+        elif [[ $# -gt 0 ]]; then
+            text="$*"
+        elif [[ ! -t 0 ]]; then
+            text=$(cat)
+        else
+            echo "wordcard new: missing text" >&2
+            exit 2
+        fi
+        if [[ -z "${text//[[:space:]]/}" ]]; then
+            echo "wordcard new: text is empty" >&2
+            exit 2
+        fi
+        run_with_input "$CREATE_NAME" "$text"
+        ;;
+    search)
+        if [[ $# -eq 0 ]]; then
+            echo "wordcard search: missing query" >&2
+            exit 2
+        fi
+        run_with_input "$SEARCH_NAME" "$*"
+        ;;
+    random)
+        out=${1:-./random.png}
+        shortcuts run "$RANDOM_NAME" --output-path "$out"
+        echo "$out"
+        ;;
+    -h|--help|help|"")
+        usage
+        ;;
+    *)
+        echo "wordcard: unknown command: $cmd" >&2
+        usage >&2
+        exit 2
+        ;;
+esac
