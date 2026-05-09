@@ -8,6 +8,9 @@ struct CardEditorView: View {
 
     var existingCard: WordCard?
 
+    @Query(filter: #Predicate<WordCard> { !$0.isArchived }, sort: \WordCard.updatedAt, order: .reverse)
+    private var allCards: [WordCard]
+
     @State private var text: String = ""
     @State private var notes: String = ""
     @State private var category: CardCategory = .idea
@@ -62,6 +65,50 @@ struct CardEditorView: View {
                     #if !os(macOS)
                     .textInputAutocapitalization(.never)
                     #endif
+            }
+
+            if existingCard == nil {
+                let matches = DuplicateDetector.matches(for: text, in: allCards, limit: 5)
+                if !matches.isEmpty {
+                    Section {
+                        ForEach(matches, id: \.card.id) { match in
+                            HStack(alignment: .top, spacing: 12) {
+                                CardPreviewView(
+                                    text: match.card.text,
+                                    backgroundColor: Color(hex: match.card.backgroundColor) ?? .white,
+                                    textColor: Color(hex: match.card.textColor) ?? .black,
+                                    fontStyle: match.card.fontStyle,
+                                    cornerRadius: CGFloat(match.card.cornerRadius),
+                                    borderColor: match.card.borderColor.flatMap { Color(hex: $0) },
+                                    borderWidth: CGFloat(match.card.borderWidth)
+                                )
+                                .frame(width: 90, height: 45)
+
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(match.card.text)
+                                        .font(.subheadline)
+                                        .lineLimit(3)
+                                    Text(match.card.updatedAt.formatted(date: .abbreviated, time: .omitted))
+                                        .font(.caption2)
+                                        .foregroundStyle(.secondary)
+                                }
+                                Spacer(minLength: 0)
+                            }
+                            .padding(.vertical, 2)
+                        }
+
+                        Button(role: .destructive) {
+                            dismiss()
+                        } label: {
+                            Label("Cancel — don't create a duplicate", systemImage: "xmark.circle")
+                        }
+                    } header: {
+                        Label("Possible Duplicates", systemImage: "exclamationmark.triangle")
+                            .foregroundStyle(.orange)
+                    } footer: {
+                        Text("These existing cards share words with what you're typing.")
+                    }
+                }
             }
 
             Section {
@@ -241,6 +288,52 @@ struct CardEditorView: View {
             modelContext.insert(card)
         }
 
+    }
+}
+
+enum DuplicateDetector {
+    struct Match {
+        let card: WordCard
+        let score: Int
+    }
+
+    private static let stopWords: Set<String> = [
+        "the", "and", "for", "are", "but", "not", "you", "all", "can", "her",
+        "was", "one", "our", "out", "day", "get", "has", "him", "his", "how",
+        "man", "new", "now", "old", "see", "two", "way", "who", "boy", "did",
+        "its", "let", "put", "say", "she", "too", "use", "your", "with",
+        "this", "that", "from", "have", "they", "what", "when", "where",
+        "would", "there", "their", "been", "were", "will", "about", "into",
+        "than", "them", "some", "just", "like", "make", "much", "such",
+        "very", "more", "over", "only", "also", "then", "even", "after"
+    ]
+
+    static func tokens(in text: String) -> Set<String> {
+        let lowered = text.lowercased()
+        let cleaned = lowered.unicodeScalars.map { scalar -> Character in
+            CharacterSet.letters.contains(scalar) ? Character(scalar) : " "
+        }
+        let words = String(cleaned).split(separator: " ").map(String.init)
+        return Set(words.filter { $0.count >= 3 && !stopWords.contains($0) })
+    }
+
+    static func matches(for input: String, in cards: [WordCard], limit: Int) -> [Match] {
+        let inputTokens = tokens(in: input)
+        guard !inputTokens.isEmpty else { return [] }
+
+        let scored: [Match] = cards.compactMap { card in
+            let cardTokens = tokens(in: card.text)
+            let shared = inputTokens.intersection(cardTokens).count
+            return shared > 0 ? Match(card: card, score: shared) : nil
+        }
+
+        return scored
+            .sorted {
+                if $0.score != $1.score { return $0.score > $1.score }
+                return $0.card.updatedAt > $1.card.updatedAt
+            }
+            .prefix(limit)
+            .map { $0 }
     }
 }
 
