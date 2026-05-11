@@ -89,6 +89,7 @@ struct WordCardWidgetEntryView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(geo.size.width * 0.06)
         }
+        .widgetURL(URL(string: "wordcard://open/\(card.id.uuidString)"))
     }
 
     private var emptyView: some View {

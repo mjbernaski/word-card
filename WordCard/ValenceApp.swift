@@ -84,6 +84,12 @@ struct ValenceApp: App {
                 .task {
                     WidgetSnapshotService.refresh(from: sharedModelContainer)
                 }
+                .onOpenURL { url in
+                    guard url.scheme == "wordcard" else { return }
+                    #if os(macOS)
+                    NSApp.activate(ignoringOtherApps: true)
+                    #endif
+                }
         }
         .modelContainer(sharedModelContainer)
         .onChange(of: scenePhase) { _, newPhase in
