@@ -97,14 +97,13 @@ struct CardEditorView: View {
                             .padding(.vertical, 2)
                         }
 
-                        Button(role: .destructive) {
+                        Button {
                             dismiss()
                         } label: {
-                            Label("Cancel — don't create a duplicate", systemImage: "xmark.circle")
+                            Label("Cancel", systemImage: "xmark.circle")
                         }
                     } header: {
-                        Label("Possible Duplicates", systemImage: "exclamationmark.triangle")
-                            .foregroundStyle(.orange)
+                        Label("Similar Cards", systemImage: "square.on.square")
                     } footer: {
                         Text("These existing cards share words with what you're typing.")
                     }
