@@ -1,5 +1,12 @@
 import SwiftUI
 
+private struct CardTextSingleLineWidthKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
+    }
+}
+
 struct CardPreviewView: View {
     let text: String
     let backgroundColor: Color
@@ -10,19 +17,47 @@ struct CardPreviewView: View {
     let borderWidth: CGFloat
     var notes: String = ""
 
+    @State private var singleLineWidth: CGFloat = 0
+
     var body: some View {
         GeometryReader { geometry in
+            let displayText = text.isEmpty ? "Preview" : text
+            let font = fontForStyle(fontStyle, size: geometry.size, text: displayText)
+            let availableWidth = geometry.size.width * 0.8
+            let wraps = singleLineWidth > availableWidth * 1.8
+            let textAlignment: TextAlignment = wraps ? .leading : .center
+            let frameAlignment: Alignment = wraps ? .leading : .center
+
             ZStack {
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .fill(backgroundColor)
 
                 VStack(spacing: 0) {
-                    Text(text.isEmpty ? "Preview" : text)
-                        .font(fontForStyle(fontStyle, size: geometry.size))
+                    Text(displayText)
+                        .font(font)
                         .foregroundStyle(text.isEmpty ? textColor.opacity(0.4) : textColor)
-                        .multilineTextAlignment(.center)
-                        .minimumScaleFactor(0.1)
+                        .multilineTextAlignment(textAlignment)
+                        .frame(maxWidth: .infinity, alignment: frameAlignment)
+                        .minimumScaleFactor(0.5)
                         .lineLimit(nil)
+                        .background {
+                            Text(displayText)
+                                .font(font)
+                                .lineLimit(1)
+                                .fixedSize(horizontal: true, vertical: false)
+                                .hidden()
+                                .background {
+                                    GeometryReader { measureGeo in
+                                        Color.clear.preference(
+                                            key: CardTextSingleLineWidthKey.self,
+                                            value: measureGeo.size.width
+                                        )
+                                    }
+                                }
+                        }
+                        .onPreferenceChange(CardTextSingleLineWidthKey.self) { width in
+                            singleLineWidth = width
+                        }
 
                     if !notes.isEmpty {
                         Spacer()
@@ -46,12 +81,10 @@ struct CardPreviewView: View {
         .aspectRatio(2, contentMode: .fit)
     }
 
-    private func fontForStyle(_ style: FontStyle, size: CGSize) -> Font {
-        // Start with a larger initial font size
-        let idealFontSize = min(size.height * 0.4, size.width * 0.15)
-        // But never go below 9pt
-        let fontSize = max(idealFontSize, 9)
-        
+    private func fontForStyle(_ style: FontStyle, size: CGSize, text: String) -> Font {
+        let base = min(size.height * 0.4, size.width * 0.15)
+        let fontSize = max(base * lengthScale(for: text.count), 9)
+
         switch style {
         case .elegant:
             return .custom("Georgia", size: fontSize)
@@ -59,6 +92,15 @@ struct CardPreviewView: View {
             return .custom("Times New Roman", size: fontSize)
         case .apple:
             return .system(size: fontSize, weight: .light)
+        }
+    }
+
+    private func lengthScale(for charCount: Int) -> CGFloat {
+        switch charCount {
+        case ...10: return 1.0
+        case 11...20: return 0.85
+        case 21...35: return 0.7
+        default: return 0.55
         }
     }
 }

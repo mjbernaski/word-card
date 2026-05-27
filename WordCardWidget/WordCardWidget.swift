@@ -42,9 +42,18 @@ struct WordCardProvider: TimelineProvider {
     )
 }
 
+private struct WidgetTextSingleLineWidthKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
+    }
+}
+
 struct WordCardWidgetEntryView: View {
     @Environment(\.widgetFamily) private var family
     let entry: WordCardEntry
+
+    @State private var singleLineWidth: CGFloat = 0
 
     var body: some View {
         Group {
@@ -68,13 +77,39 @@ struct WordCardWidgetEntryView: View {
     private func cardView(_ card: WidgetCardSnapshot) -> some View {
         GeometryReader { geo in
             let textColor = Color(widgetHex: card.textColorHex) ?? .primary
+            let displayText = card.text.isEmpty ? "Word Card" : card.text
+            let font = Font.custom(card.fontName, size: fontSize(for: geo.size, text: displayText))
+            let availableWidth = geo.size.width * 0.88
+            let wraps = singleLineWidth > availableWidth * 1.8
+            let textAlignment: TextAlignment = wraps ? .leading : .center
+            let frameAlignment: Alignment = wraps ? .leading : .center
+
             VStack(spacing: 0) {
-                Text(card.text.isEmpty ? "Word Card" : card.text)
-                    .font(.custom(card.fontName, size: fontSize(for: geo.size)))
+                Text(displayText)
+                    .font(font)
                     .foregroundStyle(textColor)
-                    .multilineTextAlignment(.center)
-                    .minimumScaleFactor(0.3)
+                    .multilineTextAlignment(textAlignment)
+                    .frame(maxWidth: .infinity, alignment: frameAlignment)
+                    .minimumScaleFactor(0.6)
                     .lineLimit(nil)
+                    .background {
+                        Text(displayText)
+                            .font(font)
+                            .lineLimit(1)
+                            .fixedSize(horizontal: true, vertical: false)
+                            .hidden()
+                            .background {
+                                GeometryReader { measureGeo in
+                                    Color.clear.preference(
+                                        key: WidgetTextSingleLineWidthKey.self,
+                                        value: measureGeo.size.width
+                                    )
+                                }
+                            }
+                    }
+                    .onPreferenceChange(WidgetTextSingleLineWidthKey.self) { width in
+                        singleLineWidth = width
+                    }
 
                 if !card.notes.isEmpty && family != .systemSmall {
                     Spacer().frame(height: geo.size.height * 0.06)
@@ -105,9 +140,18 @@ struct WordCardWidgetEntryView: View {
         .padding()
     }
 
-    private func fontSize(for size: CGSize) -> CGFloat {
-        let ideal = min(size.height * 0.32, size.width * 0.14)
-        return max(ideal, 11)
+    private func fontSize(for size: CGSize, text: String) -> CGFloat {
+        let base = min(size.height * 0.32, size.width * 0.14)
+        return max(base * lengthScale(for: text.count), 11)
+    }
+
+    private func lengthScale(for charCount: Int) -> CGFloat {
+        switch charCount {
+        case ...10: return 1.0
+        case 11...20: return 0.85
+        case 21...35: return 0.7
+        default: return 0.55
+        }
     }
 }
 
