@@ -52,13 +52,21 @@ struct CardShowcaseView: View {
 
             VStack {
                 HStack {
-                    Button("Done") {
+                    Button {
                         dismiss()
+                    } label: {
+                        Label("Done", systemImage: "xmark")
+                            .font(.headline)
                     }
-                    .buttonStyle(.plain)
-                    .foregroundStyle(.white.opacity(0.7))
+                    .buttonStyle(.bordered)
                     .padding()
+
                     Spacer()
+
+                    Text("Card Showcase")
+                        .font(.headline)
+                        .foregroundStyle(.white.opacity(0.6))
+                        .padding()
                 }
 
                 Spacer()

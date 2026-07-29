@@ -42,18 +42,9 @@ struct WordCardProvider: TimelineProvider {
     )
 }
 
-private struct WidgetTextSingleLineWidthKey: PreferenceKey {
-    static let defaultValue: CGFloat = 0
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = max(value, nextValue())
-    }
-}
-
 struct WordCardWidgetEntryView: View {
     @Environment(\.widgetFamily) private var family
     let entry: WordCardEntry
-
-    @State private var singleLineWidth: CGFloat = 0
 
     var body: some View {
         Group {
@@ -79,37 +70,15 @@ struct WordCardWidgetEntryView: View {
             let textColor = Color(widgetHex: card.textColorHex) ?? .primary
             let displayText = card.text.isEmpty ? "Word Card" : card.text
             let font = Font.custom(card.fontName, size: fontSize(for: geo.size, text: displayText))
-            let availableWidth = geo.size.width * 0.88
-            let wraps = singleLineWidth > availableWidth * 1.8
-            let textAlignment: TextAlignment = wraps ? .leading : .center
-            let frameAlignment: Alignment = wraps ? .leading : .center
 
             VStack(spacing: 0) {
                 Text(displayText)
                     .font(font)
                     .foregroundStyle(textColor)
-                    .multilineTextAlignment(textAlignment)
-                    .frame(maxWidth: .infinity, alignment: frameAlignment)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity)
                     .minimumScaleFactor(0.6)
                     .lineLimit(nil)
-                    .background {
-                        Text(displayText)
-                            .font(font)
-                            .lineLimit(1)
-                            .fixedSize(horizontal: true, vertical: false)
-                            .hidden()
-                            .background {
-                                GeometryReader { measureGeo in
-                                    Color.clear.preference(
-                                        key: WidgetTextSingleLineWidthKey.self,
-                                        value: measureGeo.size.width
-                                    )
-                                }
-                            }
-                    }
-                    .onPreferenceChange(WidgetTextSingleLineWidthKey.self) { width in
-                        singleLineWidth = width
-                    }
 
                 if !card.notes.isEmpty && family != .systemSmall {
                     Spacer().frame(height: geo.size.height * 0.06)

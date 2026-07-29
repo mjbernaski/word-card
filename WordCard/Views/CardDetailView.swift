@@ -5,17 +5,42 @@ struct CardDetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Bindable var card: WordCard
     @State private var showingEditor = false
-    @State private var showingExporter = false
-    @State private var exportedImage: CGImage?
-    @State private var showingShareSheet = false
-    @State private var showingResolutionPicker = false
-    @State private var selectedResolution: ExportResolution = .medium
+    @State private var pendingExport: CardExport?
     @State private var includeNotesInExport = true
     @State private var notesExpanded = true
 
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
+                #if os(tvOS)
+                CardPreviewView(
+                    text: card.text,
+                    backgroundColor: Color(hex: card.backgroundColor) ?? .white,
+                    textColor: Color(hex: card.textColor) ?? .black,
+                    fontStyle: card.fontStyle,
+                    cornerRadius: CGFloat(card.cornerRadius),
+                    borderColor: card.borderColor.flatMap { Color(hex: $0) },
+                    borderWidth: CGFloat(card.borderWidth),
+                    notes: card.notes
+                )
+                .frame(maxWidth: 800, maxHeight: 400)
+                .shadow(color: .black.opacity(0.2), radius: 12, x: 0, y: 6)
+                .padding(.vertical, 24)
+                #elseif os(visionOS)
+                CardPreviewView(
+                    text: card.text,
+                    backgroundColor: Color(hex: card.backgroundColor) ?? .white,
+                    textColor: Color(hex: card.textColor) ?? .black,
+                    fontStyle: card.fontStyle,
+                    cornerRadius: CGFloat(card.cornerRadius),
+                    borderColor: card.borderColor.flatMap { Color(hex: $0) },
+                    borderWidth: CGFloat(card.borderWidth),
+                    notes: card.notes
+                )
+                .frame(maxWidth: 600, maxHeight: 300)
+                .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
+                .padding()
+                #else
                 CardPreviewView(
                     text: card.text,
                     backgroundColor: Color(hex: card.backgroundColor) ?? .white,
@@ -29,6 +54,7 @@ struct CardDetailView: View {
                 .frame(maxWidth: 450, maxHeight: 225)
                 .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
                 .padding()
+                #endif
 
                 if !card.notes.isEmpty {
                     #if os(tvOS)
@@ -107,14 +133,20 @@ struct CardDetailView: View {
                             .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.bordered)
+                    #if os(visionOS)
+                    .hoverEffect()
+                    #endif
 
                     Button {
-                        showingResolutionPicker = true
+                        exportCard()
                     } label: {
                         Label("Export PNG", systemImage: "square.and.arrow.up")
                             .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.borderedProminent)
+                    #if os(visionOS)
+                    .hoverEffect()
+                    #endif
                 }
                 .padding(.horizontal)
                 #endif
@@ -131,32 +163,27 @@ struct CardDetailView: View {
                 CardEditorView(card: card)
             }
         }
-        .sheet(isPresented: $showingShareSheet) {
-            if let image = exportedImage {
-                ShareSheetView(image: image, card: card)
-            }
-        }
-        .confirmationDialog("Export Resolution", isPresented: $showingResolutionPicker, titleVisibility: .visible) {
-            ForEach(ExportResolution.allCases, id: \.self) { resolution in
-                Button("\(resolution.displayName) (\(resolution.dimensions))") {
-                    selectedResolution = resolution
-                    exportCard()
-                }
-            }
-            Button("Cancel", role: .cancel) { }
-        } message: {
-            Text("Choose the resolution for your exported image")
+        .sheet(item: $pendingExport) { export in
+            ShareSheetView(image: export.image, card: card)
         }
         #endif
     }
 
+    /// Cards always export at High (900×450) — large enough to share and print
+    /// without asking the user to make a choice at export time.
+    private static let exportResolution: ExportResolution = .high
+
     private func exportCard() {
         let exporter = PNGExporter()
-        if let image = exporter.export(card: card, resolution: selectedResolution, includeNotes: includeNotesInExport) {
-            exportedImage = image
-            showingShareSheet = true
+        if let image = exporter.export(card: card, resolution: Self.exportResolution, includeNotes: includeNotesInExport) {
+            pendingExport = CardExport(image: image)
         }
     }
+}
+
+private struct CardExport: Identifiable {
+    let id = UUID()
+    let image: CGImage
 }
 
 struct DetailRow: View {

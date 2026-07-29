@@ -56,8 +56,6 @@ struct ValenceApp: App {
     @FocusedValue(\.newCardAction) var newCardAction
     #endif
 
-    @Environment(\.scenePhase) private var scenePhase
-
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([WordCard.self])
 
@@ -81,12 +79,6 @@ struct ValenceApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .task {
-                    WidgetSnapshotService.refresh(from: sharedModelContainer)
-                    #if !os(tvOS)
-                    await WordCardSpotlightIndexer.reindexAll()
-                    #endif
-                }
                 .onOpenURL { url in
                     guard url.scheme == "wordcard" else { return }
                     #if os(macOS)
@@ -95,13 +87,6 @@ struct ValenceApp: App {
                 }
         }
         .modelContainer(sharedModelContainer)
-        .onChange(of: scenePhase) { _, newPhase in
-            if newPhase == .active {
-                Task { @MainActor in
-                    WidgetSnapshotService.refresh(from: sharedModelContainer)
-                }
-            }
-        }
         #if os(macOS)
         .commands {
             CommandGroup(replacing: .newItem) {

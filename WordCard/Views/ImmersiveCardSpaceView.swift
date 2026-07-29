@@ -41,6 +41,8 @@ struct ImmersiveCardSpaceView: View {
                             Image(systemName: "chevron.left.circle.fill")
                                 .font(.system(size: 44))
                         }
+                        .buttonStyle(.plain)
+                        .hoverEffect()
                         .disabled(currentCardIndex <= 0)
 
                         Text("\(currentCardIndex + 1) of \(cards.count)")
@@ -59,6 +61,8 @@ struct ImmersiveCardSpaceView: View {
                             Image(systemName: "chevron.right.circle.fill")
                                 .font(.system(size: 44))
                         }
+                        .buttonStyle(.plain)
+                        .hoverEffect()
                         .disabled(currentCardIndex >= cards.count - 1)
                     }
                     .padding(.bottom, 60)
@@ -88,6 +92,7 @@ struct ImmersiveCardSpaceView: View {
                     Image(systemName: "xmark.circle.fill")
                         .font(.system(size: 28))
                 }
+                .hoverEffect()
             }
         }
         .navigationTitle("Card Space")
@@ -104,31 +109,28 @@ struct CardView3D: View {
     }
 
     var body: some View {
-        // Card styling
-        RoundedRectangle(cornerRadius: 20)
-            .fill(Color(hex: card.backgroundColor) ?? .white)
-            .overlay(
-                RoundedRectangle(cornerRadius: 20)
-                    .strokeBorder(Color(hex: card.borderColor ?? "#CC785C") ?? .brown, lineWidth: CGFloat(card.borderWidth))
-            )
-            .overlay(
-                Text(card.text)
-                    .font(.system(size: 24, weight: .regular, design: .serif))
-                    .foregroundColor(Color(hex: card.textColor) ?? .black)
-                    .multilineTextAlignment(.center)
-                    .padding(24)
-            )
-            .frame(width: 400, height: 200)
-            .rotation3DEffect(
-                .degrees(Double(relativeIndex) * 8),
-                axis: (x: 0, y: 1, z: 0),
-                perspective: 0.5
-            )
-            .offset(x: CGFloat(relativeIndex) * 60)
-            .scaleEffect(relativeIndex == 0 ? 1.0 : max(0.7, 1.0 - Double(abs(relativeIndex)) * 0.1))
-            .opacity(abs(relativeIndex) > 5 ? 0 : 1.0 - Double(abs(relativeIndex)) * 0.15)
-            .zIndex(Double(-abs(relativeIndex)))
-            .animation(.spring(duration: 0.4), value: currentIndex)
+        CardPreviewView(
+            text: card.text,
+            backgroundColor: Color(hex: card.backgroundColor) ?? .white,
+            textColor: Color(hex: card.textColor) ?? .black,
+            fontStyle: card.fontStyle,
+            cornerRadius: CGFloat(card.cornerRadius),
+            borderColor: card.borderColor.flatMap { Color(hex: $0) },
+            borderWidth: CGFloat(card.borderWidth),
+            notes: card.notes
+        )
+        .frame(width: 480, height: 240)
+        .shadow(color: .black.opacity(0.25), radius: 12, x: 0, y: 6)
+        .rotation3DEffect(
+            .degrees(Double(relativeIndex) * 8),
+            axis: (x: 0, y: 1, z: 0),
+            perspective: 0.5
+        )
+        .offset(x: CGFloat(relativeIndex) * 70)
+        .scaleEffect(relativeIndex == 0 ? 1.0 : max(0.7, 1.0 - Double(abs(relativeIndex)) * 0.1))
+        .opacity(abs(relativeIndex) > 5 ? 0 : 1.0 - Double(abs(relativeIndex)) * 0.15)
+        .zIndex(Double(-abs(relativeIndex)))
+        .animation(.spring(duration: 0.4), value: currentIndex)
     }
 }
 

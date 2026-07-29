@@ -1,0 +1,9 @@
+{
+  "id" : "0794af52-6a1d-4392-80d5-479c45146056",
+  "targets" : [
+    {
+      "id" : "7e7a0fb0-73f8-407c-9ffa-a267fc6d52fb",
+      "name" : "WordCard"
+    }
+  ]
+}

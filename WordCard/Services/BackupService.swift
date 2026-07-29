@@ -1,7 +1,7 @@
 import Foundation
 import SwiftData
 
-struct CardBackup: Codable {
+struct CardBackup: Codable, Sendable {
     let id: UUID
     let text: String
     let backgroundColor: String
@@ -77,7 +77,7 @@ struct CardBackup: Codable {
     }
 }
 
-struct BackupFile: Codable {
+struct BackupFile: Codable, Sendable {
     let version: Int
     let exportDate: Date
     let appName: String

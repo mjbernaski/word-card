@@ -1,10 +1,9 @@
 import Foundation
-import SwiftData
 #if canImport(WidgetKit)
 import WidgetKit
 #endif
 
-struct WidgetCardSnapshot: Codable {
+struct WidgetCardSnapshot: Codable, Sendable {
     let id: UUID
     let text: String
     let backgroundColorHex: String
@@ -16,7 +15,7 @@ struct WidgetCardSnapshot: Codable {
     let notes: String
 }
 
-struct WidgetCardsSnapshot: Codable {
+struct WidgetCardsSnapshot: Codable, Sendable {
     let cards: [WidgetCardSnapshot]
     let generatedAt: Date
 }
@@ -26,6 +25,7 @@ enum WidgetSnapshotService {
     static let snapshotFileName = "widget-cards.json"
     static let widgetKind = "WordCardWidget"
     static let maxSnapshotCards = 500
+    @MainActor private static var lastRefreshStartedAt: Date?
 
     static var snapshotURL: URL? {
         FileManager.default
@@ -34,28 +34,24 @@ enum WidgetSnapshotService {
     }
 
     @MainActor
-    static func refresh(from container: ModelContainer) {
+    static func refresh(cards: [WordCard]) async {
+        let now = Date()
+        if let lastRefreshStartedAt,
+           now.timeIntervalSince(lastRefreshStartedAt) < 3 {
+            return
+        }
+        lastRefreshStartedAt = now
+
         guard let url = snapshotURL else {
             print("⚠️ Widget snapshot skipped: App Group container not available")
             return
         }
 
-        let context = ModelContext(container)
-        let descriptor = FetchDescriptor<WordCard>()
-
-        let cards = ((try? context.fetch(descriptor)) ?? [])
+        let snapshotCards = cards
             .filter { !$0.isArchived }
             .sorted { $0.updatedAt > $1.updatedAt }
-
-        guard !cards.isEmpty else {
-            writeEmptySnapshot(to: url)
-            reloadWidgetTimelines()
-            return
-        }
-
-        let trimmed = Array(cards.prefix(maxSnapshotCards))
-        let snapshot = WidgetCardsSnapshot(
-            cards: trimmed.map { card in
+            .prefix(maxSnapshotCards)
+            .map { card in
                 WidgetCardSnapshot(
                     id: card.id,
                     text: card.text,
@@ -67,25 +63,28 @@ enum WidgetSnapshotService {
                     borderWidth: card.borderWidth,
                     notes: card.notes
                 )
-            },
+            }
+
+        let snapshot = WidgetCardsSnapshot(
+            cards: snapshotCards,
             generatedAt: Date()
         )
 
-        do {
-            let encoder = JSONEncoder()
-            encoder.dateEncodingStrategy = .iso8601
-            let data = try encoder.encode(snapshot)
-            try data.write(to: url, options: .atomic)
-            reloadWidgetTimelines()
-        } catch {
-            print("⚠️ Failed to write widget snapshot: \(error)")
-        }
-    }
+        let didWrite = await Task.detached(priority: .utility) {
+            do {
+                let encoder = JSONEncoder()
+                encoder.dateEncodingStrategy = .iso8601
+                let data = try encoder.encode(snapshot)
+                try data.write(to: url, options: .atomic)
+                return true
+            } catch {
+                print("⚠️ Failed to write widget snapshot: \(error)")
+                return false
+            }
+        }.value
 
-    private static func writeEmptySnapshot(to url: URL) {
-        let empty = WidgetCardsSnapshot(cards: [], generatedAt: Date())
-        if let data = try? JSONEncoder().encode(empty) {
-            try? data.write(to: url, options: .atomic)
+        if didWrite {
+            reloadWidgetTimelines()
         }
     }
 

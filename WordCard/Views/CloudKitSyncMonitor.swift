@@ -19,6 +19,10 @@ class CloudKitSyncMonitor: ObservableObject {
 
     private var accountStatusTimer: Timer?
     private var modelContainer: ModelContainer?
+    private var syncIndicatorTask: Task<Void, Never>?
+    private var syncCompletionTask: Task<Void, Never>?
+    private let launchedAt = Date()
+    private let automaticSyncGracePeriod: TimeInterval = 30
 
     init() {
         checkiCloudStatus()
@@ -31,6 +35,8 @@ class CloudKitSyncMonitor: ObservableObject {
 
     deinit {
         accountStatusTimer?.invalidate()
+        syncIndicatorTask?.cancel()
+        syncCompletionTask?.cancel()
         NotificationCenter.default.removeObserver(self)
     }
 
@@ -64,16 +70,31 @@ class CloudKitSyncMonitor: ObservableObject {
 
     @objc private func handleDataChange() {
         Task { @MainActor in
-            if syncStatus != .error && syncStatus != .disabled {
-                syncStatus = .syncing
+            guard Date().timeIntervalSince(launchedAt) >= automaticSyncGracePeriod else {
+                return
+            }
 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                    Task { @MainActor in
-                        if self.syncStatus == .syncing {
-                            self.syncStatus = .synced
-                            self.lastSyncTime = Date()
-                        }
+            if syncStatus != .error && syncStatus != .disabled {
+                syncIndicatorTask?.cancel()
+                syncCompletionTask?.cancel()
+
+                // Remote-change notifications often arrive in short bursts after
+                // the data is already available. Defer the yellow indicator so it
+                // does not flash as soon as the first notification arrives.
+                if syncStatus != .syncing {
+                    syncIndicatorTask = Task { @MainActor in
+                        try? await Task.sleep(nanoseconds: 750_000_000)
+                        guard !Task.isCancelled else { return }
+                        self.syncStatus = .syncing
                     }
+                }
+
+                syncCompletionTask = Task { @MainActor in
+                    try? await Task.sleep(nanoseconds: 2_000_000_000)
+                    guard !Task.isCancelled else { return }
+                    self.syncIndicatorTask?.cancel()
+                    self.syncStatus = .synced
+                    self.lastSyncTime = Date()
                 }
             }
         }
@@ -119,6 +140,8 @@ class CloudKitSyncMonitor: ObservableObject {
     }
 
     func forceSyncRefresh() {
+        syncIndicatorTask?.cancel()
+        syncCompletionTask?.cancel()
         syncStatus = .syncing
         errorMessage = nil
 
@@ -133,4 +156,3 @@ class CloudKitSyncMonitor: ObservableObject {
         checkiCloudStatus()
     }
 }
-

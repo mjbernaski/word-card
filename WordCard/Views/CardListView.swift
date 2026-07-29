@@ -55,7 +55,6 @@ struct CardListView: View {
     @State private var randomCardImage: CGImage?
     @State private var showingRandomCardShare = false
     @State private var editingCard: WordCard?
-    @Environment(\.scenePhase) private var scenePhase
     @StateObject private var autoBackup = AutoBackupService.shared
 
     #if !os(tvOS)
@@ -234,13 +233,20 @@ struct CardListView: View {
                 Text("Removed \(result.duplicatesRemoved) duplicate(s).\n\(result.uniqueCards) unique cards remaining.")
             }
         }
-        .onAppear {
-            autoBackup.runIfNeeded(cards: allCards)
-        }
-        .onChange(of: scenePhase) { _, newPhase in
-            if newPhase == .active {
-                autoBackup.runIfNeeded(cards: allCards)
-            }
+        .task(id: spotlightIndexSignature) {
+            // CloudKit imports can arrive as a burst after activation. Wait until
+            // the query is quiet, then perform one maintenance pass without making
+            // foreground activation contend with the UI.
+            try? await Task.sleep(for: .seconds(30))
+            guard !Task.isCancelled else { return }
+
+            await WidgetSnapshotService.refresh(cards: allCards)
+            guard !Task.isCancelled else { return }
+
+            await autoBackup.runIfNeeded(cards: allCards)
+            guard !Task.isCancelled else { return }
+
+            await WordCardSpotlightIndexer.reindexAll()
         }
         .task(id: spotlightIndexSignature) {
             try? await Task.sleep(for: .seconds(1))
@@ -350,12 +356,10 @@ struct CardListView: View {
 
     private var gridView: some View {
         ScrollView {
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 200, maximum: 300))], spacing: 16) {
+            #if os(tvOS)
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 280, maximum: 360))], spacing: 32) {
                 ForEach(filteredCards) { card in
-                    #if os(tvOS)
-                    Button {
-                        selectedCard = card
-                    } label: {
+                    NavigationLink(value: card) {
                         CardThumbnailView(card: card)
                     }
                     .buttonStyle(.card)
@@ -366,7 +370,12 @@ struct CardListView: View {
                             Label("Archive", systemImage: "archivebox")
                         }
                     }
-                    #else
+                }
+            }
+            .padding(32)
+            #else
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 200, maximum: 300))], spacing: 16) {
+                ForEach(filteredCards) { card in
                     Button {
                         selectedCard = card
                     } label: {
@@ -385,10 +394,10 @@ struct CardListView: View {
                             Label("Archive", systemImage: "archivebox")
                         }
                     }
-                    #endif
                 }
             }
             .padding()
+            #endif
         }
         .overlay {
             if filteredCards.isEmpty {

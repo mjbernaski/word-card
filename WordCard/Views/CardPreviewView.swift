@@ -1,12 +1,5 @@
 import SwiftUI
 
-private struct CardTextSingleLineWidthKey: PreferenceKey {
-    static let defaultValue: CGFloat = 0
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = max(value, nextValue())
-    }
-}
-
 struct CardPreviewView: View {
     let text: String
     let backgroundColor: Color
@@ -17,16 +10,10 @@ struct CardPreviewView: View {
     let borderWidth: CGFloat
     var notes: String = ""
 
-    @State private var singleLineWidth: CGFloat = 0
-
     var body: some View {
         GeometryReader { geometry in
             let displayText = text.isEmpty ? "Preview" : text
             let font = fontForStyle(fontStyle, size: geometry.size, text: displayText)
-            let availableWidth = geometry.size.width * 0.8
-            let wraps = singleLineWidth > availableWidth * 1.8
-            let textAlignment: TextAlignment = wraps ? .leading : .center
-            let frameAlignment: Alignment = wraps ? .leading : .center
 
             ZStack {
                 RoundedRectangle(cornerRadius: cornerRadius)
@@ -36,28 +23,10 @@ struct CardPreviewView: View {
                     Text(displayText)
                         .font(font)
                         .foregroundStyle(text.isEmpty ? textColor.opacity(0.4) : textColor)
-                        .multilineTextAlignment(textAlignment)
-                        .frame(maxWidth: .infinity, alignment: frameAlignment)
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: .infinity)
                         .minimumScaleFactor(0.5)
                         .lineLimit(nil)
-                        .background {
-                            Text(displayText)
-                                .font(font)
-                                .lineLimit(1)
-                                .fixedSize(horizontal: true, vertical: false)
-                                .hidden()
-                                .background {
-                                    GeometryReader { measureGeo in
-                                        Color.clear.preference(
-                                            key: CardTextSingleLineWidthKey.self,
-                                            value: measureGeo.size.width
-                                        )
-                                    }
-                                }
-                        }
-                        .onPreferenceChange(CardTextSingleLineWidthKey.self) { width in
-                            singleLineWidth = width
-                        }
 
                     if !notes.isEmpty {
                         Spacer()
