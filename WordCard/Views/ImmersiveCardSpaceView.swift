@@ -5,13 +5,17 @@ import SwiftData
 struct ImmersiveCardSpaceView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
-    @Query(filter: ImmersiveCardSpaceView.activeCardsPredicate, sort: [
-        SortDescriptor(\WordCard.updatedAt, order: .reverse),
-        SortDescriptor(\WordCard.createdAt, order: .reverse)
-    ]) private var cards: [WordCard]
+    @Query private var allCards: [WordCard]
 
-    private static let activeCardsPredicate = #Predicate<WordCard> { card in
-        card.isArchived == false
+    private var cards: [WordCard] {
+        allCards
+            .filter { !$0.isArchived }
+            .sorted {
+                if $0.updatedAt != $1.updatedAt {
+                    return $0.updatedAt > $1.updatedAt
+                }
+                return $0.createdAt > $1.createdAt
+            }
     }
 
     @State private var currentCardIndex: Int = 0

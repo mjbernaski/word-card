@@ -1,5 +1,8 @@
 import SwiftUI
 import SwiftData
+#if !os(tvOS)
+import CoreSpotlight
+#endif
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
@@ -45,6 +48,9 @@ struct ContentView: View {
         }
         .onAppear {
             syncMonitor.setModelContainer(modelContext.container)
+        }
+        .onContinueUserActivity(CSSearchableItemActionType) { activity in
+            openSpotlightCard(from: activity)
         }
         #elseif os(visionOS)
         NavigationSplitView {
@@ -140,6 +146,20 @@ struct ContentView: View {
         }
         #endif
     }
+
+    #if os(macOS)
+    private func openSpotlightCard(from activity: NSUserActivity) {
+        guard let identifier = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String,
+              let cardID = UUID(uuidString: identifier) else { return }
+
+        let descriptor = FetchDescriptor<WordCard>()
+        guard let card = try? modelContext.fetch(descriptor).first(where: { $0.id == cardID }) else { return }
+
+        selectedCard = card
+        columnVisibility = .all
+        NSApp.activate(ignoringOtherApps: true)
+    }
+    #endif
 
     #if os(tvOS)
     private func seedSampleDataIfNeeded() {

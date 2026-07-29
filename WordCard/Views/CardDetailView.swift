@@ -10,7 +10,7 @@ struct CardDetailView: View {
     @State private var showingShareSheet = false
     @State private var showingResolutionPicker = false
     @State private var selectedResolution: ExportResolution = .medium
-    @State private var includeNotesInExport = false
+    @State private var includeNotesInExport = true
     @State private var notesExpanded = true
 
     var body: some View {
@@ -64,8 +64,6 @@ struct CardDetailView: View {
                     DetailRow(label: "Font Style", value: card.fontStyle.displayName)
                     DetailRow(label: "Corner Radius", value: "\(card.cornerRadius)px")
                     DetailRow(label: "Border", value: card.borderColor != nil ? "Yes (\(card.borderWidth)px)" : "None")
-                    DetailRow(label: "DPI", value: "\(card.dpi)")
-                    DetailRow(label: "Export Size", value: "\(Int(3 * Double(card.dpi)))×\(Int(1.5 * Double(card.dpi)))px")
                     DetailRow(label: "Valence", value: card.valence > 0 ? "+\(card.valence)" : "\(card.valence)")
 
                     Divider()
@@ -83,8 +81,6 @@ struct CardDetailView: View {
                         DetailRow(label: "Font Style", value: card.fontStyle.displayName)
                         DetailRow(label: "Corner Radius", value: "\(card.cornerRadius)px")
                         DetailRow(label: "Border", value: card.borderColor != nil ? "Yes (\(card.borderWidth)px)" : "None")
-                        DetailRow(label: "DPI", value: "\(card.dpi)")
-                        DetailRow(label: "Export Size", value: "\(Int(3 * Double(card.dpi)))×\(Int(1.5 * Double(card.dpi)))px")
                         DetailRow(label: "Valence", value: card.valence > 0 ? "+\(card.valence)" : "\(card.valence)")
 
                         Divider()

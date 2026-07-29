@@ -41,12 +41,13 @@ enum WidgetSnapshotService {
         }
 
         let context = ModelContext(container)
-        let descriptor = FetchDescriptor<WordCard>(
-            predicate: #Predicate { !$0.isArchived },
-            sortBy: [SortDescriptor(\.updatedAt, order: .reverse)]
-        )
+        let descriptor = FetchDescriptor<WordCard>()
 
-        guard let cards = try? context.fetch(descriptor), !cards.isEmpty else {
+        let cards = ((try? context.fetch(descriptor)) ?? [])
+            .filter { !$0.isArchived }
+            .sorted { $0.updatedAt > $1.updatedAt }
+
+        guard !cards.isEmpty else {
             writeEmptySnapshot(to: url)
             reloadWidgetTimelines()
             return
@@ -90,7 +91,9 @@ enum WidgetSnapshotService {
 
     private static func reloadWidgetTimelines() {
         #if canImport(WidgetKit) && !os(tvOS)
-        WidgetCenter.shared.reloadTimelines(ofKind: widgetKind)
+        if #available(visionOS 26.0, *) {
+            WidgetCenter.shared.reloadTimelines(ofKind: widgetKind)
+        }
         #endif
     }
 }

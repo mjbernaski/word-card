@@ -8,6 +8,7 @@ struct WordCardShortcuts: AppShortcutsProvider {
             intent: CreateWordCardIntent(),
             phrases: [
                 "Create a WordCard in \(.applicationName)",
+                "Create a new word card in \(.applicationName)",
                 "Add a WordCard in \(.applicationName)",
                 "New WordCard in \(.applicationName)",
                 "Make a WordCard in \(.applicationName)"
@@ -19,16 +20,31 @@ struct WordCardShortcuts: AppShortcutsProvider {
             intent: RandomCardIntent(),
             phrases: [
                 "Show me a random WordCard in \(.applicationName)",
-                "Random WordCard from \(.applicationName)"
+                "Show me a random word card in \(.applicationName)",
+                "Random WordCard from \(.applicationName)",
+                "Read me a WordCard in \(.applicationName)"
             ],
             shortTitle: "Random Card",
             systemImageName: "die.face.5"
         )
         AppShortcut(
+            intent: ReadWordCardsIntent(),
+            phrases: [
+                "Read me WordCards in \(.applicationName)",
+                "Read my WordCards in \(.applicationName)",
+                "Read me some word cards in \(.applicationName)",
+                "Read WordCards from \(.applicationName)"
+            ],
+            shortTitle: "Read Cards",
+            systemImageName: "text.book.closed"
+        )
+        AppShortcut(
             intent: SearchWordCardsIntent(),
             phrases: [
                 "Search WordCards in \(.applicationName)",
-                "Find WordCards in \(.applicationName)"
+                "Search my word cards in \(.applicationName)",
+                "Find WordCards in \(.applicationName)",
+                "Find a WordCard in \(.applicationName)"
             ],
             shortTitle: "Search Cards",
             systemImageName: "magnifyingglass"

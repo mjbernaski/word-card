@@ -4,9 +4,13 @@ import SwiftData
 
 struct CardShowcaseView: View {
     @Environment(\.dismiss) private var dismiss
-    @Query(filter: #Predicate<WordCard> { !$0.isArchived },
-           sort: \WordCard.createdAt)
-    private var cards: [WordCard]
+    @Query private var allCards: [WordCard]
+
+    private var cards: [WordCard] {
+        allCards
+            .filter { !$0.isArchived }
+            .sorted { $0.createdAt < $1.createdAt }
+    }
 
     private let stages = [1, 2, 4, 8, 12, 16]
     @State private var stageIndex = 0

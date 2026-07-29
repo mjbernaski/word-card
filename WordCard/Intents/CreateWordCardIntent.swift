@@ -31,13 +31,25 @@ enum CardCategoryAppEnum: String, AppEnum {
         case .miscellaneous: return .miscellaneous
         }
     }
+
+    init(_ category: CardCategory) {
+        switch category {
+        case .idea: self = .idea
+        case .readings: self = .readings
+        case .miscellaneous: self = .miscellaneous
+        }
+    }
+
+    var displayName: String {
+        toCardCategory.displayName
+    }
 }
 
 struct CreateWordCardIntent: AppIntent {
 
-    static var title: LocalizedStringResource = "Create a WordCard"
+    static let title: LocalizedStringResource = "Create a WordCard"
 
-    static var description: IntentDescription = IntentDescription(
+    static let description: IntentDescription = IntentDescription(
         "Creates a new word card with the given text and category.",
         categoryName: "Cards"
     )
@@ -53,10 +65,10 @@ struct CreateWordCardIntent: AppIntent {
         Summary("Create a \(\.$category) card saying \(\.$text)")
     }
 
-    static var openAppWhenRun: Bool = false
+    static let openAppWhenRun: Bool = false
 
     @MainActor
-    func perform() async throws -> some IntentResult & ReturnsValue<String> {
+    func perform() async throws -> some IntentResult & ReturnsValue<WordCardEntity> & ProvidesDialog & ShowsSnippetView {
         let trimmedText = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedText.isEmpty else {
             throw CreateCardError("Text cannot be empty.")
@@ -73,7 +85,13 @@ struct CreateWordCardIntent: AppIntent {
         context.insert(card)
         try context.save()
 
-        return .result(value: trimmedText)
+        let entity = WordCardEntity(card: card)
+        await WordCardSpotlightIndexer.index(entity)
+        return .result(
+            value: entity,
+            dialog: "Added your \(cardCategory.displayName) card.",
+            view: WordCardSnippetView(card: entity)
+        )
     }
 }
 #endif

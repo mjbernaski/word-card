@@ -1,7 +1,6 @@
 #if !os(tvOS)
 import AppIntents
 import SwiftData
-import CoreGraphics
 
 private struct RandomCardError: LocalizedError {
     let errorDescription: String?
@@ -10,45 +9,37 @@ private struct RandomCardError: LocalizedError {
 
 struct RandomCardIntent: AppIntent {
 
-    static var title: LocalizedStringResource = "Random WordCard"
+    static let title: LocalizedStringResource = "Show a Random WordCard"
 
-    static var description: IntentDescription = IntentDescription(
-        "Picks a random non-archived word card and returns it as a PNG image.",
-        categoryName: "Cards"
+    static let description: IntentDescription = IntentDescription(
+        "Picks a random card, reads it aloud, and shows it.",
+        categoryName: "Cards",
+        resultValueName: "Random WordCard"
     )
 
     static var parameterSummary: some ParameterSummary {
-        Summary("Get a random WordCard as PNG")
+        Summary("Show a random WordCard")
     }
 
-    static var openAppWhenRun: Bool = false
+    static let openAppWhenRun: Bool = false
 
     @MainActor
-    func perform() async throws -> some IntentResult & ReturnsValue<IntentFile> {
+    func perform() async throws -> some IntentResult & ReturnsValue<WordCardEntity> & ProvidesDialog & ShowsSnippetView {
         let context = SharedModelContainer.container.mainContext
-        let descriptor = FetchDescriptor<WordCard>(
-            predicate: #Predicate { $0.isArchived == false }
-        )
+        let descriptor = FetchDescriptor<WordCard>()
         let cards = try context.fetch(descriptor)
+            .filter { !$0.isArchived }
 
         guard let card = cards.randomElement() else {
-            throw RandomCardError("No cards available.")
+            throw RandomCardError("You don't have any cards yet.")
         }
 
-        let exporter = PNGExporter()
-        guard let image = exporter.export(card: card, resolution: .medium) else {
-            throw RandomCardError("Failed to render card image.")
-        }
-
-        let tempURL = FileManager.default.temporaryDirectory
-            .appendingPathComponent(UUID().uuidString)
-            .appendingPathExtension("png")
-        try exporter.saveToPNG(image: image, url: tempURL)
-        let data = try Data(contentsOf: tempURL)
-        try FileManager.default.removeItem(at: tempURL)
-
-        let file = IntentFile(data: data, filename: "wordcard.png", type: .png)
-        return .result(value: file)
+        let entity = WordCardEntity(card: card)
+        return .result(
+            value: entity,
+            dialog: "\(card.text)",
+            view: WordCardSnippetView(card: entity)
+        )
     }
 }
 #endif

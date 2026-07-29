@@ -83,6 +83,9 @@ struct ValenceApp: App {
             ContentView()
                 .task {
                     WidgetSnapshotService.refresh(from: sharedModelContainer)
+                    #if !os(tvOS)
+                    await WordCardSpotlightIndexer.reindexAll()
+                    #endif
                 }
                 .onOpenURL { url in
                     guard url.scheme == "wordcard" else { return }

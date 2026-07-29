@@ -11,26 +11,25 @@ enum CardSortOrder: String, CaseIterable {
 
 struct CardListView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(filter: CardListView.activeCardsPredicate, sort: [
-        SortDescriptor(\WordCard.createdAt, order: .reverse)
-    ]) private var cards: [WordCard]
-
-    private static let activeCardsPredicate = #Predicate<WordCard> { card in
-        card.isArchived == false
-    }
     @Query private var allCards: [WordCard]
+
+    private var activeCards: [WordCard] {
+        allCards
+            .filter { !$0.isArchived }
+            .sorted { $0.createdAt > $1.createdAt }
+    }
     @AppStorage("cardSortOrder") private var sortOrder: CardSortOrder = .newestFirst
 
     private var sortedCards: [WordCard] {
         switch sortOrder {
         case .newestFirst:
-            return cards.sorted { $0.createdAt > $1.createdAt }
+            return activeCards.sorted { $0.createdAt > $1.createdAt }
         case .oldestFirst:
-            return cards.sorted { $0.createdAt < $1.createdAt }
+            return activeCards.sorted { $0.createdAt < $1.createdAt }
         case .recentlyUpdated:
-            return cards.sorted { $0.updatedAt > $1.updatedAt }
+            return activeCards.sorted { $0.updatedAt > $1.updatedAt }
         case .alphabetical:
-            return cards.sorted { $0.text.localizedCaseInsensitiveCompare($1.text) == .orderedAscending }
+            return activeCards.sorted { $0.text.localizedCaseInsensitiveCompare($1.text) == .orderedAscending }
         }
     }
     @Binding var selectedCard: WordCard?
@@ -58,6 +57,15 @@ struct CardListView: View {
     @State private var editingCard: WordCard?
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var autoBackup = AutoBackupService.shared
+
+    #if !os(tvOS)
+    private var spotlightIndexSignature: String {
+        activeCards.map { card in
+            "\(card.id.uuidString):\(card.updatedAt.timeIntervalSinceReferenceDate):\(card.isArchived)"
+        }
+        .joined(separator: "|")
+    }
+    #endif
 
     private var filteredCards: [WordCard] {
         let sorted = sortedCards
@@ -103,7 +111,7 @@ struct CardListView: View {
                 } label: {
                     Label("Random Card", systemImage: "die.face.5")
                 }
-                .disabled(cards.isEmpty)
+                .disabled(activeCards.isEmpty)
             }
             #endif
             #if os(tvOS)
@@ -133,7 +141,7 @@ struct CardListView: View {
         .sheet(isPresented: $showingRandomCardShare) {
             if let card = randomCard {
                 if UIDevice.current.userInterfaceIdiom == .phone {
-                    RandomCardPreviewView(cards: cards, card: card, cgImage: randomCardImage)
+                    RandomCardPreviewView(cards: activeCards, card: card, cgImage: randomCardImage)
                 } else if let image = randomCardImage {
                     ShareSheetView(image: image, card: card)
                 } else {
@@ -145,7 +153,7 @@ struct CardListView: View {
         #elseif !os(tvOS)
         .sheet(isPresented: $showingRandomCardShare) {
             if let card = randomCard {
-                RandomCardPreviewView(cards: cards, card: card, cgImage: randomCardImage)
+                RandomCardPreviewView(cards: activeCards, card: card, cgImage: randomCardImage)
                     #if os(macOS)
                     .frame(minWidth: 420, minHeight: 350)
                     #endif
@@ -159,7 +167,7 @@ struct CardListView: View {
                 #endif
         }
         .sheet(isPresented: $showingCardActivity) {
-            CardActivityChartView(cards: cards)
+            CardActivityChartView(cards: activeCards)
         }
         #if !os(tvOS)
         .fileExporter(
@@ -233,6 +241,11 @@ struct CardListView: View {
             if newPhase == .active {
                 autoBackup.runIfNeeded(cards: allCards)
             }
+        }
+        .task(id: spotlightIndexSignature) {
+            try? await Task.sleep(for: .seconds(1))
+            guard !Task.isCancelled else { return }
+            await WordCardSpotlightIndexer.reindexAll()
         }
         #endif
     }
@@ -449,17 +462,10 @@ struct CardListView: View {
     }
 
     private func shareRandomCard() {
-        guard let card = cards.randomElement() else { return }
+        guard let card = activeCards.randomElement() else { return }
         randomCard = card
-        randomCardImage = nil
+        randomCardImage = PNGExporter().export(card: card, resolution: .medium)
         showingRandomCardShare = true
-        Task.detached {
-            let exporter = PNGExporter()
-            let image = exporter.export(card: card, resolution: .medium)
-            await MainActor.run {
-                randomCardImage = image
-            }
-        }
     }
 
     private func exportBackup() {
@@ -536,14 +542,22 @@ struct BackupDocument: FileDocument {
 struct ArchiveView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
-    @Query(filter: ArchiveView.archivedCardsPredicate, sort: [
-        SortDescriptor(\WordCard.archivedAt, order: .reverse),
-        SortDescriptor(\WordCard.updatedAt, order: .reverse),
-        SortDescriptor(\WordCard.createdAt, order: .reverse)
-    ]) private var archivedCards: [WordCard]
+    @Query private var allCards: [WordCard]
 
-    private static let archivedCardsPredicate = #Predicate<WordCard> { card in
-        card.isArchived == true
+    private var archivedCards: [WordCard] {
+        allCards
+            .filter { $0.isArchived }
+            .sorted { lhs, rhs in
+                let lhsArchivedAt = lhs.archivedAt ?? lhs.updatedAt
+                let rhsArchivedAt = rhs.archivedAt ?? rhs.updatedAt
+                if lhsArchivedAt != rhsArchivedAt {
+                    return lhsArchivedAt > rhsArchivedAt
+                }
+                if lhs.updatedAt != rhs.updatedAt {
+                    return lhs.updatedAt > rhs.updatedAt
+                }
+                return lhs.createdAt > rhs.createdAt
+            }
     }
 
     var body: some View {

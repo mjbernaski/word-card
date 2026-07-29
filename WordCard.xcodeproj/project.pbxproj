@@ -11,6 +11,9 @@
 		611638B72EE88B48000BCDC3 /* ValenceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611638B62EE88B48000BCDC3 /* ValenceApp.swift */; };
 		611638BA2EEA0000000BCDC3 /* ImmersiveCardSpaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611638BB2EEA0000000BCDC3 /* ImmersiveCardSpaceView.swift */; };
 		611638BC2EEA0001000BCDC3 /* BackupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611638BD2EEA0001000BCDC3 /* BackupService.swift */; };
+		614B16AD2FE9F63D00F8EF7C /* WordCardEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614B16AC2FE9F63D00F8EF7C /* WordCardEntity.swift */; };
+		614B16AF2FE9F67500F8EF7C /* ReadWordCardsIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614B16AE2FE9F67500F8EF7C /* ReadWordCardsIntent.swift */; };
+		614B16B12FE9F8C500F8EF7C /* WordCardSpotlightIndexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614B16B02FE9F8C500F8EF7C /* WordCardSpotlightIndexer.swift */; };
 		61AB68552EFC214D003D01C1 /* CardCountBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB68542EFC214D003D01C1 /* CardCountBadge.swift */; };
 		61AB68562EFC3000003D01C1 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB68572EFC3000003D01C1 /* AppVersion.swift */; };
 		61AB68582EFC4000003D01C1 /* SyncDiagnosticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB68592EFC4000003D01C1 /* SyncDiagnosticsView.swift */; };
@@ -70,6 +73,9 @@
 		611638B62EE88B48000BCDC3 /* ValenceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValenceApp.swift; sourceTree = "<group>"; };
 		611638BB2EEA0000000BCDC3 /* ImmersiveCardSpaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveCardSpaceView.swift; sourceTree = "<group>"; };
 		611638BD2EEA0001000BCDC3 /* BackupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupService.swift; sourceTree = "<group>"; };
+		614B16AC2FE9F63D00F8EF7C /* WordCardEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCardEntity.swift; sourceTree = "<group>"; };
+		614B16AE2FE9F67500F8EF7C /* ReadWordCardsIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadWordCardsIntent.swift; sourceTree = "<group>"; };
+		614B16B02FE9F8C500F8EF7C /* WordCardSpotlightIndexer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCardSpotlightIndexer.swift; sourceTree = "<group>"; };
 		6150DEC82FB21F2100D8E005 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		61AB68542EFC214D003D01C1 /* CardCountBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCountBadge.swift; sourceTree = "<group>"; };
 		61AB68572EFC3000003D01C1 /* AppVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
@@ -224,6 +230,7 @@
 				61AB68712F0A0000003D01C1 /* AutoBackupService.swift */,
 				C20000010000000000000001 /* SharedModelContainer.swift */,
 				F30000010000000000000001 /* WidgetSnapshotService.swift */,
+				614B16B02FE9F8C500F8EF7C /* WordCardSpotlightIndexer.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -244,6 +251,8 @@
 				C20000010000000000000004 /* RandomCardIntent.swift */,
 				C20000010000000000000005 /* SearchWordCardsIntent.swift */,
 				C20000010000000000000003 /* WordCardShortcuts.swift */,
+				614B16AC2FE9F63D00F8EF7C /* WordCardEntity.swift */,
+				614B16AE2FE9F67500F8EF7C /* ReadWordCardsIntent.swift */,
 			);
 			path = Intents;
 			sourceTree = "<group>";
@@ -364,18 +373,21 @@
 				A10000010000000000000003 /* WordCard.swift in Sources */,
 				A10000010000000000000004 /* CardListView.swift in Sources */,
 				61AB68552EFC214D003D01C1 /* CardCountBadge.swift in Sources */,
+				614B16AF2FE9F67500F8EF7C /* ReadWordCardsIntent.swift in Sources */,
 				A10000010000000000000005 /* CardDetailView.swift in Sources */,
 				A10000010000000000000006 /* CardEditorView.swift in Sources */,
 				A10000010000000000000007 /* CardPreviewView.swift in Sources */,
 				A10000010000000000000008 /* PNGExporter.swift in Sources */,
 				611638B72EE88B48000BCDC3 /* ValenceApp.swift in Sources */,
 				611638B52EE88688000BCDC3 /* CloudKitSyncMonitor.swift in Sources */,
+				614B16AD2FE9F63D00F8EF7C /* WordCardEntity.swift in Sources */,
 				611638BA2EEA0000000BCDC3 /* ImmersiveCardSpaceView.swift in Sources */,
 				61AB685A2EFC5000003D01C1 /* CardShowcaseView.swift in Sources */,
 				611638BC2EEA0001000BCDC3 /* BackupService.swift in Sources */,
 				61AB68702F0A0000003D01C1 /* AutoBackupService.swift in Sources */,
 				61AB68562EFC3000003D01C1 /* AppVersion.swift in Sources */,
 				61AB68582EFC4000003D01C1 /* SyncDiagnosticsView.swift in Sources */,
+				614B16B12FE9F8C500F8EF7C /* WordCardSpotlightIndexer.swift in Sources */,
 				C10000010000000000000001 /* SharedModelContainer.swift in Sources */,
 				C10000010000000000000002 /* CreateWordCardIntent.swift in Sources */,
 				C10000010000000000000003 /* WordCardShortcuts.swift in Sources */,
@@ -534,7 +546,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = WordCard/WordCard.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = DQPDVF6ZSY;
 				ENABLE_APP_SANDBOX = NO;
@@ -554,6 +566,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WordCard/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Valence;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -565,7 +578,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.2.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.wordcard.app;
+				PRODUCT_BUNDLE_IDENTIFIER = mjbernaski.wordcard.app;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=appletvos*]" = mjbernaski.wordcard.app;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = mjbernaski.wordcard.app;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = mjbernaski.wordcard.app;
@@ -592,7 +605,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "WordCard/WordCard-Release.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = DQPDVF6ZSY;
 				ENABLE_APP_SANDBOX = YES;
@@ -612,6 +625,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WordCard/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Valence;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -623,7 +637,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.2.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.wordcard.app;
+				PRODUCT_BUNDLE_IDENTIFIER = mjbernaski.wordcard.app;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=appletvos*]" = mjbernaski.wordcard.app;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = mjbernaski.wordcard.app;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = mjbernaski.wordcard.app;
@@ -649,7 +663,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = WordCardWidget/WordCardWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = DQPDVF6ZSY;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WordCardWidget/Info.plist;
@@ -674,7 +688,7 @@
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
-				XROS_DEPLOYMENT_TARGET = 2.0;
+				XROS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Debug;
 		};
@@ -684,7 +698,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = WordCardWidget/WordCardWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = DQPDVF6ZSY;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WordCardWidget/Info.plist;
@@ -709,7 +723,7 @@
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
-				XROS_DEPLOYMENT_TARGET = 2.0;
+				XROS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Release;
 		};

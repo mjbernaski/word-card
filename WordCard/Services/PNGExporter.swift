@@ -9,7 +9,7 @@ import AppKit
 
 class PNGExporter {
 
-    func export(card: WordCard, resolution: ExportResolution = .medium, includeNotes: Bool = false) -> CGImage? {
+    func export(card: WordCard, resolution: ExportResolution = .medium, includeNotes: Bool = true) -> CGImage? {
         let dpi = CGFloat(resolution.dpi)
         let width = Int(3 * dpi)
         let height = Int(1.5 * dpi)

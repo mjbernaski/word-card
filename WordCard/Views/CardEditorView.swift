@@ -8,8 +8,13 @@ struct CardEditorView: View {
 
     var existingCard: WordCard?
 
-    @Query(filter: #Predicate<WordCard> { !$0.isArchived }, sort: \WordCard.updatedAt, order: .reverse)
-    private var allCards: [WordCard]
+    @Query private var allCards: [WordCard]
+
+    private var activeCards: [WordCard] {
+        allCards
+            .filter { !$0.isArchived }
+            .sorted { $0.updatedAt > $1.updatedAt }
+    }
 
     @State private var text: String = ""
     @State private var notes: String = ""
@@ -21,7 +26,6 @@ struct CardEditorView: View {
     @State private var hasBorder: Bool = true
     @State private var borderColor: Color = Color(hex: "#CC785C") ?? .brown
     @State private var borderWidth: Double = 1
-    @State private var dpi: Int = 150
     @State private var valence: Double = 0
 
     init(card: WordCard? = nil) {
@@ -37,7 +41,6 @@ struct CardEditorView: View {
             _hasBorder = State(initialValue: card.borderColor != nil)
             _borderColor = State(initialValue: card.borderColor.flatMap { Color(hex: $0) } ?? .brown)
             _borderWidth = State(initialValue: Double(card.borderWidth))
-            _dpi = State(initialValue: card.dpi)
             _valence = State(initialValue: Double(card.valence))
         }
     }
@@ -68,7 +71,7 @@ struct CardEditorView: View {
             }
 
             if existingCard == nil {
-                let matches = DuplicateDetector.matches(for: text, in: allCards, limit: 5)
+                let matches = DuplicateDetector.matches(for: text, in: activeCards, limit: 5)
                 if !matches.isEmpty {
                     Section {
                         ForEach(matches, id: \.card.id) { match in
@@ -225,14 +228,6 @@ struct CardEditorView: View {
                     }
                 }
             }
-
-            Section("Export Settings") {
-                Picker("DPI", selection: $dpi) {
-                    Text("72 (Screen)").tag(72)
-                    Text("150 (Default)").tag(150)
-                    Text("300 (Print)").tag(300)
-                }
-            }
         }
         .formStyle(.grouped)
         .navigationTitle(existingCard == nil ? "New Card" : "Edit Card")
@@ -267,7 +262,6 @@ struct CardEditorView: View {
             card.cornerRadius = Int(cornerRadius)
             card.borderColor = hasBorder ? borderColor.toHex() : nil
             card.borderWidth = Int(borderWidth)
-            card.dpi = dpi
             card.valence = Int(valence)
             card.updatedAt = Date()
         } else {
@@ -280,7 +274,6 @@ struct CardEditorView: View {
                 cornerRadius: Int(cornerRadius),
                 borderColor: hasBorder ? borderColor.toHex() : nil,
                 borderWidth: Int(borderWidth),
-                dpi: dpi,
                 notes: notes,
                 valence: Int(valence)
             )
