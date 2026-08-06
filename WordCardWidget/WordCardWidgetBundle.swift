@@ -2,7 +2,7 @@
 import WidgetKit
 import SwiftUI
 
-@available(visionOS 26.0, *)
+@available(iOS 17.0, macOS 14.0, visionOS 1.0, *)
 @main
 struct WordCardWidgetBundle: WidgetBundle {
     var body: some Widget {

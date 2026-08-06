@@ -31,9 +31,11 @@ enum WordCardSpotlightIndexer {
     /// Re-donates every active card, replacing the previous index contents.
     /// Best-effort: failures are logged but never surfaced to the user.
     static func reindexAll() async {
+        guard let container = await MainActor.run(body: { SharedModelContainer.container as ModelContainer? }) else { return }
+
         await Task.detached(priority: .utility) {
             do {
-                let context = ModelContext(SharedModelContainer.container)
+                let context = ModelContext(container)
                 let descriptor = FetchDescriptor<WordCard>()
                 let entities = try context.fetch(descriptor)
                     .filter { !$0.isArchived }
@@ -76,3 +78,4 @@ enum WordCardSpotlightIndexer {
     }
 }
 #endif
+
