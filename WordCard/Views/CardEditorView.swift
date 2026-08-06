@@ -8,14 +8,6 @@ struct CardEditorView: View {
 
     var existingCard: WordCard?
 
-    @Query private var allCards: [WordCard]
-
-    private var activeCards: [WordCard] {
-        allCards
-            .filter { !$0.isArchived }
-            .sorted { $0.updatedAt > $1.updatedAt }
-    }
-
     @State private var text: String = ""
     @State private var notes: String = ""
     @State private var category: CardCategory = .idea
@@ -27,7 +19,9 @@ struct CardEditorView: View {
     @State private var borderColor: Color = Color(hex: "#CC785C") ?? .brown
     @State private var borderWidth: Double = 1
     @State private var valence: Double = 0
+    @State private var duplicateMatches: [DuplicateMatch] = []
     @FocusState private var isTextFieldFocused: Bool
+
 
     init(card: WordCard? = nil) {
         self.existingCard = card
@@ -67,53 +61,54 @@ struct CardEditorView: View {
                 TextField("Enter text", text: $text, axis: .vertical)
                     .lineLimit(3...6)
                     .focused($isTextFieldFocused)
+                    .onChange(of: text) { _, newText in
+                        checkForDuplicates(in: newText)
+                    }
                     #if !os(macOS)
                     .textInputAutocapitalization(.never)
                     #endif
             }
 
-            if existingCard == nil {
-                let matches = DuplicateDetector.matches(for: text, in: activeCards, limit: 5)
-                if !matches.isEmpty {
-                    Section {
-                        ForEach(matches, id: \.card.id) { match in
-                            HStack(alignment: .top, spacing: 12) {
-                                CardPreviewView(
-                                    text: match.card.text,
-                                    backgroundColor: Color(hex: match.card.backgroundColor) ?? .white,
-                                    textColor: Color(hex: match.card.textColor) ?? .black,
-                                    fontStyle: match.card.fontStyle,
-                                    cornerRadius: CGFloat(match.card.cornerRadius),
-                                    borderColor: match.card.borderColor.flatMap { Color(hex: $0) },
-                                    borderWidth: CGFloat(match.card.borderWidth)
-                                )
-                                .frame(width: 90, height: 45)
+            if existingCard == nil && !duplicateMatches.isEmpty {
+                Section {
+                    ForEach(duplicateMatches) { match in
+                        HStack(alignment: .top, spacing: 12) {
+                            CardPreviewView(
+                                text: match.text,
+                                backgroundColor: Color(hex: match.backgroundColor) ?? .white,
+                                textColor: Color(hex: match.textColor) ?? .black,
+                                fontStyle: match.fontStyle,
+                                cornerRadius: CGFloat(match.cornerRadius),
+                                borderColor: match.borderColor.flatMap { Color(hex: $0) },
+                                borderWidth: CGFloat(match.borderWidth)
+                            )
+                            .frame(width: 90, height: 45)
 
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(match.card.text)
-                                        .font(.subheadline)
-                                        .lineLimit(3)
-                                    Text(match.card.updatedAt.formatted(date: .abbreviated, time: .omitted))
-                                        .font(.caption2)
-                                        .foregroundStyle(.secondary)
-                                }
-                                Spacer(minLength: 0)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(match.text)
+                                    .font(.subheadline)
+                                    .lineLimit(3)
+                                Text(match.updatedAt.formatted(date: .abbreviated, time: .omitted))
+                                    .font(.caption2)
+                                    .foregroundStyle(.secondary)
                             }
-                            .padding(.vertical, 2)
+                            Spacer(minLength: 0)
                         }
-
-                        Button {
-                            dismiss()
-                        } label: {
-                            Label("Cancel", systemImage: "xmark.circle")
-                        }
-                    } header: {
-                        Label("Similar Cards", systemImage: "square.on.square")
-                    } footer: {
-                        Text("These existing cards share words with what you're typing.")
+                        .padding(.vertical, 2)
                     }
+
+                    Button {
+                        dismiss()
+                    } label: {
+                        Label("Cancel", systemImage: "xmark.circle")
+                    }
+                } header: {
+                    Label("Similar Cards", systemImage: "square.on.square")
+                } footer: {
+                    Text("These existing cards share words with what you're typing.")
                 }
             }
+
 
             Section {
                 ZStack(alignment: .topLeading) {
@@ -233,10 +228,10 @@ struct CardEditorView: View {
         }
         .formStyle(.grouped)
         .navigationTitle(existingCard == nil ? "New Card" : "Edit Card")
-        .task {
-            guard existingCard == nil else { return }
-            await Task.yield()
-            isTextFieldFocused = true
+        .onAppear {
+            if existingCard == nil {
+                isTextFieldFocused = true
+            }
         }
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
@@ -254,6 +249,26 @@ struct CardEditorView: View {
                     dismiss()
                 }
                 .disabled(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            }
+        }
+    }
+
+    private func checkForDuplicates(in input: String) {
+        let trimmed = input.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard existingCard == nil, trimmed.count >= 3 else {
+            if !duplicateMatches.isEmpty { duplicateMatches = [] }
+            return
+        }
+
+        let container = modelContext.container
+        Task.detached(priority: .utility) {
+            let context = ModelContext(container)
+            let descriptor = FetchDescriptor<WordCard>()
+            guard let cards = try? context.fetch(descriptor) else { return }
+            let active = cards.filter { !$0.isArchived }
+            let matches = DuplicateDetector.matches(for: trimmed, in: active, limit: 5)
+            await MainActor.run {
+                self.duplicateMatches = matches
             }
         }
     }
@@ -290,12 +305,19 @@ struct CardEditorView: View {
     }
 }
 
-enum DuplicateDetector {
-    struct Match {
-        let card: WordCard
-        let score: Int
-    }
+struct DuplicateMatch: Identifiable, Sendable {
+    let id: UUID
+    let text: String
+    let backgroundColor: String
+    let textColor: String
+    let fontStyle: FontStyle
+    let cornerRadius: Int
+    let borderColor: String?
+    let borderWidth: Int
+    let updatedAt: Date
+}
 
+enum DuplicateDetector {
     private static let stopWords: Set<String> = [
         "the", "and", "for", "are", "but", "not", "you", "all", "can", "her",
         "was", "one", "our", "out", "day", "get", "has", "him", "his", "how",
@@ -316,14 +338,14 @@ enum DuplicateDetector {
         return Set(words.filter { $0.count >= 3 && !stopWords.contains($0) })
     }
 
-    static func matches(for input: String, in cards: [WordCard], limit: Int) -> [Match] {
+    static func matches(for input: String, in cards: [WordCard], limit: Int) -> [DuplicateMatch] {
         let inputTokens = tokens(in: input)
         guard !inputTokens.isEmpty else { return [] }
 
-        let scored: [Match] = cards.compactMap { card in
+        let scored: [(card: WordCard, score: Int)] = cards.compactMap { card in
             let cardTokens = tokens(in: card.text)
             let shared = inputTokens.intersection(cardTokens).count
-            return shared > 0 ? Match(card: card, score: shared) : nil
+            return shared > 0 ? (card, shared) : nil
         }
 
         return scored
@@ -332,9 +354,22 @@ enum DuplicateDetector {
                 return $0.card.updatedAt > $1.card.updatedAt
             }
             .prefix(limit)
-            .map { $0 }
+            .map { match in
+                DuplicateMatch(
+                    id: match.card.id,
+                    text: match.card.text,
+                    backgroundColor: match.card.backgroundColor,
+                    textColor: match.card.textColor,
+                    fontStyle: match.card.fontStyle,
+                    cornerRadius: match.card.cornerRadius,
+                    borderColor: match.card.borderColor,
+                    borderWidth: match.card.borderWidth,
+                    updatedAt: match.card.updatedAt
+                )
+            }
     }
 }
+
 
 #Preview {
     NavigationStack {

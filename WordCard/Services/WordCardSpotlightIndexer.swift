@@ -30,31 +30,33 @@ enum WordCardSpotlightIndexer {
 
     /// Re-donates every active card, replacing the previous index contents.
     /// Best-effort: failures are logged but never surfaced to the user.
-    @MainActor
     static func reindexAll() async {
-        do {
-            let context = SharedModelContainer.container.mainContext
-            let descriptor = FetchDescriptor<WordCard>()
-            let entities = try context.fetch(descriptor)
-                .filter { !$0.isArchived }
-                .map(WordCardEntity.init)
+        await Task.detached(priority: .utility) {
+            do {
+                let context = ModelContext(SharedModelContainer.container)
+                let descriptor = FetchDescriptor<WordCard>()
+                let entities = try context.fetch(descriptor)
+                    .filter { !$0.isArchived }
+                    .map(WordCardEntity.init)
 
-            try await index.deleteAllSearchableItems()
-            guard !entities.isEmpty else { return }
+                try await index.deleteAllSearchableItems()
+                guard !entities.isEmpty else { return }
 
-            #if os(macOS)
-            try await index.indexSearchableItems(entities.map(searchableItem))
-            #else
-            if #available(iOS 18.0, visionOS 2.0, *) {
-                try await index.indexAppEntities(entities)
-            } else {
+                #if os(macOS)
                 try await index.indexSearchableItems(entities.map(searchableItem))
+                #else
+                if #available(iOS 18.0, visionOS 2.0, *) {
+                    try await index.indexAppEntities(entities)
+                } else {
+                    try await index.indexSearchableItems(entities.map(searchableItem))
+                }
+                #endif
+            } catch {
+                print("⚠️ Spotlight reindex failed: \(error)")
             }
-            #endif
-        } catch {
-            print("⚠️ Spotlight reindex failed: \(error)")
-        }
+        }.value
     }
+
 
     /// Adds or updates a single card in the index (e.g. right after creation).
     static func index(_ entity: WordCardEntity) async {

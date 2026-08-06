@@ -57,14 +57,7 @@ struct CardListView: View {
     @State private var editingCard: WordCard?
     @StateObject private var autoBackup = AutoBackupService.shared
 
-    #if !os(tvOS)
-    private var spotlightIndexSignature: String {
-        activeCards.map { card in
-            "\(card.id.uuidString):\(card.updatedAt.timeIntervalSinceReferenceDate):\(card.isArchived)"
-        }
-        .joined(separator: "|")
-    }
-    #endif
+
 
     private var filteredCards: [WordCard] {
         let sorted = sortedCards
@@ -234,11 +227,8 @@ struct CardListView: View {
                 Text("Removed \(result.duplicatesRemoved) duplicate(s).\n\(result.uniqueCards) unique cards remaining.")
             }
         }
-        .task(id: spotlightIndexSignature) {
-            // CloudKit imports can arrive as a burst after activation. Wait until
-            // the query is quiet, then perform one maintenance pass without making
-            // foreground activation contend with the UI.
-            try? await Task.sleep(for: .seconds(30))
+        .task(id: activeCards.count) {
+            try? await Task.sleep(for: .seconds(3))
             guard !Task.isCancelled else { return }
 
             await WidgetSnapshotService.refresh(cards: allCards)
@@ -247,11 +237,6 @@ struct CardListView: View {
             await autoBackup.runIfNeeded(cards: allCards)
             guard !Task.isCancelled else { return }
 
-            await WordCardSpotlightIndexer.reindexAll()
-        }
-        .task(id: spotlightIndexSignature) {
-            try? await Task.sleep(for: .seconds(1))
-            guard !Task.isCancelled else { return }
             await WordCardSpotlightIndexer.reindexAll()
         }
         #endif
