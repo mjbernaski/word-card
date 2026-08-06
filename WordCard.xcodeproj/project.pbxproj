@@ -553,7 +553,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = WordCard/WordCard.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = DQPDVF6ZSY;
 				ENABLE_APP_SANDBOX = NO;
@@ -584,7 +584,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.2.1;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = mjbernaski.wordcard.app;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=appletvos*]" = mjbernaski.wordcard.app;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = mjbernaski.wordcard.app;
@@ -613,7 +613,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "WordCard/WordCard-Release.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = DQPDVF6ZSY;
 				ENABLE_APP_SANDBOX = YES;
@@ -644,7 +644,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.2.1;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = mjbernaski.wordcard.app;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=appletvos*]" = mjbernaski.wordcard.app;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = mjbernaski.wordcard.app;
@@ -672,7 +672,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = WordCardWidget/WordCardWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = DQPDVF6ZSY;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WordCardWidget/Info.plist;
@@ -685,7 +685,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.2.1;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = mjbernaski.wordcard.app.WordCardWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -708,7 +708,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = WordCardWidget/WordCardWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = DQPDVF6ZSY;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WordCardWidget/Info.plist;
@@ -721,7 +721,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.2.1;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = mjbernaski.wordcard.app.WordCardWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
