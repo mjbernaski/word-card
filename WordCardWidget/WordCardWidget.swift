@@ -6,6 +6,7 @@ struct WordCardEntry: TimelineEntry {
     let card: WidgetCardSnapshot?
 }
 
+@available(iOS 17.0, macOS 14.0, visionOS 26.0, *)
 struct WordCardProvider: TimelineProvider {
     func placeholder(in context: Context) -> WordCardEntry {
         WordCardEntry(date: Date(), card: Self.placeholderCard)
@@ -42,6 +43,7 @@ struct WordCardProvider: TimelineProvider {
     )
 }
 
+@available(iOS 17.0, macOS 14.0, visionOS 26.0, *)
 struct WordCardWidgetEntryView: View {
     @Environment(\.widgetFamily) private var family
     let entry: WordCardEntry
@@ -124,6 +126,7 @@ struct WordCardWidgetEntryView: View {
     }
 }
 
+@available(iOS 17.0, macOS 14.0, visionOS 26.0, *)
 struct WordCardWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(
@@ -146,6 +149,7 @@ struct WordCardWidget: Widget {
     }
 }
 
+@available(iOS 17.0, macOS 14.0, visionOS 26.0, *)
 #Preview(as: .systemMedium) {
     WordCardWidget()
 } timeline: {
@@ -165,3 +169,4 @@ struct WordCardWidget: Widget {
         )
     )
 }
+
