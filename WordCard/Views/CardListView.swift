@@ -103,6 +103,7 @@ struct CardListView: View {
                 } label: {
                     Label("Add Card", systemImage: "plus")
                 }
+                .keyboardShortcut("+", modifiers: [])
             }
             ToolbarItem(placement: .secondaryAction) {
                 Button {

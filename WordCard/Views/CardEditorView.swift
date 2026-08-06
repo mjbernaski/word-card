@@ -27,6 +27,7 @@ struct CardEditorView: View {
     @State private var borderColor: Color = Color(hex: "#CC785C") ?? .brown
     @State private var borderWidth: Double = 1
     @State private var valence: Double = 0
+    @FocusState private var isTextFieldFocused: Bool
 
     init(card: WordCard? = nil) {
         self.existingCard = card
@@ -65,6 +66,7 @@ struct CardEditorView: View {
             Section("Text") {
                 TextField("Enter text", text: $text, axis: .vertical)
                     .lineLimit(3...6)
+                    .focused($isTextFieldFocused)
                     #if !os(macOS)
                     .textInputAutocapitalization(.never)
                     #endif
@@ -231,6 +233,11 @@ struct CardEditorView: View {
         }
         .formStyle(.grouped)
         .navigationTitle(existingCard == nil ? "New Card" : "Edit Card")
+        .task {
+            guard existingCard == nil else { return }
+            await Task.yield()
+            isTextFieldFocused = true
+        }
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
