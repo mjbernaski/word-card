@@ -90,7 +90,7 @@ enum WidgetSnapshotService {
 
     private static func reloadWidgetTimelines() {
         #if canImport(WidgetKit) && !os(tvOS)
-        if #available(iOS 17.0, macOS 14.0, visionOS 1.0, *) {
+        if #available(iOS 17.0, macOS 14.0, visionOS 26.0, *) {
             WidgetCenter.shared.reloadTimelines(ofKind: widgetKind)
         }
         #endif
