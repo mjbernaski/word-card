@@ -14,6 +14,18 @@
 		614B16AD2FE9F63D00F8EF7C /* WordCardEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614B16AC2FE9F63D00F8EF7C /* WordCardEntity.swift */; };
 		614B16AF2FE9F67500F8EF7C /* ReadWordCardsIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614B16AE2FE9F67500F8EF7C /* ReadWordCardsIntent.swift */; };
 		614B16B12FE9F8C500F8EF7C /* WordCardSpotlightIndexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614B16B02FE9F8C500F8EF7C /* WordCardSpotlightIndexer.swift */; };
+		B10000010000000000000001 /* ImageCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000010000000000000001 /* ImageCard.swift */; };
+		B10000010000000000000002 /* ImageCardListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000010000000000000002 /* ImageCardListView.swift */; };
+		B10000010000000000000003 /* ImageCardDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000010000000000000003 /* ImageCardDetailView.swift */; };
+		B10000010000000000000004 /* ImageCardEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000010000000000000004 /* ImageCardEditorView.swift */; };
+		B10000010000000000000005 /* ImageCardPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000010000000000000005 /* ImageCardPreviewView.swift */; };
+		B10000010000000000000006 /* MasonryGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000010000000000000006 /* MasonryGrid.swift */; };
+		B10000010000000000000007 /* ClipboardImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000010000000000000007 /* ClipboardImageService.swift */; };
+		B10000010000000000000008 /* ImageCardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000010000000000000008 /* ImageCardApp.swift */; };
+		B10000010000000000000009 /* ImageCardContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000010000000000000009 /* ImageCardContentView.swift */; };
+		B10000010000000000000010 /* ImageCardCountBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000010000000000000010 /* ImageCardCountBadge.swift */; };
+		B10000010000000000000011 /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000010000000000000011 /* Color+Hex.swift */; };
+		B10000010000000000000012 /* ImageCard Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B20000010000000000000012 /* ImageCard Assets.xcassets */; };
 		61AB68552EFC214D003D01C1 /* CardCountBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB68542EFC214D003D01C1 /* CardCountBadge.swift */; };
 		61AB68562EFC3000003D01C1 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB68572EFC3000003D01C1 /* AppVersion.swift */; };
 		61AB68582EFC4000003D01C1 /* SyncDiagnosticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB68592EFC4000003D01C1 /* SyncDiagnosticsView.swift */; };
@@ -93,7 +105,20 @@
 		A20000010000000000000007 /* CardPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPreviewView.swift; sourceTree = "<group>"; };
 		A20000010000000000000008 /* PNGExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PNGExporter.swift; sourceTree = "<group>"; };
 		A20000010000000000000009 /* AppConfig.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = AppConfig.json; sourceTree = "<group>"; };
+		B20000010000000000000001 /* ImageCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCard.swift; sourceTree = "<group>"; };
+		B20000010000000000000002 /* ImageCardListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCardListView.swift; sourceTree = "<group>"; };
+		B20000010000000000000003 /* ImageCardDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCardDetailView.swift; sourceTree = "<group>"; };
+		B20000010000000000000004 /* ImageCardEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCardEditorView.swift; sourceTree = "<group>"; };
+		B20000010000000000000005 /* ImageCardPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCardPreviewView.swift; sourceTree = "<group>"; };
+		B20000010000000000000006 /* MasonryGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasonryGrid.swift; sourceTree = "<group>"; };
+		B20000010000000000000007 /* ClipboardImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardImageService.swift; sourceTree = "<group>"; };
+		B20000010000000000000008 /* ImageCardApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCardApp.swift; sourceTree = "<group>"; };
+		B20000010000000000000009 /* ImageCardContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCardContentView.swift; sourceTree = "<group>"; };
+		B20000010000000000000010 /* ImageCardCountBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCardCountBadge.swift; sourceTree = "<group>"; };
+		B20000010000000000000011 /* Color+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Hex.swift"; sourceTree = "<group>"; };
+		B20000010000000000000012 /* ImageCard Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = "ImageCard Assets.xcassets"; path = "ImageCard Assets/Assets.xcassets"; sourceTree = "<group>"; };
 		A30000010000000000000001 /* Valence.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Valence.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B30000010000000000000001 /* ImageCard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageCard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C20000010000000000000001 /* SharedModelContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedModelContainer.swift; sourceTree = "<group>"; };
 		C20000010000000000000002 /* CreateWordCardIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWordCardIntent.swift; sourceTree = "<group>"; };
 		C20000010000000000000003 /* WordCardShortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCardShortcuts.swift; sourceTree = "<group>"; };
@@ -111,6 +136,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		B40000010000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A40000010000000000000001 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -176,6 +208,9 @@
 			children = (
 				6150DEC82FB21F2100D8E005 /* Info.plist */,
 				611638B62EE88B48000BCDC3 /* ValenceApp.swift */,
+				B20000010000000000000008 /* ImageCardApp.swift */,
+				B20000010000000000000010 /* ImageCardCountBadge.swift */,
+				B20000010000000000000012 /* ImageCard Assets.xcassets */,
 				A50000010000000000000004 /* Models */,
 				A50000010000000000000005 /* Views */,
 				A50000010000000000000006 /* Services */,
@@ -192,6 +227,7 @@
 			isa = PBXGroup;
 			children = (
 				A30000010000000000000001 /* Valence.app */,
+				B30000010000000000000001 /* ImageCard.app */,
 				F1000001000000000000000A /* WordCardWidget.appex */,
 			);
 			name = Products;
@@ -201,6 +237,7 @@
 			isa = PBXGroup;
 			children = (
 				A20000010000000000000003 /* WordCard.swift */,
+				B20000010000000000000001 /* ImageCard.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -218,6 +255,12 @@
 				61AB685B2EFC5000003D01C1 /* CardShowcaseView.swift */,
 				61AB68592EFC4000003D01C1 /* SyncDiagnosticsView.swift */,
 				E20000010000000000000001 /* CardActivityChartView.swift */,
+				B20000010000000000000009 /* ImageCardContentView.swift */,
+				B20000010000000000000002 /* ImageCardListView.swift */,
+				B20000010000000000000003 /* ImageCardDetailView.swift */,
+				B20000010000000000000004 /* ImageCardEditorView.swift */,
+				B20000010000000000000005 /* ImageCardPreviewView.swift */,
+				B20000010000000000000006 /* MasonryGrid.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -231,6 +274,8 @@
 				C20000010000000000000001 /* SharedModelContainer.swift */,
 				F30000010000000000000001 /* WidgetSnapshotService.swift */,
 				614B16B02FE9F8C500F8EF7C /* WordCardSpotlightIndexer.swift */,
+				B20000010000000000000007 /* ClipboardImageService.swift */,
+				B20000010000000000000011 /* Color+Hex.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -272,6 +317,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		B60000010000000000000001 /* ImageCard */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B70000010000000000000003 /* Build configuration list for PBXNativeTarget "ImageCard" */;
+			buildPhases = (
+				B80000010000000000000001 /* Sources */,
+				B40000010000000000000001 /* Frameworks */,
+				B90000010000000000000001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ImageCard;
+			productName = ImageCard;
+			productReference = B30000010000000000000001 /* ImageCard.app */;
+			productType = "com.apple.product-type.application";
+		};
 		A60000010000000000000001 /* WordCard */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A70000010000000000000001 /* Build configuration list for PBXNativeTarget "WordCard" */;
@@ -321,6 +383,9 @@
 					A60000010000000000000001 = {
 						CreatedOnToolsVersion = 15.0;
 					};
+					B60000010000000000000001 = {
+						CreatedOnToolsVersion = 27.0;
+					};
 				};
 			};
 			buildConfigurationList = AB0000010000000000000001 /* Build configuration list for PBXProject "WordCard" */;
@@ -337,12 +402,21 @@
 			projectRoot = "";
 			targets = (
 				A60000010000000000000001 /* WordCard */,
+				B60000010000000000000001 /* ImageCard */,
 				F50000010000000000000001 /* WordCardWidget */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		B90000010000000000000001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B10000010000000000000012 /* ImageCard Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A90000010000000000000001 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -365,6 +439,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		B80000010000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B10000010000000000000008 /* ImageCardApp.swift in Sources */,
+				B10000010000000000000001 /* ImageCard.swift in Sources */,
+				B10000010000000000000009 /* ImageCardContentView.swift in Sources */,
+				B10000010000000000000002 /* ImageCardListView.swift in Sources */,
+				B10000010000000000000003 /* ImageCardDetailView.swift in Sources */,
+				B10000010000000000000004 /* ImageCardEditorView.swift in Sources */,
+				B10000010000000000000005 /* ImageCardPreviewView.swift in Sources */,
+				B10000010000000000000006 /* MasonryGrid.swift in Sources */,
+				B10000010000000000000007 /* ClipboardImageService.swift in Sources */,
+				B10000010000000000000010 /* ImageCardCountBadge.swift in Sources */,
+				B10000010000000000000011 /* Color+Hex.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A80000010000000000000001 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -424,6 +516,83 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		B70000010000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = WordCard/ImageCard.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=iphoneos*]" = "WordCard/ImageCard-iOS.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
+				DEVELOPMENT_TEAM = DQPDVF6ZSY;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readwrite;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = ImageCard;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.graphics-design";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = mjbernaski.imagecard.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B70000010000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = WordCard/ImageCard.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=iphoneos*]" = "WordCard/ImageCard-iOS.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
+				DEVELOPMENT_TEAM = DQPDVF6ZSY;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readwrite;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = ImageCard;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.graphics-design";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = mjbernaski.imagecard.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		AC0000010000000000000001 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -741,6 +910,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		B70000010000000000000003 /* Build configuration list for PBXNativeTarget "ImageCard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B70000010000000000000001 /* Debug */,
+				B70000010000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		A70000010000000000000001 /* Build configuration list for PBXNativeTarget "WordCard" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
