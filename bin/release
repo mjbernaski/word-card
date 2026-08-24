@@ -1,0 +1,147 @@
+#!/bin/bash
+# Archive and distribute every platform a scheme supports, in one command.
+#
+# Xcode's Archive action only ever archives the platform of the currently
+# selected run destination, so shipping a multiplatform target means repeating
+# the whole flow by hand once per platform. Missing one is silent: ImageCard's
+# macOS build carried the CloudKit container fix while the iOS build did not,
+# and for weeks the two apps mirrored into different iCloud containers without
+# either of them reporting an error.
+
+set -euo pipefail
+
+PROJECT="WordCard.xcodeproj"
+EXPORT_OPTIONS="TestFlightExportOptions.plist"
+OUT_DIR="build/release"
+
+usage() {
+    cat <<EOF
+release - archive a scheme for every platform it ships on
+
+Usage:
+  release <scheme> [platform ...]   Archive, then export for App Store Connect
+  release --archive-only <scheme> [platform ...]
+
+Platforms default to "iOS macOS"; pass them explicitly to override
+(e.g. "release WordCard iOS macOS visionOS").
+
+Archives land in $OUT_DIR/<scheme>-<platform>.xcarchive and exports beside
+them. Build numbers come from the project: $EXPORT_OPTIONS sets
+manageAppVersionAndBuildNumber=false, so bump CURRENT_PROJECT_VERSION before
+running or App Store Connect will reject the build as a duplicate.
+
+Uploading needs an App Store Connect API key. Set these first:
+
+  export ASC_KEY_PATH=~/private_keys/AuthKey_XXXXXXXXXX.p8
+  export ASC_KEY_ID=XXXXXXXXXX
+  export ASC_ISSUER_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+
+Without them, only --archive-only works and you distribute from Xcode's
+Organizer by hand.
+
+Signing is manual on purpose. Xcode.app signs with a *cloud-managed*
+distribution certificate, which API keys cannot access — xcodebuild then fails
+with "Cloud signing permission error" no matter what -allowProvisioningUpdates
+is told to do. The way through is real local certificates plus explicit
+profiles. Create these once in Xcode > Settings > Accounts > Manage
+Certificates (+):
+
+  Apple Distribution              signs the app (both platforms)
+  Mac Installer Distribution      signs the .pkg (macOS App Store only)
+
+and name the App Store profiles per the PROFILE_* values below. Mac uploads
+need installerSigningCertificate as well as signingCertificate: the profile
+covers the app, not the installer.
+EOF
+}
+
+archive_only=false
+if [[ "${1:-}" == "--archive-only" ]]; then
+    archive_only=true
+    shift
+fi
+
+scheme="${1:-}"
+if [[ -z "$scheme" || "$scheme" == "-h" || "$scheme" == "--help" ]]; then
+    usage
+    [[ -z "$scheme" ]] && exit 2 || exit 0
+fi
+shift
+
+platforms=("$@")
+[[ ${#platforms[@]} -eq 0 ]] && platforms=(iOS macOS)
+
+TEAM_ID="DQPDVF6ZSY"
+BUNDLE_ID="mjbernaski.imagecard.app"
+PROFILE_IOS="ImageCard iOS App Store"
+PROFILE_MACOS="ImageCard macOS App Store"
+
+write_export_options() {
+    local platform="$1" out="$2" profile
+    case "$platform" in
+        iOS)   profile="$PROFILE_IOS" ;;
+        macOS) profile="$PROFILE_MACOS" ;;
+        *)     echo "no App Store profile configured for platform $platform" >&2; exit 1 ;;
+    esac
+
+    {
+        echo '<?xml version="1.0" encoding="UTF-8"?>'
+        echo '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">'
+        echo '<plist version="1.0"><dict>'
+        echo "  <key>destination</key><string>upload</string>"
+        echo "  <key>method</key><string>app-store-connect</string>"
+        echo "  <key>manageAppVersionAndBuildNumber</key><false/>"
+        echo "  <key>signingStyle</key><string>manual</string>"
+        echo "  <key>signingCertificate</key><string>Apple Distribution</string>"
+        # The .pkg an App Store macOS upload ships in is signed by a different
+        # certificate than the app inside it, and the profile does not cover it.
+        [[ "$platform" == "macOS" ]] && \
+            echo "  <key>installerSigningCertificate</key><string>3rd Party Mac Developer Installer</string>"
+        echo "  <key>provisioningProfiles</key><dict>"
+        echo "    <key>${BUNDLE_ID}</key><string>${profile}</string>"
+        echo "  </dict>"
+        echo "  <key>stripSwiftSymbols</key><true/>"
+        echo "  <key>teamID</key><string>${TEAM_ID}</string>"
+        echo "  <key>uploadSymbols</key><true/>"
+        echo '</dict></plist>'
+    } > "$out"
+}
+
+mkdir -p "$OUT_DIR"
+
+for platform in "${platforms[@]}"; do
+    archive="$OUT_DIR/${scheme}-${platform}.xcarchive"
+    echo "==> Archiving $scheme for $platform"
+    xcodebuild archive \
+        -project "$PROJECT" \
+        -scheme "$scheme" \
+        -configuration Release \
+        -destination "generic/platform=${platform}" \
+        -archivePath "$archive" \
+        -allowProvisioningUpdates
+
+    if [[ "$archive_only" == true ]]; then
+        echo "==> Archived: $archive"
+        continue
+    fi
+
+    if [[ -z "${ASC_KEY_PATH:-}" || -z "${ASC_KEY_ID:-}" || -z "${ASC_ISSUER_ID:-}" ]]; then
+        echo "==> Archived: $archive"
+        echo "    Skipping upload: ASC_KEY_PATH / ASC_KEY_ID / ASC_ISSUER_ID not set." >&2
+        continue
+    fi
+
+    opts="$OUT_DIR/exportOptions-${platform}.plist"
+    write_export_options "$platform" "$opts"
+
+    echo "==> Uploading $scheme ($platform) to App Store Connect"
+    xcodebuild -exportArchive \
+        -archivePath "$archive" \
+        -exportPath "$OUT_DIR/${scheme}-${platform}-upload" \
+        -exportOptionsPlist "$opts" \
+        -authenticationKeyPath "$ASC_KEY_PATH" \
+        -authenticationKeyID "$ASC_KEY_ID" \
+        -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+done
+
+echo "==> Done: ${platforms[*]}"

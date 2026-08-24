@@ -98,6 +98,8 @@ struct ImageCardListView: View {
                     }
                 }
             }
+
+            ImageCardStatusBar()
         }
         .navigationTitle("Image Cards")
         .searchable(text: $searchText, prompt: "Search title, notes, or tags...")
