@@ -11,8 +11,8 @@
 set -euo pipefail
 
 PROJECT="WordCard.xcodeproj"
-EXPORT_OPTIONS="TestFlightExportOptions.plist"
 OUT_DIR="build/release"
+TEAM_ID="DQPDVF6ZSY"
 
 usage() {
     cat <<EOF
@@ -22,13 +22,16 @@ Usage:
   release <scheme> [platform ...]   Archive, then export for App Store Connect
   release --archive-only <scheme> [platform ...]
 
+Schemes: WordCard, ImageCard
 Platforms default to "iOS macOS"; pass them explicitly to override
 (e.g. "release WordCard iOS macOS visionOS").
 
 Archives land in $OUT_DIR/<scheme>-<platform>.xcarchive and exports beside
-them. Build numbers come from the project: $EXPORT_OPTIONS sets
+them. Build numbers come from the project: the generated export options set
 manageAppVersionAndBuildNumber=false, so bump CURRENT_PROJECT_VERSION before
-running or App Store Connect will reject the build as a duplicate.
+running or App Store Connect will reject the build as a duplicate. The build
+and marketing version are echoed before each archive so you can catch a
+forgotten bump before waiting on a Release build.
 
 Uploading needs an App Store Connect API key. Set these first:
 
@@ -49,40 +52,66 @@ Certificates (+):
   Apple Distribution              signs the app (both platforms)
   Mac Installer Distribution      signs the .pkg (macOS App Store only)
 
-and name the App Store profiles per the PROFILE_* values below. Mac uploads
-need installerSigningCertificate as well as signingCertificate: the profile
-covers the app, not the installer.
+Mac uploads need installerSigningCertificate as well as signingCertificate:
+the profile covers the app, not the installer.
+
+Every bundle inside the archive needs its own App Store profile, named exactly
+as listed in signing_config() below — an embedded extension with no profile
+fails the export even though the app itself is signed. WordCard embeds
+WordCardWidget on iOS, macOS, and visionOS (but not tvOS, which the widget
+target does not support), so those platforms need two profiles each.
+Run "release --profiles <scheme> [platform ...]" to print the exact list.
 EOF
 }
 
-archive_only=false
-if [[ "${1:-}" == "--archive-only" ]]; then
-    archive_only=true
-    shift
-fi
+# Per-scheme, per-platform App Store signing configuration.
+#
+# Each line is "<bundle-id>|<profile-name>", one per bundle the archive
+# contains. This is the whole reason the script exists as a table rather than a
+# pair of variables: the previous version hardcoded ImageCard's bundle ID and
+# profiles, so pointing it at WordCard archived the right app and then handed
+# the exporter a profile map that did not mention WordCard at all.
+signing_config() {
+    local scheme="$1" platform="$2"
 
-scheme="${1:-}"
-if [[ -z "$scheme" || "$scheme" == "-h" || "$scheme" == "--help" ]]; then
-    usage
-    [[ -z "$scheme" ]] && exit 2 || exit 0
-fi
-shift
+    case "$scheme:$platform" in
+        WordCard:iOS)
+            echo "mjbernaski.wordcard.app|WordCard iOS App Store"
+            echo "mjbernaski.wordcard.app.WordCardWidget|WordCard Widget iOS App Store"
+            ;;
+        WordCard:macOS)
+            echo "mjbernaski.wordcard.app|WordCard macOS App Store"
+            echo "mjbernaski.wordcard.app.WordCardWidget|WordCard Widget macOS App Store"
+            ;;
+        WordCard:visionOS)
+            echo "mjbernaski.wordcard.app|WordCard visionOS App Store"
+            echo "mjbernaski.wordcard.app.WordCardWidget|WordCard Widget visionOS App Store"
+            ;;
+        WordCard:tvOS)
+            # WordCardWidget does not support appletvos, so the tvOS archive
+            # embeds no extension and needs no second profile.
+            echo "mjbernaski.wordcard.app|WordCard tvOS App Store"
+            ;;
+        ImageCard:iOS)
+            echo "mjbernaski.imagecard.app|ImageCard iOS App Store"
+            ;;
+        ImageCard:macOS)
+            echo "mjbernaski.imagecard.app|ImageCard macOS App Store"
+            ;;
+    esac
+}
 
-platforms=("$@")
-[[ ${#platforms[@]} -eq 0 ]] && platforms=(iOS macOS)
-
-TEAM_ID="DQPDVF6ZSY"
-BUNDLE_ID="mjbernaski.imagecard.app"
-PROFILE_IOS="ImageCard iOS App Store"
-PROFILE_MACOS="ImageCard macOS App Store"
+require_signing_config() {
+    local scheme="$1" platform="$2"
+    if [[ -z "$(signing_config "$scheme" "$platform")" ]]; then
+        echo "release: no App Store profiles configured for $scheme on $platform." >&2
+        echo "         Add an entry to signing_config() in $0." >&2
+        exit 1
+    fi
+}
 
 write_export_options() {
-    local platform="$1" out="$2" profile
-    case "$platform" in
-        iOS)   profile="$PROFILE_IOS" ;;
-        macOS) profile="$PROFILE_MACOS" ;;
-        *)     echo "no App Store profile configured for platform $platform" >&2; exit 1 ;;
-    esac
+    local scheme="$1" platform="$2" out="$3"
 
     {
         echo '<?xml version="1.0" encoding="UTF-8"?>'
@@ -98,7 +127,10 @@ write_export_options() {
         [[ "$platform" == "macOS" ]] && \
             echo "  <key>installerSigningCertificate</key><string>3rd Party Mac Developer Installer</string>"
         echo "  <key>provisioningProfiles</key><dict>"
-        echo "    <key>${BUNDLE_ID}</key><string>${profile}</string>"
+        while IFS='|' read -r bundle profile; do
+            [[ -z "$bundle" ]] && continue
+            echo "    <key>${bundle}</key><string>${profile}</string>"
+        done < <(signing_config "$scheme" "$platform")
         echo "  </dict>"
         echo "  <key>stripSwiftSymbols</key><true/>"
         echo "  <key>teamID</key><string>${TEAM_ID}</string>"
@@ -107,11 +139,58 @@ write_export_options() {
     } > "$out"
 }
 
+print_versions() {
+    local scheme="$1" platform="$2"
+    # Purely informational, and running under `set -e -o pipefail`: never let a
+    # failed lookup take the release down with it.
+    xcodebuild -project "$PROJECT" -scheme "$scheme" -configuration Release \
+        -destination "generic/platform=${platform}" -showBuildSettings 2>/dev/null \
+        | awk '/ MARKETING_VERSION = / {m=$3} / CURRENT_PROJECT_VERSION = / {b=$3}
+               END {if (m != "" || b != "") printf "    version %s (build %s)\n", m, b}' \
+        || true
+}
+
+archive_only=false
+print_profiles=false
+case "${1:-}" in
+    --archive-only) archive_only=true; shift ;;
+    --profiles)     print_profiles=true; shift ;;
+esac
+
+scheme="${1:-}"
+if [[ -z "$scheme" || "$scheme" == "-h" || "$scheme" == "--help" ]]; then
+    usage
+    [[ -z "$scheme" ]] && exit 2 || exit 0
+fi
+shift
+
+platforms=("$@")
+[[ ${#platforms[@]} -eq 0 ]] && platforms=(iOS macOS)
+
+# Validate every platform before archiving anything. A missing profile used to
+# surface only at export, after a full Release build had already run.
+for platform in "${platforms[@]}"; do
+    require_signing_config "$scheme" "$platform"
+done
+
+if [[ "$print_profiles" == true ]]; then
+    echo "App Store profiles required for $scheme:"
+    for platform in "${platforms[@]}"; do
+        echo "  $platform"
+        while IFS='|' read -r bundle profile; do
+            [[ -z "$bundle" ]] && continue
+            printf '    %-45s %s\n' "$bundle" "$profile"
+        done < <(signing_config "$scheme" "$platform")
+    done
+    exit 0
+fi
+
 mkdir -p "$OUT_DIR"
 
 for platform in "${platforms[@]}"; do
     archive="$OUT_DIR/${scheme}-${platform}.xcarchive"
     echo "==> Archiving $scheme for $platform"
+    print_versions "$scheme" "$platform"
     xcodebuild archive \
         -project "$PROJECT" \
         -scheme "$scheme" \
@@ -131,8 +210,8 @@ for platform in "${platforms[@]}"; do
         continue
     fi
 
-    opts="$OUT_DIR/exportOptions-${platform}.plist"
-    write_export_options "$platform" "$opts"
+    opts="$OUT_DIR/exportOptions-${scheme}-${platform}.plist"
+    write_export_options "$scheme" "$platform" "$opts"
 
     echo "==> Uploading $scheme ($platform) to App Store Connect"
     xcodebuild -exportArchive \
