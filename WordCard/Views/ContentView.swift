@@ -49,9 +49,6 @@ struct ContentView: View {
         .onAppear {
             syncMonitor.setModelContainer(modelContext.container)
         }
-        .onContinueUserActivity(CSSearchableItemActionType) { activity in
-            openSpotlightCard(from: activity)
-        }
         #elseif os(visionOS)
         NavigationSplitView {
             CardListView(selectedCard: $selectedCard, showingEditor: $showingEditor)
@@ -115,7 +112,6 @@ struct ContentView: View {
                 }
                 .onAppear {
                     syncMonitor.setModelContainer(modelContext.container)
-                    seedSampleDataIfNeeded()
                 }
         }
         .fullScreenCover(isPresented: $showingShowcase) {
@@ -146,54 +142,6 @@ struct ContentView: View {
         }
         #endif
     }
-
-    #if os(macOS)
-    private func openSpotlightCard(from activity: NSUserActivity) {
-        guard let identifier = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String,
-              let cardID = UUID(uuidString: identifier) else { return }
-
-        let descriptor = FetchDescriptor<WordCard>()
-        guard let card = try? modelContext.fetch(descriptor).first(where: { $0.id == cardID }) else { return }
-
-        selectedCard = card
-        columnVisibility = .all
-        NSApp.activate(ignoringOtherApps: true)
-    }
-    #endif
-
-    #if os(tvOS)
-    private func seedSampleDataIfNeeded() {
-        let descriptor = FetchDescriptor<WordCard>()
-        let count = (try? modelContext.fetchCount(descriptor)) ?? 0
-        guard count == 0 else { return }
-
-        guard let url = Bundle.main.url(forResource: "SampleCards", withExtension: "json"),
-              let data = try? Data(contentsOf: url) else { return }
-
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        guard let backup = try? decoder.decode(BackupFile.self, from: data) else { return }
-
-        for cardBackup in backup.cards where !cardBackup.isArchived {
-            let card = WordCard(
-                id: cardBackup.id,
-                text: cardBackup.text,
-                backgroundColor: cardBackup.backgroundColor,
-                textColor: cardBackup.textColor,
-                fontStyle: FontStyle(rawValue: cardBackup.fontStyle) ?? .elegant,
-                category: CardCategory(rawValue: cardBackup.category) ?? .idea,
-                cornerRadius: cardBackup.cornerRadius,
-                borderColor: cardBackup.borderColor,
-                borderWidth: cardBackup.borderWidth,
-                dpi: cardBackup.dpi,
-                createdAt: cardBackup.createdAt,
-                updatedAt: cardBackup.updatedAt,
-                notes: cardBackup.notes
-            )
-            modelContext.insert(card)
-        }
-    }
-    #endif
 }
 
 struct SyncStatusDot: View {
@@ -259,67 +207,6 @@ struct PulseAnimation: ViewModifier {
             .onAppear {
                 isPulsing = true
             }
-    }
-}
-
-struct SyncStatusView: View {
-    @ObservedObject var syncMonitor: CloudKitSyncMonitor
-    
-    var body: some View {
-        HStack {
-            Image(systemName: statusIcon)
-                .foregroundColor(statusColor)
-            
-            Text(statusText)
-                .font(.caption)
-            
-            Spacer()
-            
-            if syncMonitor.syncStatus == .error || syncMonitor.syncStatus == .disabled {
-                Button("Fix") {
-                    syncMonitor.forceSyncRefresh()
-                }
-                .font(.caption)
-                .buttonStyle(.borderless)
-            }
-        }
-        .padding(.horizontal)
-        .padding(.vertical, 8)
-        .background(Color.secondary.opacity(0.1))
-    }
-    
-    private var statusIcon: String {
-        switch syncMonitor.syncStatus {
-        case .syncing: return "arrow.trianglehead.2.clockwise.rotate.90"
-        case .synced: return "checkmark.icloud"
-        case .error: return "exclamationmark.triangle"
-        case .disabled: return "icloud.slash"
-        case .unknown: return "questionmark.circle"
-        }
-    }
-    
-    private var statusColor: Color {
-        switch syncMonitor.syncStatus {
-        case .syncing: return .blue
-        case .synced: return .green
-        case .error: return .red
-        case .disabled: return .orange
-        case .unknown: return .gray
-        }
-    }
-    
-    private var statusText: String {
-        if let errorMessage = syncMonitor.errorMessage {
-            return errorMessage
-        }
-        
-        switch syncMonitor.syncStatus {
-        case .syncing: return "Syncing cards..."
-        case .synced: return "Cards synced"
-        case .error: return "Sync error"
-        case .disabled: return "iCloud sync disabled"
-        case .unknown: return "Checking sync status..."
-        }
     }
 }
 

@@ -55,6 +55,7 @@ struct CardListView: View {
     @State private var randomCardImage: CGImage?
     @State private var showingRandomCardShare = false
     @State private var editingCard: WordCard?
+    @State private var showingURLProposal = false
     @StateObject private var autoBackup = AutoBackupService.shared
 
 
@@ -91,12 +92,21 @@ struct CardListView: View {
         .toolbar {
             #if !os(tvOS)
             ToolbarItem(placement: .primaryAction) {
-                Button {
-                    showingEditor = true
+                Menu {
+                    Button {
+                        showingEditor = true
+                    } label: {
+                        Label("New Blank Card", systemImage: "rectangle.on.rectangle.angled")
+                    }
+                    .keyboardShortcut("+", modifiers: [])
+                    Button {
+                        showingURLProposal = true
+                    } label: {
+                        Label("Propose from URL", systemImage: "link.badge.plus")
+                    }
                 } label: {
                     Label("Add Card", systemImage: "plus")
                 }
-                .keyboardShortcut("+", modifiers: [])
             }
             ToolbarItem(placement: .secondaryAction) {
                 Button {
@@ -162,6 +172,11 @@ struct CardListView: View {
         .sheet(isPresented: $showingCardActivity) {
             CardActivityChartView(cards: activeCards)
         }
+        #if !os(tvOS)
+        .sheet(isPresented: $showingURLProposal) {
+            URLCardProposalView()
+        }
+        #endif
         #if !os(tvOS)
         .fileExporter(
             isPresented: $showingExporter,
@@ -425,8 +440,17 @@ struct CardListView: View {
         #if os(iOS)
         .overlay(alignment: .bottomTrailing) {
             if UIDevice.current.userInterfaceIdiom == .phone {
-                Button {
-                    showingEditor = true
+                Menu {
+                    Button {
+                        showingEditor = true
+                    } label: {
+                        Label("New Blank Card", systemImage: "rectangle.on.rectangle.angled")
+                    }
+                    Button {
+                        showingURLProposal = true
+                    } label: {
+                        Label("Propose from URL", systemImage: "link.badge.plus")
+                    }
                 } label: {
                     Image(systemName: "plus")
                         .font(.title2.weight(.semibold))

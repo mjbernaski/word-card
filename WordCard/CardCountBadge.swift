@@ -13,8 +13,7 @@ struct CardCountBadge: View {
         .font(.caption2)
         .padding(.horizontal, 6)
         .padding(.vertical, 2)
-        .background(.ultraThinMaterial)
-        .clipShape(Capsule())
+        .background(.ultraThinMaterial, in: Capsule())
         .accessibilityLabel("Total cards: \(allCards.count)")
     }
 }

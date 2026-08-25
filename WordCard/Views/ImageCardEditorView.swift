@@ -24,6 +24,7 @@ struct ImageCardEditorView: View {
     @State private var selectedPhotoItem: PhotosPickerItem?
     @State private var showingFileImporter = false
     @State private var pasteFeedback: String?
+    @FocusState private var isTitleFocused: Bool
 
     init(card: ImageCard? = nil) {
         self.existingCard = card
@@ -130,6 +131,7 @@ struct ImageCardEditorView: View {
 
             Section("Card Title") {
                 TextField("Title / Caption (Optional)", text: $title)
+                    .focused($isTitleFocused)
                     #if !os(macOS)
                     .textInputAutocapitalization(.sentences)
                     #endif
@@ -229,6 +231,11 @@ struct ImageCardEditorView: View {
         }
         .formStyle(.grouped)
         .navigationTitle(existingCard == nil ? "New Image Card" : "Edit Image Card")
+        .onAppear {
+            if existingCard == nil {
+                isTitleFocused = true
+            }
+        }
         #if !os(tvOS)
         .fileImporter(
             isPresented: $showingFileImporter,
@@ -248,9 +255,6 @@ struct ImageCardEditorView: View {
                             self.imageData = info.data
                             self.imageWidth = info.width
                             self.imageHeight = info.height
-                            if self.title.isEmpty {
-                                self.title = info.sourceDescription
-                            }
                             self.pasteFeedback = "✅ Loaded image from Photos (\(Int(info.width))×\(Int(info.height)) px)"
                         }
                     }
@@ -295,9 +299,6 @@ struct ImageCardEditorView: View {
             self.imageData = info.data
             self.imageWidth = info.width
             self.imageHeight = info.height
-            if title.isEmpty {
-                title = info.sourceDescription
-            }
             withAnimation {
                 pasteFeedback = "📋 Pasted image from clipboard (\(Int(info.width)) × \(Int(info.height)) px)"
             }
@@ -317,9 +318,6 @@ struct ImageCardEditorView: View {
             self.imageData = info.data
             self.imageWidth = info.width
             self.imageHeight = info.height
-            if title.isEmpty {
-                title = info.sourceDescription
-            }
             withAnimation {
                 pasteFeedback = "📁 Loaded \(url.lastPathComponent) (\(Int(info.width)) × \(Int(info.height)) px)"
             }

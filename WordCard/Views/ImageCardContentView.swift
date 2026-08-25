@@ -54,7 +54,7 @@ struct ImageCardContentView: View {
         #else
         NavigationStack {
             ImageCardListView(selectedCard: $selectedImageCard, showingEditor: $showingEditor)
-                .navigationDestination(for: ImageCard.self) { card in
+                .navigationDestination(item: $selectedImageCard) { card in
                     ImageCardDetailView(card: card)
                 }
                 .sheet(isPresented: $showingEditor) {
