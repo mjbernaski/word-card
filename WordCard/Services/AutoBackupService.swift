@@ -44,7 +44,8 @@ final class AutoBackupService: ObservableObject {
                     isArchived: card.isArchived,
                     archivedAt: card.archivedAt,
                     notes: card.notes,
-                    valence: card.valence
+                    valence: card.valence,
+                    isItalic: card.isItalic
                 )
             }
         )

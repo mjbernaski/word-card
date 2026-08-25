@@ -13,6 +13,8 @@ struct WidgetCardSnapshot: Codable, Sendable {
     let borderColorHex: String?
     let borderWidth: Int
     let notes: String
+    /// Optional so a snapshot written by an older build still decodes.
+    let isItalic: Bool?
 }
 
 struct WidgetCardsSnapshot: Codable, Sendable {
@@ -61,7 +63,8 @@ enum WidgetSnapshotService {
                     cornerRadius: card.cornerRadius,
                     borderColorHex: card.borderColor,
                     borderWidth: card.borderWidth,
-                    notes: card.notes
+                    notes: card.notes,
+                    isItalic: card.isItalic
                 )
             }
 

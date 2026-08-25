@@ -18,6 +18,7 @@ struct CardBackup: Codable, Sendable {
     let archivedAt: Date?
     let notes: String
     let valence: Int
+    let isItalic: Bool
 
     // Custom decoder to handle backups without notes field (backward compatibility)
     init(from decoder: Decoder) throws {
@@ -38,6 +39,7 @@ struct CardBackup: Codable, Sendable {
         archivedAt = try container.decodeIfPresent(Date.self, forKey: .archivedAt)
         notes = try container.decodeIfPresent(String.self, forKey: .notes) ?? ""
         valence = try container.decodeIfPresent(Int.self, forKey: .valence) ?? 0
+        isItalic = try container.decodeIfPresent(Bool.self, forKey: .isItalic) ?? false
     }
 
     init(
@@ -56,7 +58,8 @@ struct CardBackup: Codable, Sendable {
         isArchived: Bool,
         archivedAt: Date?,
         notes: String,
-        valence: Int = 0
+        valence: Int = 0,
+        isItalic: Bool = false
     ) {
         self.id = id
         self.text = text
@@ -74,6 +77,7 @@ struct CardBackup: Codable, Sendable {
         self.archivedAt = archivedAt
         self.notes = notes
         self.valence = valence
+        self.isItalic = isItalic
     }
 }
 
@@ -132,7 +136,8 @@ class BackupService {
                 isArchived: card.isArchived,
                 archivedAt: card.archivedAt,
                 notes: card.notes,
-                valence: card.valence
+                valence: card.valence,
+                isItalic: card.isItalic
             )
         }
 
@@ -238,7 +243,8 @@ class BackupService {
             isArchived: backup.isArchived,
             archivedAt: backup.archivedAt,
             notes: backup.notes,
-            valence: backup.valence
+            valence: backup.valence,
+            isItalic: backup.isItalic
         )
         return card
     }
@@ -256,6 +262,7 @@ class BackupService {
         card.archivedAt = backup.archivedAt
         card.notes = backup.notes
         card.valence = backup.valence
+        card.isItalic = backup.isItalic
         card.updatedAt = Date()
     }
 }

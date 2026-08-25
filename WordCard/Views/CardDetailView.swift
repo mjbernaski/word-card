@@ -21,7 +21,8 @@ struct CardDetailView: View {
                     cornerRadius: CGFloat(card.cornerRadius),
                     borderColor: card.borderColor.flatMap { Color(hex: $0) },
                     borderWidth: CGFloat(card.borderWidth),
-                    notes: card.notes
+                    notes: card.notes,
+                    isItalic: card.isItalic
                 )
                 .frame(maxWidth: 800, maxHeight: 400)
                 .shadow(color: .black.opacity(0.2), radius: 12, x: 0, y: 6)
@@ -35,7 +36,8 @@ struct CardDetailView: View {
                     cornerRadius: CGFloat(card.cornerRadius),
                     borderColor: card.borderColor.flatMap { Color(hex: $0) },
                     borderWidth: CGFloat(card.borderWidth),
-                    notes: card.notes
+                    notes: card.notes,
+                    isItalic: card.isItalic
                 )
                 .frame(maxWidth: 600, maxHeight: 300)
                 .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
@@ -49,7 +51,8 @@ struct CardDetailView: View {
                     cornerRadius: CGFloat(card.cornerRadius),
                     borderColor: card.borderColor.flatMap { Color(hex: $0) },
                     borderWidth: CGFloat(card.borderWidth),
-                    notes: card.notes
+                    notes: card.notes,
+                    isItalic: card.isItalic
                 )
                 .frame(maxWidth: 450, maxHeight: 225)
                 .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
@@ -88,6 +91,7 @@ struct CardDetailView: View {
                     Text("Card Details")
                         .font(.headline)
                     DetailRow(label: "Font Style", value: card.fontStyle.displayName)
+                    DetailRow(label: "Italic", value: card.isItalic ? "Yes" : "No")
                     DetailRow(label: "Corner Radius", value: "\(card.cornerRadius)px")
                     DetailRow(label: "Border", value: card.borderColor != nil ? "Yes (\(card.borderWidth)px)" : "None")
                     DetailRow(label: "Valence", value: card.valence > 0 ? "+\(card.valence)" : "\(card.valence)")
@@ -105,6 +109,7 @@ struct CardDetailView: View {
                 GroupBox("Card Details") {
                     VStack(alignment: .leading, spacing: 12) {
                         DetailRow(label: "Font Style", value: card.fontStyle.displayName)
+                        DetailRow(label: "Italic", value: card.isItalic ? "Yes" : "No")
                         DetailRow(label: "Corner Radius", value: "\(card.cornerRadius)px")
                         DetailRow(label: "Border", value: card.borderColor != nil ? "Yes (\(card.borderWidth)px)" : "None")
                         DetailRow(label: "Valence", value: card.valence > 0 ? "+\(card.valence)" : "\(card.valence)")

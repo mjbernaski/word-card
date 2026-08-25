@@ -9,11 +9,13 @@ struct CardPreviewView: View {
     let borderColor: Color?
     let borderWidth: CGFloat
     var notes: String = ""
+    var isItalic: Bool = false
 
     var body: some View {
         GeometryReader { geometry in
             let displayText = text.isEmpty ? "Preview" : text
             let font = fontForStyle(fontStyle, size: geometry.size, text: displayText)
+            let mainFont = isItalic ? font.italic() : font
 
             ZStack {
                 RoundedRectangle(cornerRadius: cornerRadius)
@@ -21,7 +23,7 @@ struct CardPreviewView: View {
 
                 VStack(spacing: 0) {
                     Text(displayText)
-                        .font(font)
+                        .font(mainFont)
                         .foregroundStyle(text.isEmpty ? textColor.opacity(0.4) : textColor)
                         .multilineTextAlignment(.center)
                         .frame(maxWidth: .infinity)

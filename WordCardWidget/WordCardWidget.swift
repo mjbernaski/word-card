@@ -39,7 +39,8 @@ struct WordCardProvider: TimelineProvider {
         cornerRadius: 20,
         borderColorHex: "#CC785C",
         borderWidth: 1,
-        notes: ""
+        notes: "",
+        isItalic: false
     )
 }
 
@@ -71,7 +72,8 @@ struct WordCardWidgetEntryView: View {
         GeometryReader { geo in
             let textColor = Color(widgetHex: card.textColorHex) ?? .primary
             let displayText = card.text.isEmpty ? "Word Card" : card.text
-            let font = Font.custom(card.fontName, size: fontSize(for: geo.size, text: displayText))
+            let baseFont = Font.custom(card.fontName, size: fontSize(for: geo.size, text: displayText))
+            let font = (card.isItalic ?? false) ? baseFont.italic() : baseFont
 
             VStack(spacing: 0) {
                 Text(displayText)
@@ -165,7 +167,8 @@ struct WordCardWidget: Widget {
             cornerRadius: 20,
             borderColorHex: "#CC785C",
             borderWidth: 1,
-            notes: "love of fate"
+            notes: "love of fate",
+            isItalic: true
         )
     )
 }

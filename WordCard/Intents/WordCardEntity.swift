@@ -18,6 +18,7 @@ struct WordCardEntity: IndexedEntity, Identifiable {
     let borderColorHex: String?
     let borderWidth: Int
     let notes: String
+    let isItalic: Bool
     let createdAt: Date
     let updatedAt: Date
 
@@ -44,6 +45,7 @@ struct WordCardEntity: IndexedEntity, Identifiable {
         self.borderColorHex = card.borderColor
         self.borderWidth = card.borderWidth
         self.notes = card.notes
+        self.isItalic = card.isItalic
         self.createdAt = card.createdAt
         self.updatedAt = card.updatedAt
     }
@@ -115,7 +117,8 @@ struct WordCardSnippetView: View {
             cornerRadius: CGFloat(card.cornerRadius),
             borderColor: card.borderColorHex.flatMap { Color(hex: $0) },
             borderWidth: CGFloat(card.borderWidth),
-            notes: card.notes
+            notes: card.notes,
+            isItalic: card.isItalic
         )
         .frame(maxWidth: 360)
         .padding()

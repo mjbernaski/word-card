@@ -19,6 +19,7 @@ struct CardEditorView: View {
     @State private var borderColor: Color = Color(hex: "#CC785C") ?? .brown
     @State private var borderWidth: Double = 1
     @State private var valence: Double = 0
+    @State private var isItalic: Bool = false
     @State private var duplicateMatches: [DuplicateMatch] = []
     @FocusState private var isTextFieldFocused: Bool
 
@@ -37,6 +38,7 @@ struct CardEditorView: View {
             _borderColor = State(initialValue: card.borderColor.flatMap { Color(hex: $0) } ?? .brown)
             _borderWidth = State(initialValue: Double(card.borderWidth))
             _valence = State(initialValue: Double(card.valence))
+            _isItalic = State(initialValue: card.isItalic)
         } else if let proposal {
             _text = State(initialValue: proposal.text)
             let sourceNote = "Source: \(proposal.sourceURL.absoluteString)"
@@ -58,7 +60,8 @@ struct CardEditorView: View {
                     fontStyle: fontStyle,
                     cornerRadius: cornerRadius,
                     borderColor: hasBorder ? borderColor : nil,
-                    borderWidth: borderWidth
+                    borderWidth: borderWidth,
+                    isItalic: isItalic
                 )
                 .frame(height: 120)
                 .listRowInsets(EdgeInsets())
@@ -88,7 +91,8 @@ struct CardEditorView: View {
                                 fontStyle: match.fontStyle,
                                 cornerRadius: CGFloat(match.cornerRadius),
                                 borderColor: match.borderColor.flatMap { Color(hex: $0) },
-                                borderWidth: CGFloat(match.borderWidth)
+                                borderWidth: CGFloat(match.borderWidth),
+                                isItalic: match.isItalic
                             )
                             .frame(width: 90, height: 45)
 
@@ -211,6 +215,8 @@ struct CardEditorView: View {
                     }
                 }
 
+                Toggle("Italic", isOn: $isItalic)
+
                 HStack {
                     Text("Corner Radius")
                     Slider(value: $cornerRadius, in: 0...50, step: 1)
@@ -293,6 +299,7 @@ struct CardEditorView: View {
             card.borderColor = hasBorder ? borderColor.toHex() : nil
             card.borderWidth = Int(borderWidth)
             card.valence = Int(valence)
+            card.isItalic = isItalic
             card.updatedAt = Date()
         } else {
             let card = WordCard(
@@ -305,7 +312,8 @@ struct CardEditorView: View {
                 borderColor: hasBorder ? borderColor.toHex() : nil,
                 borderWidth: Int(borderWidth),
                 notes: notes,
-                valence: Int(valence)
+                valence: Int(valence),
+                isItalic: isItalic
             )
             modelContext.insert(card)
         }
@@ -323,6 +331,7 @@ struct DuplicateMatch: Identifiable, Sendable {
     let borderColor: String?
     let borderWidth: Int
     let updatedAt: Date
+    let isItalic: Bool
 }
 
 enum DuplicateDetector {
@@ -372,7 +381,8 @@ enum DuplicateDetector {
                     cornerRadius: match.card.cornerRadius,
                     borderColor: match.card.borderColor,
                     borderWidth: match.card.borderWidth,
-                    updatedAt: match.card.updatedAt
+                    updatedAt: match.card.updatedAt,
+                    isItalic: match.card.isItalic
                 )
             }
     }

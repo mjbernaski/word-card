@@ -231,7 +231,8 @@ struct SpatialCard3DView: View {
                     cornerRadius: CGFloat(card.cornerRadius),
                     borderColor: card.borderColor.flatMap { Color(hex: $0) },
                     borderWidth: CGFloat(card.borderWidth),
-                    notes: card.notes
+                    notes: card.notes,
+                    isItalic: card.isItalic
                 )
             }
         }

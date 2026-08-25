@@ -51,7 +51,7 @@ class PNGExporter {
         let availableMainHeight = notes.isEmpty ? maxHeight : maxHeight * 0.75
 
         repeat {
-            mainFont = createFont(style: card.fontStyle, size: fontSize)
+            mainFont = createFont(style: card.fontStyle, size: fontSize, italic: card.isItalic)
             let attrs: [NSAttributedString.Key: Any] = [.font: mainFont, .foregroundColor: textColor]
             mainAttrString = NSAttributedString(string: card.text, attributes: attrs)
             mainTextSize = measureText(mainAttrString, maxWidth: maxWidth)
@@ -177,7 +177,7 @@ class PNGExporter {
         context.restoreGState()
     }
 
-    private func createFont(style: FontStyle, size: CGFloat) -> CTFont {
+    private func createFont(style: FontStyle, size: CGFloat, italic: Bool = false) -> CTFont {
         let fontName: String
         switch style {
         case .elegant:
@@ -192,10 +192,12 @@ class PNGExporter {
             #endif
         }
 
-        if let font = CTFontCreateWithName(fontName as CFString, size, nil) as CTFont? {
-            return font
-        }
-        return CTFontCreateWithName("Helvetica" as CFString, size, nil)
+        let font = CTFontCreateWithName(fontName as CFString, size, nil)
+        guard italic else { return font }
+
+        // Prefer the family's real italic face; fall back to the upright face
+        // when the family ships without one.
+        return CTFontCreateCopyWithSymbolicTraits(font, size, nil, .traitItalic, .traitItalic) ?? font
     }
 
     private func measureText(_ attributedString: NSAttributedString, maxWidth: CGFloat) -> CGSize {

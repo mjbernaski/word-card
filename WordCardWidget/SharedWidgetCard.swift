@@ -11,6 +11,8 @@ struct WidgetCardSnapshot: Codable {
     let borderColorHex: String?
     let borderWidth: Int
     let notes: String
+    /// Optional so a snapshot written by an older build still decodes.
+    let isItalic: Bool?
 }
 
 struct WidgetCardsSnapshot: Codable {
