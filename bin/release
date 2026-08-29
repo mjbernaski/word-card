@@ -71,27 +71,28 @@ EOF
 # pair of variables: the previous version hardcoded ImageCard's bundle ID and
 # profiles, so pointing it at WordCard archived the right app and then handed
 # the exporter a profile map that did not mention WordCard at all.
+# How each scheme is signed at export.
+#
+# "manual" needs a hand-created App Store profile per bundle, named exactly as
+# signing_config() lists it. "automatic" lets xcodebuild resolve profiles from
+# the local Apple Distribution certificate, and needs no table at all.
+#
+# WordCard is automatic because it has no hand-made profiles: pointing it at the
+# Xcode-managed ones that do exist ("iOS Team Store Provisioning Profile: ...")
+# fails, since manual signing rejects a managed profile by name --
+#   error: Provisioning profile "..." is Xcode managed, but signing settings
+#          require a manually managed profile.
+signing_style() {
+    case "$1" in
+        WordCard)  echo automatic ;;
+        *)         echo manual ;;
+    esac
+}
+
 signing_config() {
     local scheme="$1" platform="$2"
 
     case "$scheme:$platform" in
-        WordCard:iOS)
-            echo "mjbernaski.wordcard.app|WordCard iOS App Store"
-            echo "mjbernaski.wordcard.app.WordCardWidget|WordCard Widget iOS App Store"
-            ;;
-        WordCard:macOS)
-            echo "mjbernaski.wordcard.app|WordCard macOS App Store"
-            echo "mjbernaski.wordcard.app.WordCardWidget|WordCard Widget macOS App Store"
-            ;;
-        WordCard:visionOS)
-            echo "mjbernaski.wordcard.app|WordCard visionOS App Store"
-            echo "mjbernaski.wordcard.app.WordCardWidget|WordCard Widget visionOS App Store"
-            ;;
-        WordCard:tvOS)
-            # WordCardWidget does not support appletvos, so the tvOS archive
-            # embeds no extension and needs no second profile.
-            echo "mjbernaski.wordcard.app|WordCard tvOS App Store"
-            ;;
         ImageCard:iOS)
             echo "mjbernaski.imagecard.app|ImageCard iOS App Store"
             ;;
@@ -103,6 +104,7 @@ signing_config() {
 
 require_signing_config() {
     local scheme="$1" platform="$2"
+    [[ "$(signing_style "$scheme")" == automatic ]] && return 0
     if [[ -z "$(signing_config "$scheme" "$platform")" ]]; then
         echo "release: no App Store profiles configured for $scheme on $platform." >&2
         echo "         Add an entry to signing_config() in $0." >&2
@@ -120,18 +122,21 @@ write_export_options() {
         echo "  <key>destination</key><string>upload</string>"
         echo "  <key>method</key><string>app-store-connect</string>"
         echo "  <key>manageAppVersionAndBuildNumber</key><false/>"
-        echo "  <key>signingStyle</key><string>manual</string>"
-        echo "  <key>signingCertificate</key><string>Apple Distribution</string>"
+        echo "  <key>signingStyle</key><string>$(signing_style "$scheme")</string>"
+        [[ "$(signing_style "$scheme")" == manual ]] && \
+            echo "  <key>signingCertificate</key><string>Apple Distribution</string>"
         # The .pkg an App Store macOS upload ships in is signed by a different
         # certificate than the app inside it, and the profile does not cover it.
         [[ "$platform" == "macOS" ]] && \
             echo "  <key>installerSigningCertificate</key><string>3rd Party Mac Developer Installer</string>"
-        echo "  <key>provisioningProfiles</key><dict>"
-        while IFS='|' read -r bundle profile; do
-            [[ -z "$bundle" ]] && continue
-            echo "    <key>${bundle}</key><string>${profile}</string>"
-        done < <(signing_config "$scheme" "$platform")
-        echo "  </dict>"
+        if [[ "$(signing_style "$scheme")" == manual ]]; then
+            echo "  <key>provisioningProfiles</key><dict>"
+            while IFS='|' read -r bundle profile; do
+                [[ -z "$bundle" ]] && continue
+                echo "    <key>${bundle}</key><string>${profile}</string>"
+            done < <(signing_config "$scheme" "$platform")
+            echo "  </dict>"
+        fi
         echo "  <key>stripSwiftSymbols</key><true/>"
         echo "  <key>teamID</key><string>${TEAM_ID}</string>"
         echo "  <key>uploadSymbols</key><true/>"
@@ -174,6 +179,10 @@ for platform in "${platforms[@]}"; do
 done
 
 if [[ "$print_profiles" == true ]]; then
+    if [[ "$(signing_style "$scheme")" == automatic ]]; then
+        echo "$scheme signs automatically; no named profiles required."
+        exit 0
+    fi
     echo "App Store profiles required for $scheme:"
     for platform in "${platforms[@]}"; do
         echo "  $platform"
@@ -220,7 +229,8 @@ for platform in "${platforms[@]}"; do
         -exportOptionsPlist "$opts" \
         -authenticationKeyPath "$ASC_KEY_PATH" \
         -authenticationKeyID "$ASC_KEY_ID" \
-        -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+        -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+        -allowProvisioningUpdates
 done
 
 echo "==> Done: ${platforms[*]}"
