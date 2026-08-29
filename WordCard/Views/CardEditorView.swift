@@ -24,7 +24,7 @@ struct CardEditorView: View {
     @FocusState private var isTextFieldFocused: Bool
 
 
-    init(card: WordCard? = nil, proposal: CardProposal? = nil) {
+    init(card: WordCard? = nil) {
         self.existingCard = card
         if let card = card {
             _text = State(initialValue: card.text)
@@ -39,14 +39,6 @@ struct CardEditorView: View {
             _borderWidth = State(initialValue: Double(card.borderWidth))
             _valence = State(initialValue: Double(card.valence))
             _isItalic = State(initialValue: card.isItalic)
-        } else if let proposal {
-            _text = State(initialValue: proposal.text)
-            let sourceNote = "Source: \(proposal.sourceURL.absoluteString)"
-            let combinedNotes = proposal.notes.isEmpty ? sourceNote : "\(sourceNote)\n\n\(proposal.notes)"
-            _notes = State(initialValue: String(combinedNotes.prefix(500)))
-            _category = State(initialValue: proposal.category)
-            _backgroundColor = State(initialValue: Color(hex: proposal.category.defaultBackgroundColor) ?? .white)
-            _valence = State(initialValue: Double(proposal.valence))
         }
     }
 

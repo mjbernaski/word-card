@@ -57,8 +57,6 @@
 		F10000010000000000000003 /* SharedWidgetCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2000001000000000000000E /* SharedWidgetCard.swift */; };
 		F10000010000000000000004 /* WordCardWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = F1000001000000000000000A /* WordCardWidget.appex */; platformFilters = (ios, macos, xros, ); settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		F10000010000000000000005 /* WidgetSnapshotService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30000010000000000000001 /* WidgetSnapshotService.swift */; };
-		710000010000000000000001 /* CardProposalService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710000020000000000000001 /* CardProposalService.swift */; };
-		710000010000000000000002 /* URLCardProposalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710000020000000000000002 /* URLCardProposalView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -141,8 +139,6 @@
 		F2000001000000000000000F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F20000010000000000000010 /* WordCardWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WordCardWidget.entitlements; sourceTree = "<group>"; };
 		F30000010000000000000001 /* WidgetSnapshotService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetSnapshotService.swift; sourceTree = "<group>"; };
-		710000020000000000000001 /* CardProposalService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardProposalService.swift; sourceTree = "<group>"; };
-		710000020000000000000002 /* URLCardProposalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLCardProposalView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -255,7 +251,6 @@
 		A50000010000000000000005 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				710000020000000000000002 /* URLCardProposalView.swift */,
 				A20000010000000000000002 /* ContentView.swift */,
 				A20000010000000000000004 /* CardListView.swift */,
 				A20000010000000000000005 /* CardDetailView.swift */,
@@ -280,7 +275,6 @@
 		A50000010000000000000006 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				710000020000000000000001 /* CardProposalService.swift */,
 				A20000010000000000000008 /* PNGExporter.swift */,
 				611638BD2EEA0001000BCDC3 /* BackupService.swift */,
 				61AB68712F0A0000003D01C1 /* AutoBackupService.swift */,
@@ -479,8 +473,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				710000010000000000000001 /* CardProposalService.swift in Sources */,
-				710000010000000000000002 /* URLCardProposalView.swift in Sources */,
 				A10000010000000000000002 /* ContentView.swift in Sources */,
 				A10000010000000000000003 /* WordCard.swift in Sources */,
 				A10000010000000000000004 /* CardListView.swift in Sources */,
