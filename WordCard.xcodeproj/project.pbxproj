@@ -34,9 +34,11 @@
 		61AB68582EFC4000003D01C1 /* SyncDiagnosticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB68592EFC4000003D01C1 /* SyncDiagnosticsView.swift */; };
 		61AB685A2EFC5000003D01C1 /* CardShowcaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB685B2EFC5000003D01C1 /* CardShowcaseView.swift */; };
 		61AB68702F0A0000003D01C1 /* AutoBackupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AB68712F0A0000003D01C1 /* AutoBackupService.swift */; };
-		61D71EC82F3E9A3200B7CE73 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61D71EC32F3E9A3200B7CE73 /* Assets.xcassets */; };
-		61D71EC92F3E9A3200B7CE73 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61D71EC52F3E9A3200B7CE73 /* Assets.xcassets */; };
-		61D71ECC2F3E9A3200B7CE73 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61D71ECA2F3E9A3200B7CE73 /* Assets.xcassets */; };
+		61D71ED12F3E9A3200B7CE73 /* visionOS.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61D71ED02F3E9A3200B7CE73 /* visionOS.xcassets */; };
+		61D71ED42F3E9A3200B7CE73 /* Shared.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61D71ED32F3E9A3200B7CE73 /* Shared.xcassets */; };
+		61D71EC82F3E9A3200B7CE73 /* iOS.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61D71EC32F3E9A3200B7CE73 /* iOS.xcassets */; };
+		61D71EC92F3E9A3200B7CE73 /* macOS.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61D71EC52F3E9A3200B7CE73 /* macOS.xcassets */; };
+		61D71ECC2F3E9A3200B7CE73 /* tvOS.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61D71ECA2F3E9A3200B7CE73 /* tvOS.xcassets */; };
 		A10000010000000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000002 /* ContentView.swift */; };
 		A10000010000000000000003 /* WordCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000003 /* WordCard.swift */; };
 		A10000010000000000000004 /* CardListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000004 /* CardListView.swift */; };
@@ -97,9 +99,11 @@
 		61AB68592EFC4000003D01C1 /* SyncDiagnosticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncDiagnosticsView.swift; sourceTree = "<group>"; };
 		61AB685B2EFC5000003D01C1 /* CardShowcaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardShowcaseView.swift; sourceTree = "<group>"; };
 		61AB68712F0A0000003D01C1 /* AutoBackupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoBackupService.swift; sourceTree = "<group>"; };
-		61D71EC32F3E9A3200B7CE73 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		61D71EC52F3E9A3200B7CE73 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		61D71ECA2F3E9A3200B7CE73 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		61D71ED02F3E9A3200B7CE73 /* visionOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = visionOS.xcassets; sourceTree = "<group>"; };
+		61D71ED32F3E9A3200B7CE73 /* Shared.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Shared.xcassets; sourceTree = "<group>"; };
+		61D71EC32F3E9A3200B7CE73 /* iOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = iOS.xcassets; sourceTree = "<group>"; };
+		61D71EC52F3E9A3200B7CE73 /* macOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = macOS.xcassets; sourceTree = "<group>"; };
+		61D71ECA2F3E9A3200B7CE73 /* tvOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = tvOS.xcassets; sourceTree = "<group>"; };
 		A20000010000000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A20000010000000000000003 /* WordCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCard.swift; sourceTree = "<group>"; };
 		A20000010000000000000004 /* CardListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardListView.swift; sourceTree = "<group>"; };
@@ -166,10 +170,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		61D71ED22F3E9A3200B7CE73 /* visionOS */ = {
+			isa = PBXGroup;
+			children = (
+				61D71ED02F3E9A3200B7CE73 /* visionOS.xcassets */,
+			);
+			path = visionOS;
+			sourceTree = "<group>";
+		};
+		61D71ED52F3E9A3200B7CE73 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				61D71ED32F3E9A3200B7CE73 /* Shared.xcassets */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
 		61D71EC42F3E9A3200B7CE73 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				61D71EC32F3E9A3200B7CE73 /* Assets.xcassets */,
+				61D71EC32F3E9A3200B7CE73 /* iOS.xcassets */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -177,7 +197,7 @@
 		61D71EC62F3E9A3200B7CE73 /* macOS */ = {
 			isa = PBXGroup;
 			children = (
-				61D71EC52F3E9A3200B7CE73 /* Assets.xcassets */,
+				61D71EC52F3E9A3200B7CE73 /* macOS.xcassets */,
 			);
 			path = macOS;
 			sourceTree = "<group>";
@@ -188,6 +208,8 @@
 				61D71EC42F3E9A3200B7CE73 /* iOS */,
 				61D71EC62F3E9A3200B7CE73 /* macOS */,
 				61D71ECB2F3E9A3200B7CE73 /* tvOS */,
+				61D71ED22F3E9A3200B7CE73 /* visionOS */,
+				61D71ED52F3E9A3200B7CE73 /* Shared */,
 			);
 			path = "App Assets";
 			sourceTree = "<group>";
@@ -195,7 +217,7 @@
 		61D71ECB2F3E9A3200B7CE73 /* tvOS */ = {
 			isa = PBXGroup;
 			children = (
-				61D71ECA2F3E9A3200B7CE73 /* Assets.xcassets */,
+				61D71ECA2F3E9A3200B7CE73 /* tvOS.xcassets */,
 			);
 			path = tvOS;
 			sourceTree = "<group>";
@@ -430,9 +452,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				61D71EC82F3E9A3200B7CE73 /* Assets.xcassets in Resources */,
-				61D71EC92F3E9A3200B7CE73 /* Assets.xcassets in Resources */,
-				61D71ECC2F3E9A3200B7CE73 /* Assets.xcassets in Resources */,
+				61D71EC82F3E9A3200B7CE73 /* iOS.xcassets in Resources */,
+				61D71EC92F3E9A3200B7CE73 /* macOS.xcassets in Resources */,
+				61D71ECC2F3E9A3200B7CE73 /* tvOS.xcassets in Resources */,
+				61D71ED12F3E9A3200B7CE73 /* visionOS.xcassets in Resources */,
+				61D71ED42F3E9A3200B7CE73 /* Shared.xcassets in Resources */,
 				A10000010000000000000009 /* AppConfig.json in Resources */,
 				D1000001000000000000000B /* SampleCards.json in Resources */,
 			);
@@ -536,7 +560,7 @@
 				"CODE_SIGN_ENTITLEMENTS[sdk=iphoneos*]" = "WordCard/ImageCard-iOS.entitlements";
 				"CODE_SIGN_ENTITLEMENTS[sdk=iphonesimulator*]" = "WordCard/ImageCard-iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = DQPDVF6ZSY;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -577,7 +601,7 @@
 				"CODE_SIGN_ENTITLEMENTS[sdk=iphoneos*]" = "WordCard/ImageCard-iOS-Release.entitlements";
 				"CODE_SIGN_ENTITLEMENTS[sdk=iphonesimulator*]" = "WordCard/ImageCard-iOS-Release.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = DQPDVF6ZSY;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -738,9 +762,31 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				EXCLUDED_SOURCE_FILE_NAMES = (
+					iOS.xcassets,
+					macOS.xcassets,
+					tvOS.xcassets,
+					visionOS.xcassets,
+				);
+				"INCLUDED_SOURCE_FILE_NAMES[sdk=appletv*]" = (
+					tvOS.xcassets,
+					Shared.xcassets,
+				);
+				"INCLUDED_SOURCE_FILE_NAMES[sdk=iphone*]" = (
+					iOS.xcassets,
+					Shared.xcassets,
+				);
+				"INCLUDED_SOURCE_FILE_NAMES[sdk=macosx*]" = (
+					macOS.xcassets,
+					Shared.xcassets,
+				);
+				"INCLUDED_SOURCE_FILE_NAMES[sdk=xr*]" = (
+					visionOS.xcassets,
+					Shared.xcassets,
+				);
 				CODE_SIGN_ENTITLEMENTS = WordCard/WordCard.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 14;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = DQPDVF6ZSY;
 				ENABLE_APP_SANDBOX = NO;
@@ -798,9 +844,31 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				EXCLUDED_SOURCE_FILE_NAMES = (
+					iOS.xcassets,
+					macOS.xcassets,
+					tvOS.xcassets,
+					visionOS.xcassets,
+				);
+				"INCLUDED_SOURCE_FILE_NAMES[sdk=appletv*]" = (
+					tvOS.xcassets,
+					Shared.xcassets,
+				);
+				"INCLUDED_SOURCE_FILE_NAMES[sdk=iphone*]" = (
+					iOS.xcassets,
+					Shared.xcassets,
+				);
+				"INCLUDED_SOURCE_FILE_NAMES[sdk=macosx*]" = (
+					macOS.xcassets,
+					Shared.xcassets,
+				);
+				"INCLUDED_SOURCE_FILE_NAMES[sdk=xr*]" = (
+					visionOS.xcassets,
+					Shared.xcassets,
+				);
 				CODE_SIGN_ENTITLEMENTS = "WordCard/WordCard-Release.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 14;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = DQPDVF6ZSY;
 				ENABLE_APP_SANDBOX = YES;
@@ -859,7 +927,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = WordCardWidget/WordCardWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = DQPDVF6ZSY;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WordCardWidget/Info.plist;
@@ -895,7 +963,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = WordCardWidget/WordCardWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = DQPDVF6ZSY;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WordCardWidget/Info.plist;
