@@ -1,7 +1,9 @@
 import CloudKit
+import CoreData
 import Foundation
 import SwiftData
 import SwiftUI
+import os
 
 enum SyncStatus {
     case syncing
@@ -23,6 +25,16 @@ class CloudKitSyncMonitor: ObservableObject {
     private var syncCompletionTask: Task<Void, Never>?
     private let launchedAt = Date()
     private let automaticSyncGracePeriod: TimeInterval = 30
+    private var eventObserver: NSObjectProtocol?
+    private var inFlightEvents = 0
+    /// Last CloudKit failure, held until a later event succeeds. Kept apart from
+    /// `errorMessage` so the 30-second account poll cannot quietly clear it.
+    private var cloudKitError: String?
+
+    private let logger = Logger(
+        subsystem: Bundle.main.bundleIdentifier ?? "mjbernaski.wordcard.app",
+        category: "CloudKit"
+    )
 
     init() {
         checkiCloudStatus()
@@ -37,6 +49,9 @@ class CloudKitSyncMonitor: ObservableObject {
         accountStatusTimer?.invalidate()
         syncIndicatorTask?.cancel()
         syncCompletionTask?.cancel()
+        if let eventObserver {
+            NotificationCenter.default.removeObserver(eventObserver)
+        }
         NotificationCenter.default.removeObserver(self)
     }
 
@@ -60,6 +75,82 @@ class CloudKitSyncMonitor: ObservableObject {
             name: .NSPersistentStoreRemoteChange,
             object: nil
         )
+
+        eventObserver = NotificationCenter.default.addObserver(
+            forName: NSPersistentCloudKitContainer.eventChangedNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] notification in
+            guard let event = notification.userInfo?[
+                NSPersistentCloudKitContainer.eventNotificationUserInfoKey
+            ] as? NSPersistentCloudKitContainer.Event else { return }
+
+            // Event isn't Sendable, so pull out plain values before hopping.
+            let phase: String
+            switch event.type {
+            case .setup: phase = "setup"
+            case .import: phase = "import"
+            case .export: phase = "export"
+            @unknown default: phase = "unknown"
+            }
+            let endDate = event.endDate
+            let succeeded = event.succeeded
+            let failure = event.error?.localizedDescription
+
+            Task { @MainActor in
+                self?.applyEvent(
+                    phase: phase,
+                    endDate: endDate,
+                    succeeded: succeeded,
+                    failure: failure
+                )
+            }
+        }
+    }
+
+    /// Folds a CloudKit setup/import/export event into the published state.
+    ///
+    /// SwiftData reports no sync errors of its own, so without this a rejected
+    /// export is indistinguishable from an idle store. That is how a missing
+    /// `CD_isItalic` in the production schema killed both upload and download
+    /// while the status dot stayed green: the only record of it was the device
+    /// log. Every event is logged, and a failure now reaches the UI.
+    private func applyEvent(
+        phase: String,
+        endDate: Date?,
+        succeeded: Bool,
+        failure: String?
+    ) {
+        guard let endDate else {
+            inFlightEvents += 1
+            syncIndicatorTask?.cancel()
+            syncCompletionTask?.cancel()
+            syncStatus = .syncing
+            logger.info("CloudKit \(phase, privacy: .public) started")
+            return
+        }
+
+        inFlightEvents = max(0, inFlightEvents - 1)
+
+        if let failure {
+            // A real failure outranks the remote-change heuristic, which would
+            // otherwise flip the dot back to green two seconds later.
+            syncIndicatorTask?.cancel()
+            syncCompletionTask?.cancel()
+            cloudKitError = failure
+            errorMessage = failure
+            syncStatus = .error
+            logger.error("CloudKit \(phase, privacy: .public) FAILED: \(failure, privacy: .public)")
+            return
+        }
+
+        cloudKitError = nil
+        errorMessage = nil
+        lastSyncTime = endDate
+        if inFlightEvents == 0 {
+            syncStatus = .synced
+        }
+        logger.info("CloudKit \(phase, privacy: .public) finished, succeeded=\(succeeded, privacy: .public)")
     }
 
     @objc private func handleAccountChange() {
@@ -128,6 +219,9 @@ class CloudKitSyncMonitor: ObservableObject {
 
     private func checkiCloudStatus() {
         if FileManager.default.ubiquityIdentityToken != nil {
+            // A CloudKit failure outranks this check: the account is signed in,
+            // which is precisely why the export error must stay on screen.
+            guard cloudKitError == nil else { return }
             if syncStatus == .disabled || syncStatus == .unknown {
                 syncStatus = .synced
                 lastSyncTime = Date()
@@ -144,6 +238,7 @@ class CloudKitSyncMonitor: ObservableObject {
         syncCompletionTask?.cancel()
         syncStatus = .syncing
         errorMessage = nil
+        cloudKitError = nil
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             Task { @MainActor in
