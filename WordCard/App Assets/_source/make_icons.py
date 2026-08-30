@@ -40,7 +40,8 @@ def wide_crop(img, ratio):
 
 
 # ------------------------------------------------------------------- wordmark
-def draw_wordmark(img, height_frac=0.085, baseline_frac=0.80, tracking_frac=0.16):
+def draw_wordmark(img, height_frac=0.085, baseline_frac=0.80, tracking_frac=0.16,
+                  scrim=True):
     """Set WORDMARK across the lower third, letterspaced, over a soft scrim.
 
     The photo is busy, so the text gets a vertical scrim behind it rather than a
@@ -65,10 +66,12 @@ def draw_wordmark(img, height_frac=0.085, baseline_frac=0.80, tracking_frac=0.16
     ascent, descent = font.getmetrics()
     baseline = H * baseline_frac
 
-    # scrim: a soft dark band behind the text, feathered top and bottom
+    # scrim: a soft dark band behind the text, feathered top and bottom.
+    # A layered icon skips it -- the front layer is transparent by design, and a
+    # dark band there would sit over the photo as a grey smear.
     band_top = int(baseline - ascent * 1.5)
     band_bot = int(baseline + descent * 1.5)
-    if band_bot > band_top:
+    if scrim and band_bot > band_top:
         scrim = Image.new("L", (1, H), 0)
         px = scrim.load()
         for y in range(H):
@@ -87,6 +90,12 @@ def draw_wordmark(img, height_frac=0.085, baseline_frac=0.80, tracking_frac=0.16
         d.text((x, baseline), ch, font=font, fill=INK + (255,), anchor="ls")
         x += adv + tracking
     return img
+
+
+def wordmark_layer(w, h, **kw):
+    """The wordmark alone on transparency, for a parallax stack's front layer."""
+    kw.setdefault("scrim", False)
+    return draw_wordmark(Image.new("RGBA", (w, h), (0, 0, 0, 0)), **kw)
 
 
 # --------------------------------------------------------------- macOS shape
@@ -143,9 +152,11 @@ def main():
     src = Image.open(src_path).convert("RGBA")
     print(f"source {src.size[0]}x{src.size[1]}")
 
-    # square master, full bleed, with wordmark
-    master = square_crop(src).resize((1024, 1024), Image.LANCZOS)
-    master = draw_wordmark(master)
+    # square master, full bleed. iOS and macOS bake the wordmark in; the
+    # layered platforms keep the photo and the wordmark apart, so both a plain
+    # plate and a lettered master are needed.
+    plate = square_crop(src).resize((1024, 1024), Image.LANCZOS)
+    master = draw_wordmark(plate.copy())
     small = small_master(src)
 
     def out(rel):
@@ -171,19 +182,40 @@ def main():
     for name, px in MAC_SIZES:
         macos_canvas(small if px <= SMALL_MAX else master, px).save(out(f"{macdir}/{name}"))
 
-    # visionOS: full-bleed back layer
-    master.convert("RGB").save(out(
-        "visionOS/visionOS.xcassets/AppIcon.solidimagestack/"
-        "Back.solidimagestacklayer/Content.imageset/AppIcon-vision.png"))
+    # visionOS and tvOS both reject a stack that carries art on only one layer:
+    #   error: ... must have at least 2 layers with applicable content.
+    # Splitting photo from wordmark satisfies that and is what the parallax is
+    # for -- the lettering floats above the swarm instead of being painted on
+    # it. Neither back layer gets the wordmark, or it would show up twice.
+    vis = "visionOS/visionOS.xcassets/AppIcon.solidimagestack"
+    plate.convert("RGB").save(out(
+        f"{vis}/Back.solidimagestacklayer/Content.imageset/AppIcon-vision.png"))
+    wordmark_layer(1024, 1024).save(out(
+        f"{vis}/Front.solidimagestacklayer/Content.imageset/AppIcon-vision-front.png"))
 
     # tvOS: wide crops for both image stacks
     ba = "tvOS/tvOS.xcassets/AppIcon.brandassets"
-    for stack, (w, h), fname in (("App Icon", (400, 240), "icon_back.png"),
-                                 ("App Icon - App Store", (1280, 768), "icon_back_store.png")):
+    for stack, (w, h), back, front in (
+            ("App Icon", (400, 240), "icon_back.png", "icon_front.png"),
+            ("App Icon - App Store", (1280, 768),
+             "icon_back_store.png", "icon_front_store.png")):
+        layers = f"{ba}/{stack}.imagestack"
         tv = wide_crop(src, w / h).resize((w, h), Image.LANCZOS)
-        tv = draw_wordmark(tv, height_frac=0.13, baseline_frac=0.82)
         tv.convert("RGB").save(out(
-            f"{ba}/{stack}.imagestack/Back.imagestacklayer/Content.imageset/{fname}"))
+            f"{layers}/Back.imagestacklayer/Content.imageset/{back}"))
+        wordmark_layer(w, h, height_frac=0.13, baseline_frac=0.82).save(out(
+            f"{layers}/Front.imagestacklayer/Content.imageset/{front}"))
+
+    # Top shelf art is a flat imageset rather than a stack, so the wordmark is
+    # baked back in. Both idioms ship 1x and 2x.
+    for shelf, (w, h) in (("Top Shelf Image", (1920, 720)),
+                          ("Top Shelf Image Wide", (2320, 720))):
+        for scale in (1, 2):
+            art = wide_crop(src, w / h).resize((w * scale, h * scale), Image.LANCZOS)
+            art = draw_wordmark(art, height_frac=0.13, baseline_frac=0.82)
+            suffix = "" if scale == 1 else "@2x"
+            art.convert("RGB").save(out(
+                f"{ba}/{shelf}.imageset/{shelf.lower().replace(' ', '_')}{suffix}.png"))
 
     print("icon set written")
 
